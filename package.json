@@ -1,0 +1,27 @@
+{
+  "name": "ccdc-etl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CBIIT/CCDC-ETL.git"
+  },
+  "author": "Wei Yu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CBIIT/CCDC-ETL/issues"
+  },
+  "homepage": "https://github.com/CBIIT/CCDC-ETL#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "elasticsearch": "^16.7.2",
+    "lodash": "^4.17.21",
+    "mysql": "^2.18.1",
+    "node-xlsx": "^0.17.1",
+    "winston": "^3.3.3"
+  }
+}
