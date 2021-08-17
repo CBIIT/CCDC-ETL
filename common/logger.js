@@ -1,9 +1,9 @@
-var winston = require('winston');
-var config = require('../config');
+var winston = require("winston");
+var config = require("../config");
 
 const transports = [];
 
-if(config.env !== 'dev'){
+if(config.env !== "dev"){
     transports.push(
         new winston.transports.Console()
     );
@@ -22,10 +22,10 @@ else{
 }
 
 const LoggerInstance = winston.createLogger({
-    level: config.log_level,
+    level: config.logLevel,
     format: winston.format.combine(
       winston.format.timestamp({
-        format: 'YYYY-MM-DD HH:mm:ss'
+        format: "YYYY-MM-DD HH:mm:ss"
       }),
       winston.format.errors({ stack: true }),
       winston.format.splat(),
