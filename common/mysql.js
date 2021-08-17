@@ -3,7 +3,7 @@
  */
 
  "use strict";
- var config = require("../config")
+ var config = require("../config");
  var mysql = require("mysql");
  const { promisify } = require("util");
  
@@ -22,14 +22,17 @@
  
  pool.getConnectionAsync = () => new Promise((resolve, reject) => {
      pool.getConnection((error, connection) => {
-         if (error) reject(error);
-         else resolve(connection);
-     })
+         if (error) {
+            reject(error);
+         } else {
+            resolve(connection);
+         }
+     });
  });
  
  pool.query = promisify(pool.query).bind(pool);
 
- pool.format = (sql, inserts) =>{
+ pool.format = (sql, inserts) => {
     return mysql.format(sql, inserts);
  };
  

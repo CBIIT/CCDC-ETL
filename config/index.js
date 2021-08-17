@@ -1,8 +1,8 @@
 let path = require("path");
-let local_env = require("dotenv");
+let localEnv = require("dotenv");
 let _ = require("lodash");
 
-const cfg = local_env.config();
+const cfg = localEnv.config();
 if (!cfg.error) {
     let tmp = cfg.parsed;
     process.env = {

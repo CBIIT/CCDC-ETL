@@ -13,7 +13,7 @@ extract.run = async () => {
     const digestFileFolder = config.digestFileFolder;
     const files = fs.readdirSync(digestFileFolder);
     for(let i = 0; i< files.length; i++){
-        let file = files[parseInt(i)];
+        let file = files[parseInt(i, 10)];
         const workSheetsFromFile = xlsx.parse(`${digestFileFolder}/${file}`);
         let dataResource = extractHelper.getDataResourceInfo(workSheetsFromFile[0]);
         //update data resource info to RDB if exists, otherwise create a new row
@@ -26,12 +26,12 @@ extract.run = async () => {
         let len = datasetsInfo.length;
         for(let i = 0; i< len; i++){
             //insert datasets info to RDB
-            let datasetInfo = datasetsInfo[parseInt(i)];
+            let datasetInfo = datasetsInfo[parseInt(i, 10)];
             datasetInfo.submissionId = submissionId;
             let datasetId = await extractHelper.insertDataset(datasetInfo);
             let digests = extractHelper.getDigest(workSheetsFromFile[i + 2]);
             for(let j = 0; j < digests.length ; j++){
-                let digest = digests[parseInt(j)];
+                let digest = digests[parseInt(j, 10)];
                 digest.datasetId = datasetId;
                 //insert digests info to RDB
                 await extractHelper.insertDigest(digest);
