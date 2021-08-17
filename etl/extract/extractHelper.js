@@ -13,10 +13,10 @@ extractHelper.getDataResourceInfo = (dataResourceSheet) => {
     result.siteOwner = "";
     result.poc = data[14][3];
     result.pocEmail = data[14][4];
-    result.api = data[14][8] == "No" ? "" : data[14][9];
-    result.pediatricSpecific = data[14][7] == "Mix" ? 0 : 1;
-    result.analytics = data[14][5] == "Yes" ? 1 : 0;
-    result.visualization = data[14][6] == "Yes" ? 1 : 0;
+    result.api = data[14][8] === "No" ? "" : data[14][9];
+    result.pediatricSpecific = data[14][7] === "Mix" ? 0 : 1;
+    result.analytics = data[14][5] === "Yes" ? 1 : 0;
+    result.visualization = data[14][6] === "Yes" ? 1 : 0;
     result.hasGenomicsOmics = data[14][2].indexOf("genomics") > -1? 1 : 0;
     result.hasImagingData = data[14][2].indexOf("imaging") > -1? 1 : 0;
     result.hasClinicalData = data[14][2].indexOf("clinical") > -1? 1 : 0;

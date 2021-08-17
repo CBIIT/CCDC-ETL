@@ -2,7 +2,7 @@
  * client for mysql
  */
 
- 'use strict';
+ "use strict";
  var config = require("../config");
  var logger = require("../common/logger");
  var extract = require("./extract");

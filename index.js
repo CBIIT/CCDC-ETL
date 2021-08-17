@@ -4,7 +4,7 @@ const mysql = require("./common/mysql");
 const elasticsearch = require("./common/elasticsearch");
 const etl = require("./etl");
 
-const run_CCDC_ETL = async function(){
+const runCCDCETL = async function(){
 
     try{
         const elasticsearchConnected = await elasticsearch.testConnection();
@@ -37,4 +37,4 @@ const run_CCDC_ETL = async function(){
     etl.endEtl();
 }
 
-run_CCDC_ETL();
+runCCDCETL();
