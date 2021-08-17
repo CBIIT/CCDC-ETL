@@ -1,5 +1,5 @@
 let path = require("path");
-let local_env = require("dotenv")
+let local_env = require("dotenv");
 let _ = require("lodash");
 
 const cfg = local_env.config();
@@ -26,7 +26,7 @@ var config = {
   // Root path of server
   root: path.resolve(__dirname, "../../"),
 
-  digest_file_folder: process.env.DIGEST_FILE_FOLDER || path.resolve(__dirname, "../digests"),
+  digestFileFolder: process.env.DIGEST_FILE_FOLDER || path.resolve(__dirname, "../digests"),
 
   // Log directory
   logDir: process.env.LOGDIR || "/local/content/ccdc/etl/logs",
@@ -35,29 +35,29 @@ var config = {
   env: process.env.NODE_ENV || "prod",
 
   // Used by winston logger
-  log_level: process.env.LOG_LEVEL || 'silly',
+  logLevel: process.env.LOG_LEVEL || "silly",
 
   // index name for data resource
-  index_dr: "data_resource",
+  indexDR: "data_resource",
 
   // index name for dataset
-  index_ds: "dataset",
+  indexDS: "dataset",
 
   //mysql connection
   mysql: {
     connectionLimit: 100, 
-    host: process.env.RDB_HOST || 'localhost',
+    host: process.env.RDB_HOST || "localhost",
     port: process.env.RDB_PORT || 3306,
-    user: process.env.RDB_USER || 'root', 
-    password : process.env.RDB_PASSWORD || '123456', 
-    db : 'ccdc'
+    user: process.env.RDB_USER || "root", 
+    password : process.env.RDB_PASSWORD || "123456", 
+    db : "ccdc"
   },
 
   //elasticsearch connection
   elasticsearch: {
-    host: process.env.ES_HOST || '127.0.0.1',
+    host: process.env.ES_HOST || "127.0.0.1",
     port: process.env.ES_PORT || 9200,
-    log: 'error',
+    log: "error",
 		requestTimeout: 30000
   },
 

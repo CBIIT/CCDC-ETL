@@ -1,9 +1,9 @@
 /**
  * Client for elasticsearch
  */
- const elasticsearch = require('elasticsearch');
- const logger = require('./logger');
- const config = require('../config');
+ const elasticsearch = require("elasticsearch");
+ const logger = require("./logger");
+ const config = require("../config");
  
  var esClient = new elasticsearch.Client({
      host: config.elasticsearch.host + ":" + config.elasticsearch.port,
@@ -19,9 +19,9 @@
  
  exports.testConnection = testConnection;
  
- const search = async (index, query) => {
-     const {body} = await esClient.search({
-         index: index,
+ const search = async (searchIndex, query) => {
+     const body = await esClient.search({
+         index: searchIndex,
          body: query
      });
  
