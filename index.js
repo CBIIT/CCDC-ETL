@@ -5,8 +5,7 @@ const elasticsearch = require("./common/elasticsearch");
 const etl = require("./etl");
 
 const runCCDCETL = async function(){
-
-    try{
+    try {
         const elasticsearchConnected = await elasticsearch.testConnection();
         if(elasticsearchConnected){
             logger.info("Elasticsearch connected!");
@@ -19,7 +18,6 @@ const runCCDCETL = async function(){
         logger.error(error);
     }
   
-
     try{
         const mysqlConnected = await mysql.query("select 1 as c1");
         if(mysqlConnected[0].c1){
@@ -35,6 +33,6 @@ const runCCDCETL = async function(){
 
     await etl.startEtl();
     etl.endEtl();
-}
+};
 
 runCCDCETL();
