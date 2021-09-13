@@ -34,6 +34,10 @@ indices.datasetsIndexConfig = {
           "type": "text",
           "analyzer": "standard_analyzer"
         },
+        "desc": {
+          "type": "text",
+          "analyzer": "standard_analyzer"
+        },
         "primary_dataset_scope": {
           "type": "keyword"
         },

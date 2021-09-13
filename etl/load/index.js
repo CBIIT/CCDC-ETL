@@ -66,6 +66,7 @@ load.run = async () => {
       tmp.data_resource_id = drs[i].id;
       tmp.dataset_id = dataset.id;
       tmp.dataset_name = dataset.dataset_name;
+      tmp.desc = dataset.description;
       tmp.primary_dataset_scope = dataset.dataset_scope;
       tmp.poc = dataset.poc;
       tmp.poc_email = dataset.poc_email;
@@ -165,24 +166,24 @@ load.run = async () => {
       logger.info("Indexed document into elasticsearch: " + result._id);
     }
     //indexing dataresource into elasticsearch
-    let dsDocument = {};
-    dsDocument.data_resource_id = drs[i].id;
-    dsDocument.resource_name = drs[i].resource_name;
-    dsDocument.resource_type = drs[i].resource_type;
-    dsDocument.description = drs[i].description;
-    dsDocument.resource_uri = drs[i].resource_uri;
-    dsDocument.has_genomics_omics = drs[i].has_genomics_omics;
-    dsDocument.has_imaging_data = drs[i].has_imaging_data;
-    dsDocument.has_clinical_data = drs[i].has_clinical_data;
-    dsDocument.has_xenograft_data = drs[i].has_xenograft_data;
-    dsDocument.has_cell_lines_data = drs[i].has_cell_lines_data;
-    dsDocument.poc = drs[i].poc;
-    dsDocument.poc_email = drs[i].poc_email;
-    dsDocument.api = drs[i].api;
-    dsDocument.pediatric_specific = drs[i].pediatric_specific;
-    dsDocument.analytics = drs[i].analytics;
-    dsDocument.visualization = drs[i].visualization;
-    let result = await elasticsearch.addDocument(config.indexDR.alias, dsDocument.data_resource_id , dsDocument);
+    let drDocument = {};
+    drDocument.data_resource_id = drs[i].id;
+    drDocument.resource_name = drs[i].resource_name;
+    drDocument.resource_type = drs[i].resource_type;
+    drDocument.description = drs[i].description;
+    drDocument.resource_uri = drs[i].resource_uri;
+    drDocument.has_genomics_omics = drs[i].has_genomics_omics;
+    drDocument.has_imaging_data = drs[i].has_imaging_data;
+    drDocument.has_clinical_data = drs[i].has_clinical_data;
+    drDocument.has_xenograft_data = drs[i].has_xenograft_data;
+    drDocument.has_cell_lines_data = drs[i].has_cell_lines_data;
+    drDocument.poc = drs[i].poc;
+    drDocument.poc_email = drs[i].poc_email;
+    drDocument.api = drs[i].api;
+    drDocument.pediatric_specific = drs[i].pediatric_specific;
+    drDocument.analytics = drs[i].analytics;
+    drDocument.visualization = drs[i].visualization;
+    let result = await elasticsearch.addDocument(config.indexDR.alias, drDocument.data_resource_id , drDocument);
     logger.info("Indexed document into elasticsearch: " + result._id);
   }
 };
