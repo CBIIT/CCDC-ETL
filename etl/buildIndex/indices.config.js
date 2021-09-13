@@ -16,7 +16,7 @@ indices.datasetsIndexConfig = {
       "filter": {
         "edge_ngram": {
           "max_gram": "20",
-          "min_gram": "3",
+          "min_gram": "4",
           "type": "edge_ngram"
         }
       }
@@ -521,7 +521,7 @@ indices.dataresourcesIndexConfig = {
       filter: {
         edge_ngram: {
           max_gram: "20",
-          min_gram: "3",
+          min_gram: "4",
           type: "edge_ngram"
         }
       }
