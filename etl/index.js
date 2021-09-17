@@ -6,7 +6,7 @@
  var config = require("../config");
  var logger = require("../common/logger");
  var extract = require("./extract");
- var transform = require("./transform");
+ var buildIndex = require("./buildIndex");
  var load = require("./load");
  var mysql = require("../common/mysql");
  
@@ -14,8 +14,8 @@
  
  etl.startEtl = async () => {
     await extract.run();
-    transform.run();
-    load.run();
+    await buildIndex.run();
+    await load.run();
  };
  
  etl.endEtl = () => {

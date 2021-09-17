@@ -38,10 +38,16 @@ var config = {
   logLevel: process.env.LOG_LEVEL || "silly",
 
   // index name for data resource
-  indexDR: "data_resource",
+  indexDR: {
+    prefix: "dataresources_",
+    alias: "dataresources"
+  },
 
   // index name for dataset
-  indexDS: "dataset",
+  indexDS: {
+    prefix: "datasets_",
+    alias: "datasets"
+  },
 
   //mysql connection
   mysql: {

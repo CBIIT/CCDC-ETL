@@ -1,31 +1,79 @@
 /**
  * Client for elasticsearch
  */
- const elasticsearch = require("elasticsearch");
- const logger = require("./logger");
- const config = require("../config");
+const elasticsearch = require("elasticsearch");
+const logger = require("./logger");
+const config = require("../config");
+const { uniqueId } = require("lodash");
  
- var esClient = new elasticsearch.Client({
-     host: config.elasticsearch.host + ":" + config.elasticsearch.port,
-     log: config.elasticsearch.log,
-     requestTimeout: config.elasticsearch.requestTimeout
- });
+var esClient = new elasticsearch.Client({
+    host: config.elasticsearch.host + ":" + config.elasticsearch.port,
+    log: config.elasticsearch.log,
+    requestTimeout: config.elasticsearch.requestTimeout
+});
  
- const testConnection = async () => {
-     const info = await esClient.ping();
- 
-     return info;
- };
- 
- exports.testConnection = testConnection;
- 
- const search = async (searchIndex, query) => {
-     const body = await esClient.search({
-         index: searchIndex,
-         body: query
-     });
- 
-     return body.hits.hits;
- };
- 
- exports.search = search;
+const testConnection = async () => {
+    const info = await esClient.ping();
+
+    return info;
+};
+
+exports.testConnection = testConnection;
+
+const search = async (indexName, query) => {
+    const body = await esClient.search({
+        index: indexName,
+        body: query
+    });
+
+    return body.hits.hits;
+};
+
+exports.search = search;
+
+const createIndex = async (indexName, indexConfig) => {
+  await esClient.indices.create({
+    index: indexName,
+    body: indexConfig
+  });
+};
+
+exports.createIndex = createIndex;
+
+const getAliases = async (aliasNames) => {
+  const result = await esClient.cat.aliases({ format: "json", name: aliasNames });
+  return result;
+};
+
+exports.getAliases = getAliases;
+
+const removeIndices = async (indexNames) => {
+  await esClient.indices.delete({
+    index: indexNames
+  });
+};
+
+exports.removeIndices = removeIndices;
+
+const addIndicesToAliases = async (indexNames, aliasNames) => {
+  for(let i = 0; i < indexNames.length ; i++){
+    await esClient.indices.putAlias({
+      index: indexNames[i],
+      name: aliasNames[i]
+    });
+  }
+};
+
+exports.addIndicesToAliases = addIndicesToAliases;
+
+const addDocument = async (indexName, uid, document) => {
+  const result = await esClient.create({
+    id: uid,  
+    index: indexName,
+    body: document
+  });
+  return result;
+};
+
+exports.addDocument = addDocument;
+
