@@ -64,7 +64,8 @@ load.run = async () => {
       let has_partition = false;
       let partitionSet = {};
       tmp.data_resource_id = drs[i].id;
-      tmp.dataset_id = dataset.id;
+      //tmp.dataset_id = dataset.id;
+      tmp.dataset_id = tmp.data_resource_id + "-" + dataset.dataset_name; 
       tmp.dataset_name = dataset.dataset_name;
       tmp.desc = dataset.description;
       tmp.primary_dataset_scope = dataset.dataset_scope;

@@ -27,10 +27,10 @@ indices.datasetsIndexConfig = {
         "data_resource_id": {
           "type": "keyword"
         },
-        "dateset_id": {
+        "dataset_id": {
           "type": "keyword"
         },
-        "dateset_name": {
+        "dataset_name": {
           "type": "text",
           "analyzer": "standard_analyzer"
         },
