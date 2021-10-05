@@ -48,11 +48,13 @@ var load = {};
 load.run = async () => {
   //get data resource list from table data_resources
   const drs = await loadHelper.getDataResources();
+  const submissionIDs = [];
   //iterator on data resource
   for(let i = 0; i< drs.length; i++){
     logger.info("Start transforming and loading data into elasticsearch for data resource: " + drs[i].id);
     //pick the most up-to-date submission to process
     const submission = await loadHelper.getSubmissionUpToDate(drs[i].id);
+    submissionIDs.push(submission[0].id);
     //get datasets basic info
     const datasets = await loadHelper.getDatasets(submission[0].id);
     for(let k = 0; k < datasets.length; k++){
@@ -64,8 +66,9 @@ load.run = async () => {
       let has_partition = false;
       let partitionSet = {};
       tmp.data_resource_id = drs[i].id;
-      tmp.dataset_id = dataset.id;
-      tmp.dataset_name = dataset.dataset_name;
+      //tmp.dataset_id = dataset.id;
+      tmp.dataset_id = tmp.data_resource_id + "-" + dataset.dataset_name; 
+      tmp.dataset_name = dataset.dataset_full_name;
       tmp.desc = dataset.description;
       tmp.primary_dataset_scope = dataset.dataset_scope;
       tmp.poc = dataset.poc;
@@ -186,6 +189,11 @@ load.run = async () => {
     let result = await elasticsearch.addDocument(config.indexDR.alias, drDocument.data_resource_id , drDocument);
     logger.info("Indexed document into elasticsearch: " + result._id);
   }
+  logger.info("Start aggragating data to generate filter list.");
+  await loadHelper.deletePreviousAggratedData();
+  const aggratedData = await loadHelper.insertAggratedData(submissionIDs);
+  const rowCount = await loadHelper.insertAggratedDataForDataResource(submissionIDs);
+  logger.info("End of aggragating data: " + ( aggratedData + rowCount ) + " records have been created.");
 };
 
 module.exports = load;

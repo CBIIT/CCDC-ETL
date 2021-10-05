@@ -53,7 +53,6 @@ var config = {
   mysql: {
     connectionLimit: 100, 
     host: process.env.RDB_HOST || "localhost",
-    port: process.env.RDB_PORT || 3306,
     user: process.env.RDB_USER || "root", 
     password : process.env.RDB_PASSWORD || "123456", 
     db : "ccdc"
@@ -61,8 +60,7 @@ var config = {
 
   //elasticsearch connection
   elasticsearch: {
-    host: process.env.ES_HOST || "127.0.0.1",
-    port: process.env.ES_PORT || 9200,
+    host: process.env.ES_HOST || "127.0.0.1:9200",
     log: "error",
 		requestTimeout: 30000
   },
