@@ -31,7 +31,7 @@ CREATE TABLE `data_resources` (
   `site_owner` varchar(200) DEFAULT NULL,
   `poc` varchar(100) DEFAULT NULL,
   `poc_email` varchar(200) DEFAULT NULL,
-  `api` varchar(100) DEFAULT NULL,
+  `api` varchar(500) DEFAULT NULL,
   `pediatric_specific` int(1) NOT NULL,
   `analytics` int(1) NOT NULL,
   `visualization` int(1) NOT NULL,
@@ -46,15 +46,6 @@ CREATE TABLE `data_resources` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `data_resources`
---
-
-LOCK TABLES `data_resources` WRITE;
-/*!40000 ALTER TABLE `data_resources` DISABLE KEYS */;
-/*!40000 ALTER TABLE `data_resources` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -65,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-07 23:58:04
+-- Dump completed on 2021-10-05 15:40:46

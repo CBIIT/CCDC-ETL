@@ -38,17 +38,8 @@ CREATE TABLE `digests` (
   PRIMARY KEY (`id`),
   KEY `digest_4_dataset_idx` (`dataset_id`),
   CONSTRAINT `digest_4_dataset` FOREIGN KEY (`dataset_id`) REFERENCES `datasets` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=264372 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=110250 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `digests`
---
-
-LOCK TABLES `digests` WRITE;
-/*!40000 ALTER TABLE `digests` DISABLE KEYS */;
-/*!40000 ALTER TABLE `digests` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -59,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-07 23:58:04
+-- Dump completed on 2021-10-05 15:40:46
