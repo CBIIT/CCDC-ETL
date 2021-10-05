@@ -26,6 +26,7 @@ CREATE TABLE `datasets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `submission_id` int(11) NOT NULL,
   `dataset_name` varchar(100) NOT NULL,
+  `dataset_full_name` varchar(300) NOT NULL,
   `description` varchar(2000) DEFAULT NULL,
   `dataset_scope` varchar(40) DEFAULT NULL,
   `poc` varchar(100) DEFAULT NULL,
@@ -37,17 +38,8 @@ CREATE TABLE `datasets` (
   PRIMARY KEY (`id`),
   KEY `dataset_4_submission_idx` (`submission_id`),
   CONSTRAINT `dataset_4_submission` FOREIGN KEY (`submission_id`) REFERENCES `submissions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2888 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1019 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `datasets`
---
-
-LOCK TABLES `datasets` WRITE;
-/*!40000 ALTER TABLE `datasets` DISABLE KEYS */;
-/*!40000 ALTER TABLE `datasets` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -58,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-07 23:58:02
+-- Dump completed on 2021-10-05 15:40:45

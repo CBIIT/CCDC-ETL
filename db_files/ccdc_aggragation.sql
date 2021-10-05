@@ -16,25 +16,19 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `submissions`
+-- Table structure for table `aggragation`
 --
 
-DROP TABLE IF EXISTS `submissions`;
+DROP TABLE IF EXISTS `aggragation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `submissions` (
+CREATE TABLE `aggragation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `submission_date` datetime NOT NULL,
-  `resource_id` varchar(30) NOT NULL,
-  `submission_type` int(1) NOT NULL COMMENT '1 - manual\n2 - api',
-  `submission_poc` varchar(100) DEFAULT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `status` int(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `submission_4_data_resource_idx` (`resource_id`),
-  CONSTRAINT `submission_4_data_resource` FOREIGN KEY (`resource_id`) REFERENCES `data_resources` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=296 DEFAULT CHARSET=utf8;
+  `data_element` varchar(100) NOT NULL,
+  `element_value` varchar(500) NOT NULL,
+  `dataset_count` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=45075 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -46,4 +40,4 @@ CREATE TABLE `submissions` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-05 15:40:47
+-- Dump completed on 2021-10-05 15:40:46
