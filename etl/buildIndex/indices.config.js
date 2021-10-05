@@ -7,6 +7,12 @@ indices.datasetsIndexConfig = {
     "max_inner_result_window": 500,
     "mapping.total_fields.limit": 2000,
     "analysis": {
+      "normalizer": {
+        "keyword_lowercase": {
+          "type": "custom",
+          "filter": ["lowercase"]
+        }
+      },
       "analyzer": {
         "standard_analyzer": {
           "filter": ["lowercase","edge_ngram"],
@@ -25,10 +31,12 @@ indices.datasetsIndexConfig = {
   mappings: {
     properties: {
         "data_resource_id": {
-          "type": "keyword"
+          "type": "keyword",
+          "normalizer": "keyword_lowercase"
         },
         "dataset_id": {
-          "type": "keyword"
+          "type": "keyword",
+          "normalizer": "keyword_lowercase"
         },
         "dataset_name": {
           "type": "text",
@@ -39,7 +47,8 @@ indices.datasetsIndexConfig = {
           "analyzer": "standard_analyzer"
         },
         "primary_dataset_scope": {
-          "type": "keyword"
+          "type": "keyword",
+          "normalizer": "keyword_lowercase"
         },
         "poc": {
           "type": "text",
@@ -54,7 +63,8 @@ indices.datasetsIndexConfig = {
           "analyzer": "standard_analyzer"
         },
         "digest_type": {
-          "type": "keyword"
+          "type": "keyword",
+          "normalizer": "keyword_lowercase"
         },
         "digest_date": {
           "type": "date"
@@ -63,7 +73,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -78,7 +89,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -93,7 +105,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -108,7 +121,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -123,7 +137,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -138,7 +153,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -153,7 +169,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -168,7 +185,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -183,7 +201,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -198,7 +217,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -213,7 +233,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -228,7 +249,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -243,7 +265,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -258,7 +281,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -273,7 +297,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -288,7 +313,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -307,7 +333,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -322,7 +349,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -341,7 +369,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -356,7 +385,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -371,7 +401,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -386,7 +417,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -401,7 +433,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -416,7 +449,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",
@@ -431,7 +465,8 @@ indices.datasetsIndexConfig = {
           "type": "nested",
           "properties":{
             "n":{
-              "type": "keyword"
+              "type": "keyword",
+              "normalizer": "keyword_lowercase"
             },
             "k":{
               "type": "text",

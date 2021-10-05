@@ -7,7 +7,7 @@ const config = require("../config");
 const { uniqueId } = require("lodash");
  
 var esClient = new elasticsearch.Client({
-    host: config.elasticsearch.host + ":" + config.elasticsearch.port,
+    host: config.elasticsearch.host,
     log: config.elasticsearch.log,
     requestTimeout: config.elasticsearch.requestTimeout
 });

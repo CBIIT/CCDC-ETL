@@ -47,11 +47,12 @@ extractHelper.getDatasetsInfo = (datasetInfoSheet) => {
         if(tmp.datasetName == null){
             break;
         }
-        tmp.description = data[i+1][3];
-        tmp.datasetScope = data[i+1][4];
-        tmp.poc = data[i+1][5];
-        tmp.pocEmail = data[i+1][6];
-        tmp.publishedIn = data[i+1][7];
+        tmp.datasetFullName = data[i+1][3];
+        tmp.description = data[i+1][4];
+        tmp.datasetScope = data[i+1][5];
+        tmp.poc = data[i+1][6];
+        tmp.pocEmail = data[i+1][7];
+        tmp.publishedIn = data[i+1][8];
         tmp.status = 1;
         result.push(tmp);
     }
@@ -130,12 +131,12 @@ extractHelper.insertSubmission = async (dataSubmissionInfo) => {
 };
 
 extractHelper.insertDataset = async (datasetInfo) => {
-    let sql = "insert into datasets (submission_id, dataset_name, description, dataset_scope, poc, poc_email, published_in, status) "
-        +"values (?,?,?,?,?,?,?,?)";
+    let sql = "insert into datasets (submission_id, dataset_name, dataset_full_name, description, dataset_scope, poc, poc_email, published_in, status) "
+        +"values (?,?,?,?,?,?,?,?,?)";
     
     
     let inserts = [
-        datasetInfo.submissionId, datasetInfo.datasetName, datasetInfo.description, datasetInfo.datasetScope, datasetInfo.poc, datasetInfo.pocEmail, datasetInfo.publishedIn, datasetInfo.status
+        datasetInfo.submissionId, datasetInfo.datasetName, datasetInfo.datasetFullName, datasetInfo.description, datasetInfo.datasetScope, datasetInfo.poc, datasetInfo.pocEmail, datasetInfo.publishedIn, datasetInfo.status
     ];
     sql = mysql.format(sql, inserts);
     try{
