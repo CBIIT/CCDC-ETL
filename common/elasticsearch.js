@@ -9,7 +9,8 @@ const { uniqueId } = require("lodash");
 var esClient = new elasticsearch.Client({
     host: config.elasticsearch.host,
     log: config.elasticsearch.log,
-    requestTimeout: config.elasticsearch.requestTimeout
+    requestTimeout: config.elasticsearch.requestTimeout,
+    ssl:{ rejectUnauthorized: false }
 });
  
 const testConnection = async () => {
