@@ -1,14 +1,13 @@
 /**
  * Client for elasticsearch
  */
-const elasticsearch = require("elasticsearch");
+const { Client } = require("@elastic/elasticsearch");
 const logger = require("./logger");
 const config = require("../config");
 const { uniqueId } = require("lodash");
  
-var esClient = new elasticsearch.Client({
-    host: config.elasticsearch.host,
-    log: config.elasticsearch.log,
+const esClient = new Client({
+    node: config.elasticsearch.host,
     requestTimeout: config.elasticsearch.requestTimeout,
     ssl:{ rejectUnauthorized: false }
 });
@@ -22,12 +21,12 @@ const testConnection = async () => {
 exports.testConnection = testConnection;
 
 const search = async (indexName, query) => {
-    const body = await esClient.search({
+    const result = await esClient.search({
         index: indexName,
         body: query
     });
 
-    return body.hits.hits;
+    return result.body.hits.hits;
 };
 
 exports.search = search;
@@ -43,7 +42,7 @@ exports.createIndex = createIndex;
 
 const getAliases = async (aliasNames) => {
   const result = await esClient.cat.aliases({ format: "json", name: aliasNames });
-  return result;
+  return result.body;
 };
 
 exports.getAliases = getAliases;
@@ -73,7 +72,7 @@ const addDocument = async (indexName, uid, document) => {
     index: indexName,
     body: document
   });
-  return result;
+  return result.body;
 };
 
 exports.addDocument = addDocument;
