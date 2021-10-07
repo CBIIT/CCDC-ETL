@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/CBIIT/CCDC-ETL#readme",
   "dependencies": {
+    "@elastic/elasticsearch": "^7.9.1",
     "dotenv": "^10.0.0",
-    "elasticsearch": "^16.7.2",
     "lodash": "^4.17.21",
     "mysql": "^2.18.1",
     "node-xlsx": "^0.17.1",
