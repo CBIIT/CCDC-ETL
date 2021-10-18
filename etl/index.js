@@ -7,6 +7,7 @@
  var logger = require("../common/logger");
  var extract = require("./extract");
  var buildIndex = require("./buildIndex");
+ var createTables = require("./createTables");
  var load = require("./load");
  var mysql = require("../common/mysql");
  
@@ -22,5 +23,14 @@
     logger.info("Finished ETL process.");
     mysql.close();
  };
+
+ etl.createDBTables = async () => {
+    logger.info("Start creating tables into Relational Database.");
+    await createTables.run();
+ };
+
+ etl.finishedTableCreation = () => {
+  mysql.close();
+};
  
  module.exports = etl;
