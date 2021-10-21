@@ -17,7 +17,7 @@ loadHelper.getDataResources = async () => {
 };
 
 loadHelper.getSubmissionUpToDate = async (dataResourceId) => {
-  let sql = "select * from submissions where resource_id = ?";
+  let sql = "select * from submissions where resource_id = ? order by id desc";
 
   let inserts = [
     dataResourceId
