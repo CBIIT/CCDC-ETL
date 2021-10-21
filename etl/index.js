@@ -8,6 +8,7 @@
  var extract = require("./extract");
  var buildIndex = require("./buildIndex");
  var createTables = require("./createTables");
+ var dropTables = require("./dropTables");
  var load = require("./load");
  var mysql = require("../common/mysql");
  
@@ -31,6 +32,15 @@
 
  etl.finishedTableCreation = () => {
   mysql.close();
+};
+
+etl.dropDBTables = async () => {
+  logger.info("Droping tables in Relational Database.");
+  await dropTables.run();
+};
+
+etl.finishedDropTables = () => {
+mysql.close();
 };
  
  module.exports = etl;
