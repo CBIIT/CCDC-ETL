@@ -607,6 +607,9 @@ indices.dataresourcesIndexConfig = {
       },
       "visualization": {
         "type": "keyword"
+      },
+      "datasets_total": {
+        "type": "integer"
       }
     }
   }

@@ -17,11 +17,11 @@ extractHelper.getDataResourceInfo = (dataResourceSheet) => {
     result.pediatricSpecific = data[14][7] === "Mix" ? 0 : 1;
     result.analytics = data[14][5] === "Yes" ? 1 : 0;
     result.visualization = data[14][6] === "Yes" ? 1 : 0;
-    result.hasGenomicsOmics = data[14][2].indexOf("genomics") > -1? 1 : 0;
-    result.hasImagingData = data[14][2].indexOf("imaging") > -1? 1 : 0;
-    result.hasClinicalData = data[14][2].indexOf("clinical") > -1? 1 : 0;
-    result.hasXenograftData = data[14][2].indexOf("xenograft") > -1? 1 : 0;
-    result.hasCellLinesData = data[14][2].indexOf("cell") > -1? 1 : 0;
+    result.hasGenomicsOmics = data[14][2].toLowerCase().indexOf("genomics") > -1? 1 : 0;
+    result.hasImagingData = data[14][2].toLowerCase().indexOf("imaging") > -1? 1 : 0;
+    result.hasClinicalData = data[14][2].toLowerCase().indexOf("clinical") > -1? 1 : 0;
+    result.hasXenograftData = data[14][2].toLowerCase().indexOf("xenograft") > -1? 1 : 0;
+    result.hasCellLinesData = data[14][2].toLowerCase().indexOf("cell") > -1? 1 : 0;
     result.status = 1;
     return result;
 };

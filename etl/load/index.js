@@ -175,24 +175,39 @@ load.run = async () => {
     drDocument.resource_type = drs[i].resource_type;
     drDocument.description = drs[i].description;
     drDocument.resource_uri = drs[i].resource_uri;
-    drDocument.has_genomics_omics = drs[i].has_genomics_omics;
-    drDocument.has_imaging_data = drs[i].has_imaging_data;
-    drDocument.has_clinical_data = drs[i].has_clinical_data;
-    drDocument.has_xenograft_data = drs[i].has_xenograft_data;
-    drDocument.has_cell_lines_data = drs[i].has_cell_lines_data;
+    let data_content_type = [];
+    if(drs[i].has_genomics_omics === 1) {
+      data_content_type.push("Genomics & Omics");
+    }
+    if(drs[i].has_imaging_data === 1) {
+      data_content_type.push("Imaging");
+    }
+    if(drs[i].has_clinical_data === 1) {
+      data_content_type.push("Clinical");
+    }
+    if(drs[i].has_xenograft_data === 1) {
+      data_content_type.push("Xenograft");
+    }
+    if(drs[i].has_cell_lines_data === 1) {
+      data_content_type.push("Cell Lines");
+    }
+    drDocument.data_content_type = data_content_type.length === 0 ? "" : data_content_type.join(",");
     drDocument.poc = drs[i].poc;
     drDocument.poc_email = drs[i].poc_email;
     drDocument.api = drs[i].api;
     drDocument.pediatric_specific = drs[i].pediatric_specific;
     drDocument.analytics = drs[i].analytics;
     drDocument.visualization = drs[i].visualization;
+    drDocument.datasets_total = datasets.length;
     let result = await elasticsearch.addDocument(config.indexDR.alias, drDocument.data_resource_id , drDocument);
     logger.info("Indexed document into elasticsearch: " + result._id);
   }
   logger.info("Start aggragating data to generate filter list.");
   await loadHelper.deletePreviousAggratedData();
   const aggratedData = await loadHelper.insertAggratedData(submissionIDs);
-  const rowCount = await loadHelper.insertAggratedDataForDataResource(submissionIDs);
+  let rowCount = await loadHelper.insertAggratedDataForDataResource(submissionIDs);
+  rowCount += await loadHelper.insertAggratedDataForDataResourceTypeFilter();
+  rowCount += await loadHelper.insertAggratedDataForDataContentTypeFilter();
   logger.info("End of aggragating data: " + ( aggratedData + rowCount ) + " records have been created.");
 };
 
