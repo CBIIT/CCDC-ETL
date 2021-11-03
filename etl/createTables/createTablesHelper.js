@@ -76,7 +76,7 @@ createTablesHelper.createDatasetsTable = async () => {
     "dataset_scope varchar(40) DEFAULT NULL, " +
     "poc varchar(100) DEFAULT NULL, " +
     "poc_email varchar(200) DEFAULT NULL, " +
-    "published_in varchar(200) DEFAULT NULL, " +
+    "published_in varchar(2000) DEFAULT NULL, " +
     "create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
     "update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, " +
     "status int(1) NOT NULL, " +

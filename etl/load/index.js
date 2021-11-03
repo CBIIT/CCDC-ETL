@@ -3,6 +3,9 @@ const logger = require("../../common/logger");
 const loadHelper = require("./loadHelper");
 const { toNumber } = require("lodash");
 const elasticsearch = require("../../common/elasticsearch");
+const {
+  readNCItSynonyms,
+} = require('../../common/utils');
 
 var core_elements_1 = {
   "Case Age": "case_age",
@@ -46,6 +49,8 @@ var core_elements_3 = {
 var load = {};
 
 load.run = async () => {
+  //prepare NCIt synonyms data
+  const synonyms = readNCItSynonyms();
   //get data resource list from table data_resources
   const drs = await loadHelper.getDataResources();
   const submissionIDs = [];
@@ -163,6 +168,15 @@ load.run = async () => {
           entry.attr_set = nonCoreElements[key];
           tmp.additional.push(entry);
         }
+      }
+      //add synonyms into the document for case disease dignosis
+      if(tmp.case_disease_diagnosis) {
+        tmp.case_disease_diagnosis.forEach((disease) => {
+          const syn = synonyms[disease.k.trim().toLowerCase()];
+          if(syn) {
+            disease.s = syn;
+          }
+        });
       }
       //indexing dataset into elasticsearch
       let result = await elasticsearch.addDocument(config.indexDS.alias, tmp.data_resource_id + "_" + tmp.dataset_id , tmp);
