@@ -63,6 +63,9 @@ var config = {
 		requestTimeout: 30000
   },
 
+  //NCIt synonyms API
+  ncitAPI: "https://api-evsrest.nci.nih.gov/api/v1/concept/ncit/",
+
 };
 
 // Export the config object based on the NODE_ENV
