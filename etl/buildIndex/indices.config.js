@@ -15,7 +15,7 @@ indices.datasetsIndexConfig = {
       },
       "analyzer": {
         "standard_analyzer": {
-          "filter": ["lowercase","edge_ngram"],
+          "filter": ["lowercase"],
           "tokenizer": "standard"
         }
       },
@@ -553,7 +553,7 @@ indices.dataresourcesIndexConfig = {
     analysis: {
       analyzer: {
         standard_analyzer: {
-          filter: ["lowercase","edge_ngram"],
+          filter: ["lowercase"],
           tokenizer: "standard"
         }
       },
