@@ -1,7 +1,7 @@
 {
   "acute lymphoblastic leukemia":"C3167",
   "Acute Lymphoid Leukemia":"C3167",
-  "acute myeloid leukemia":"C174129",
+  "acute myeloid leukemia":"C3171",
   "Acute Myelomonocytic Leukemia":"C7463",
   "Adenocarcinoma, NOS":"C2852",
   "Adenoid cystic carcinoma":"C2970",
@@ -87,7 +87,7 @@
   "Subependymal Giant Cell Astrocytoma (SEGA)":"C3696",
   "Supratentorial PNET":"C6968",
   "Synovial sarcoma":"C3400",
-  "T Lymphoblastic leukemia/lymphoma":"C8694",
+  "T lymphoblastic leukemia/lymphoma":"C8694",
   "Teratoma":"C3403",
   "Thymoma, NOS":"C3411",
   "Urothelial carcinoma, NOS":"C4030",
