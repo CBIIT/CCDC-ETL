@@ -115,7 +115,9 @@ loadHelper.insertAggratedDataForDataResource = async (submissionIDs) => {
 
 loadHelper.insertAggratedDataForDataResourceTypeFilter = async () => {
   let sql = "insert into aggragation (data_element, element_value, dataset_count) "
-        +"select 'Data Resource Type', dr.resource_type, COALESCE(sum(1), 0) from data_resources dr group by dr.resource_type";
+        + "select dr.resource_type, dr.id, COALESCE(sum(1), 0) from data_resources dr group by dr.id UNION ALL "
+        + "select 'Data Resource Type', dr.resource_type, COALESCE(sum(1), 0) from data_resources dr group by dr.resource_type";
+        
   let inserts = [];
   sql = mysql.format(sql, inserts);
   try{
