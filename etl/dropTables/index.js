@@ -5,17 +5,7 @@ var dropTables = {};
 
 dropTables.run = async () => {
   //drop relational database tables
-  let result = await dropTablesHelper.dropLUValueSetTable();
-  if(result === 1){
-    logger.info("Table <lu_value_set> droped.");
-  } 
-  
-  result = await dropTablesHelper.dropLUTermsTable();
-  if(result === 1){
-    logger.info("Table <lu_terms> droped.");
-  }
-
-  result = await dropTablesHelper.dropAggragationTable();
+  let result = await dropTablesHelper.dropAggragationTable();
   if(result === 1){
     logger.info("Table <aggragation> droped.");
   }

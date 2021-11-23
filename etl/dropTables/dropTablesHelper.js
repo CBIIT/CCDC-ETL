@@ -67,30 +67,4 @@ dropTablesHelper.dropAggragationTable = async () => {
   }
 };
 
-dropTablesHelper.dropLUTermsTable = async () => {
-  let sql = "DROP TABLE lu_terms";
-  sql = mysql.format(sql, []);
-  try{
-      await mysql.query(sql);
-      return 1;
-  }
-  catch(error){
-      logger.error(error);
-      return -1;
-  }
-};
-
-dropTablesHelper.dropLUValueSetTable = async () => {
-  let sql = "DROP TABLE lu_value_set";
-  sql = mysql.format(sql, []);
-  try{
-      await mysql.query(sql);
-      return 1;
-  }
-  catch(error){
-      logger.error(error);
-      return -1;
-  }
-};
-
 module.exports = dropTablesHelper;

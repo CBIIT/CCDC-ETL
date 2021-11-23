@@ -30,16 +30,6 @@ createTables.run = async () => {
     logger.info("Table <aggragation> created.");
   }
 
-  result = await createTablesHelper.createLUTermsTable();
-  if(result === 1){
-    logger.info("Table <lu_terms> created.");
-  }
-
-  result = await createTablesHelper.createLUValueSetTable();
-  if(result === 1){
-    logger.info("Table <lu_value_set> created.");
-  }
-
 };
 
 module.exports = createTables;
