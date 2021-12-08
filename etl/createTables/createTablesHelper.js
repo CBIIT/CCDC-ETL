@@ -72,7 +72,7 @@ createTablesHelper.createDatasetsTable = async () => {
     "submission_id int(11) NOT NULL, " +
     "dataset_name varchar(100) NOT NULL, " +
     "dataset_full_name varchar(300) NOT NULL, " +
-    "description varchar(2000) DEFAULT NULL, " +
+    "description varchar(5000) DEFAULT NULL, " +
     "dataset_scope varchar(40) DEFAULT NULL, " +
     "poc varchar(100) DEFAULT NULL, " +
     "poc_email varchar(200) DEFAULT NULL, " +
