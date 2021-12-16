@@ -244,10 +244,10 @@ load.run = async () => {
   dataResourceDocuments.forEach((drd) => {
     ccdcDocuments.push(drd);
   });
-  ccdcDocuments.forEach(async (doc) => {
-    let tmp = await elasticsearch.addDocument(config.indexDoc.alias, doc.uid , doc);
+  for(let c = 0; c< ccdcDocuments.length; c++){
+    let tmp = await elasticsearch.addDocument(config.indexDoc.alias, ccdcDocuments[c].uid , ccdcDocuments[c]);
     logger.info("Indexed document into elasticsearch: " + tmp._id);
-  });
+  }
   
   logger.info("End of creating website documents : " + ccdcDocuments.length + " records have been created.");
 };
