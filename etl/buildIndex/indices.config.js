@@ -619,4 +619,39 @@ indices.dataresourcesIndexConfig = {
   }
 };
 
+indices.documentsIndexConfig = {
+  settings: {
+    number_of_shards: 1,
+    max_result_window: 5000,
+    max_inner_result_window: 500,
+    analysis: {
+      analyzer: {
+        my_analyzer: {
+          filter: ["lowercase"],
+          tokenizer: "whitespace"
+        }
+      }
+    }
+  },
+  mappings: {
+    properties: {
+      "title": {
+        "type": "text",
+        "analyzer": "my_analyzer"
+      },
+      "description": {
+        "type": "text",
+        "analyzer": "my_analyzer"
+      },
+      "link": {
+        "type": "keyword"
+      },
+      "content": {
+        "type": "text",
+        "analyzer": "my_analyzer"
+      }
+    }
+  }
+};
+
 module.exports = indices;

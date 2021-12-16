@@ -48,6 +48,12 @@ var config = {
     alias: "datasets"
   },
 
+  // index name for ccdc documents
+  indexDoc: {
+    prefix: "documents_",
+    alias: "documents"
+  },
+
   //mysql connection
   mysql: {
     connectionLimit: 100, 

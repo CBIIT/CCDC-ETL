@@ -49,6 +49,8 @@ var core_elements_3 = {
 var load = {};
 
 load.run = async () => {
+  const drDocuments = [];
+  const dsDocuments = [];
   //prepare NCIt synonyms data
   const synonyms = readNCItSynonyms();
   //get data resource list from table data_resources
@@ -180,6 +182,7 @@ load.run = async () => {
       }
       //indexing dataset into elasticsearch
       let result = await elasticsearch.addDocument(config.indexDS.alias, tmp.data_resource_id + "_" + tmp.dataset_id , tmp);
+      dsDocuments.push(tmp);
       logger.info("Indexed document into elasticsearch: " + result._id);
     }
     //indexing dataresource into elasticsearch
@@ -214,6 +217,7 @@ load.run = async () => {
     drDocument.visualization = drs[i].visualization;
     drDocument.datasets_total = datasets.length;
     let result = await elasticsearch.addDocument(config.indexDR.alias, drDocument.data_resource_id , drDocument);
+    drDocuments.push(drDocument);
     logger.info("Indexed document into elasticsearch: " + result._id);
   }
   logger.info("Start aggragating data to generate filter list.");
@@ -223,6 +227,29 @@ load.run = async () => {
   rowCount += await loadHelper.insertAggratedDataForDataResourceTypeFilter();
   rowCount += await loadHelper.insertAggratedDataForDataContentTypeFilter();
   logger.info("End of aggragating data: " + ( aggratedData + rowCount ) + " records have been created.");
+  logger.info("Start creating CCDC website documents.");
+  const ccdcDocuments = [];
+  const homePageDocument = loadHelper.getHomePageDocument();
+  ccdcDocuments.push(homePageDocument);
+  const aboutPageDocument = loadHelper.getAboutPageDocument();
+  ccdcDocuments.push(aboutPageDocument);
+  const glossaries = await loadHelper.getGlossary();
+  const glossaryPageDocument = loadHelper.getGlossaryPageDocument(glossaries);
+  ccdcDocuments.push(glossaryPageDocument);
+  const datasetDocuments = loadHelper.getDatasetDocuments(dsDocuments);
+  datasetDocuments.forEach((dd) => {
+    ccdcDocuments.push(dd);
+  });
+  const dataResourceDocuments = loadHelper.getDataResourceDocuments(drDocuments);
+  dataResourceDocuments.forEach((drd) => {
+    ccdcDocuments.push(drd);
+  });
+  ccdcDocuments.forEach(async (doc) => {
+    let tmp = await elasticsearch.addDocument(config.indexDoc.alias, doc.uid , doc);
+    logger.info("Indexed document into elasticsearch: " + tmp._id);
+  });
+  
+  logger.info("End of creating website documents : " + ccdcDocuments.length + " records have been created.");
 };
 
 module.exports = load;

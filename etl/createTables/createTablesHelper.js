@@ -52,7 +52,7 @@ createTablesHelper.createSubmissionsTable = async () => {
     "PRIMARY KEY (id), " +
     "KEY submission_4_data_resource_idx (resource_id), " +
     "CONSTRAINT submission_4_data_resource FOREIGN KEY (resource_id) REFERENCES data_resources (id) ON DELETE NO ACTION ON UPDATE NO ACTION " +
-    ") ENGINE=InnoDB AUTO_INCREMENT=296 DEFAULT CHARSET=utf8;";
+    ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     
   let createParams = [];
   sql = mysql.format(sql, createParams);
@@ -83,7 +83,7 @@ createTablesHelper.createDatasetsTable = async () => {
     "PRIMARY KEY (id), " +
     "KEY dataset_4_submission_idx (submission_id), " +
     "CONSTRAINT dataset_4_submission FOREIGN KEY (submission_id) REFERENCES submissions (id) ON DELETE NO ACTION ON UPDATE NO ACTION " +
-    ") ENGINE=InnoDB AUTO_INCREMENT=1019 DEFAULT CHARSET=utf8;";
+    ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     
     
   let createParams = [];
@@ -115,7 +115,7 @@ createTablesHelper.createDigestsTable = async () => {
     "PRIMARY KEY (id), " +
     "KEY digest_4_dataset_idx (dataset_id), " +
     "CONSTRAINT digest_4_dataset FOREIGN KEY (dataset_id) REFERENCES datasets (id) ON DELETE NO ACTION ON UPDATE NO ACTION " +
-    ") ENGINE=InnoDB AUTO_INCREMENT=110250 DEFAULT CHARSET=utf8;";
+    ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     
     
   let createParams = [];
@@ -137,7 +137,7 @@ createTablesHelper.createAggragationTable = async () => {
     "element_value varchar(500) NOT NULL, " +
     "dataset_count int(11) NOT NULL, " +
     "PRIMARY KEY (id) " +
-    ") ENGINE=InnoDB AUTO_INCREMENT=45075 DEFAULT CHARSET=utf8;";
+    ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     
     
   let createParams = [];
@@ -152,39 +152,15 @@ createTablesHelper.createAggragationTable = async () => {
   }
 };
 
-createTablesHelper.createLUTermsTable = async () => {
-  let sql = "CREATE TABLE lu_terms (" +
+createTablesHelper.createGlossaryTable = async () => {
+  let sql = "CREATE TABLE glossary (" +
     "id int(11) NOT NULL AUTO_INCREMENT, " +
     "term_category varchar(45) NOT NULL, " +
     "term_name varchar(45) NOT NULL, " +
-    "definition varchar(1000) DEFAULT NULL, " +
+    "definition varchar(5000) DEFAULT NULL, " +
+    "reference varchar(2000) DEFAULT NULL, " +
     "PRIMARY KEY (id) " +
-  ") ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;";
-    
-    
-  let createParams = [];
-  sql = mysql.format(sql, createParams);
-  try{
-      await mysql.query(sql);
-      return 1;
-  }
-  catch(error){
-      logger.error(error);
-      return -1;
-  }
-};
-
-createTablesHelper.createLUValueSetTable = async () => {
-  let sql = "CREATE TABLE lu_value_set (" +
-    "id int(11) NOT NULL AUTO_INCREMENT, " +
-    "term_id int(11) NOT NULL, " +
-    "permissible_value varchar(200) NOT NULL, " +
-    "ncit varchar(10) DEFAULT NULL, " +
-    "definition varchar(2000) DEFAULT NULL, " +
-    "PRIMARY KEY (id), " +
-    "KEY value_2_term_idx (term_id), " +
-    "CONSTRAINT value_2_term FOREIGN KEY (term_id) REFERENCES lu_terms (id) ON DELETE NO ACTION ON UPDATE NO ACTION " +
-    ") ENGINE=InnoDB AUTO_INCREMENT=2446 DEFAULT CHARSET=utf8;";
+  ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     
     
   let createParams = [];

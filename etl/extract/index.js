@@ -3,6 +3,9 @@ const logger = require("../../common/logger");
 const fs = require("fs");
 const xlsx = require("node-xlsx").default;
 const extractHelper = require("./extractHelper");
+const {
+  readGlossary,
+} = require('../../common/utils');
 
 // Parse a file
 
@@ -39,6 +42,13 @@ extract.run = async () => {
             logger.info("Created dataset for " + datasetInfo.datasetName + " and " + digests.length + " digests has been inserted.");
         }
     }
+    //get glossary data from data file and put into relational DB
+    let glossaries = readGlossary();
+    await extractHelper.deleteAllGlossary();
+    for(let g = 0; g< glossaries.length; g++){
+      await extractHelper.insertGlossary(glossaries[g]);
+    }
+    logger.info(glossaries.length + " glossaries has been inserted.");
 };
 
 module.exports = extract;
