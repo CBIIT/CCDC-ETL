@@ -67,4 +67,17 @@ dropTablesHelper.dropAggragationTable = async () => {
   }
 };
 
+dropTablesHelper.dropGlossaryTable = async () => {
+  let sql = "DROP TABLE glossary";
+  sql = mysql.format(sql, []);
+  try{
+      await mysql.query(sql);
+      return 1;
+  }
+  catch(error){
+      logger.error(error);
+      return -1;
+  }
+};
+
 module.exports = dropTablesHelper;

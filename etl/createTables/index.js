@@ -30,6 +30,11 @@ createTables.run = async () => {
     logger.info("Table <aggragation> created.");
   }
 
+  result = await createTablesHelper.createGlossaryTable();
+  if(result === 1){
+    logger.info("Table <glossary> created.");
+  }
+
 };
 
 module.exports = createTables;

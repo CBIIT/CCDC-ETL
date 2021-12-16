@@ -30,6 +30,11 @@ dropTables.run = async () => {
     logger.info("Table <data resources> droped.");
   }
 
+  result  = await dropTablesHelper.dropGlossaryTable();
+  if(result === 1){
+    logger.info("Table <glossary> droped.");
+  }
+
 };
 
 module.exports = dropTables;

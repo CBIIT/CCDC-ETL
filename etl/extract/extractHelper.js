@@ -168,4 +168,36 @@ extractHelper.insertDigest = async (digest) => {
     }
 };
 
+extractHelper.insertGlossary = async (glossary) => {
+  let sql = "insert into glossary (term_category, term_name, definition, reference) "
+        +"values (?,?,?,?)";
+    
+    
+    let inserts = [
+      glossary.termCategory, glossary.termName, glossary.definition, glossary.reference
+    ];
+    sql = mysql.format(sql, inserts);
+    try{
+        const result = await mysql.query(sql);
+        return result.insertId;
+    }
+    catch(error){
+        logger.error(error);
+        return -1;
+    }
+};
+
+extractHelper.deleteAllGlossary = async () => {
+  let sql = "delete from glossary";
+  
+  try{
+      const result = await mysql.query(sql);
+      return result;
+  }
+  catch(error){
+      logger.error(error);
+      return -1;
+  }
+};
+
 module.exports = extractHelper;
