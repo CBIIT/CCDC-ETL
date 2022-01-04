@@ -6,24 +6,37 @@ indices.datasetsIndexConfig = {
     "max_result_window": 5000,
     "max_inner_result_window": 500,
     "mapping.total_fields.limit": 2000,
+    "max_ngram_diff": "30",
     "analysis": {
-      "normalizer": {
-        "keyword_lowercase": {
-          "type": "custom",
-          "filter": ["lowercase"]
+      "filter":{
+        "my_filter":{
+          "type":"ngram",
+          "min_gram":3,
+          "max_gram":30,
+          "token_chars":[
+            "letter",
+            "digit",
+            "symbol",
+            "punctuation"
+          ]
         }
       },
-      "analyzer": {
+      "analyzer":{
+        "keyword_analyzer":{
+          "type":"custom",
+          "tokenizer":"keyword",
+          "filter":[
+            "lowercase",
+            "my_filter"
+          ]
+        },
         "standard_analyzer": {
-          "filter": ["lowercase"],
-          "tokenizer": "standard"
-        }
-      },
-      "filter": {
-        "edge_ngram": {
-          "max_gram": "20",
-          "min_gram": "8",
-          "type": "edge_ngram"
+          "type":"custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "my_filter"
+          ]
         }
       }
     }
@@ -32,39 +45,45 @@ indices.datasetsIndexConfig = {
     properties: {
         "data_resource_id": {
           "type": "keyword",
-          "normalizer": "keyword_lowercase"
+        },
+        "data_resource_name": {
+          "type": "text",
+          "analyzer": "standard_analyzer",
+          "search_analyzer": "standard"
         },
         "dataset_id": {
           "type": "keyword",
-          "normalizer": "keyword_lowercase"
         },
         "dataset_name": {
           "type": "text",
-          "analyzer": "standard_analyzer"
+          "analyzer": "standard_analyzer",
+          "search_analyzer": "standard"
         },
         "desc": {
           "type": "text",
-          "analyzer": "standard_analyzer"
+          "analyzer": "standard_analyzer",
+          "search_analyzer": "standard"
         },
         "primary_dataset_scope": {
-          "type": "keyword",
-          "normalizer": "keyword_lowercase"
+          "type": "keyword"
         },
         "poc": {
           "type": "text",
-          "analyzer": "standard_analyzer"
+          "analyzer": "standard_analyzer",
+          "search_analyzer": "standard"
         },
         "poc_email": {
           "type": "text",
-          "analyzer": "standard_analyzer"
+          "analyzer": "standard_analyzer",
+          "search_analyzer": "standard"
         },
         "published_in": {
           "type": "text",
-          "analyzer": "standard_analyzer"
+          "analyzer": "standard_analyzer",
+          "search_analyzer": "standard"
         },
         "digest_type": {
-          "type": "keyword",
-          "normalizer": "keyword_lowercase"
+          "type": "keyword"
         },
         "digest_date": {
           "type": "date"
@@ -72,13 +91,10 @@ indices.datasetsIndexConfig = {
         "case_age": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -88,13 +104,10 @@ indices.datasetsIndexConfig = {
         "case_age_at_diagnosis": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -104,13 +117,10 @@ indices.datasetsIndexConfig = {
         "case_age_at_trial": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -120,33 +130,28 @@ indices.datasetsIndexConfig = {
         "case_disease_diagnosis": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
             },
             "s":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             }
           }
         },
         "case_ethnicity": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -156,13 +161,10 @@ indices.datasetsIndexConfig = {
         "case_gender": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -172,13 +174,10 @@ indices.datasetsIndexConfig = {
         "case_proband": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -188,13 +187,10 @@ indices.datasetsIndexConfig = {
         "case_race": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -204,13 +200,10 @@ indices.datasetsIndexConfig = {
         "case_sex": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -220,13 +213,10 @@ indices.datasetsIndexConfig = {
         "case_sex_at_birth": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -236,13 +226,10 @@ indices.datasetsIndexConfig = {
         "case_treatment_administered": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -252,13 +239,10 @@ indices.datasetsIndexConfig = {
         "case_treatment_outcome": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -268,13 +252,10 @@ indices.datasetsIndexConfig = {
         "case_tumor_site": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -284,13 +265,10 @@ indices.datasetsIndexConfig = {
         "donor_age": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -300,13 +278,10 @@ indices.datasetsIndexConfig = {
         "donor_disease_diagnosis": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -316,13 +291,10 @@ indices.datasetsIndexConfig = {
         "donor_sex": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -331,18 +303,16 @@ indices.datasetsIndexConfig = {
         },
         "program_name":{
           "type": "text",
-          "analyzer": "standard_analyzer"
+          "analyzer": "standard_analyzer",
+          "search_analyzer": "standard"
         },
         "project_anatomic_site": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -352,13 +322,10 @@ indices.datasetsIndexConfig = {
         "project_cancer_studied": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -367,18 +334,16 @@ indices.datasetsIndexConfig = {
         },
         "project_name":{
           "type": "text",
-          "analyzer": "standard_analyzer"
+          "analyzer": "standard_analyzer",
+          "search_analyzer": "standard"
         },
         "sample_analyte_type": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -388,13 +353,10 @@ indices.datasetsIndexConfig = {
         "sample_anatomic_site": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -404,13 +366,10 @@ indices.datasetsIndexConfig = {
         "sample_assay_method": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -420,13 +379,10 @@ indices.datasetsIndexConfig = {
         "sample_composition_type": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -436,13 +392,10 @@ indices.datasetsIndexConfig = {
         "sample_repository_name": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -452,13 +405,10 @@ indices.datasetsIndexConfig = {
         "sample_is_normal": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -468,13 +418,10 @@ indices.datasetsIndexConfig = {
         "sample_is_xenograft": {
           "type": "nested",
           "properties":{
-            "n":{
-              "type": "keyword",
-              "normalizer": "keyword_lowercase"
-            },
             "k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "v":{
               "type": "integer"
@@ -486,14 +433,16 @@ indices.datasetsIndexConfig = {
           "properties":{
             "p_k":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "p_v":{
               "type": "nested",
               "properties":{
                 "k":{
                   "type": "text",
-                  "analyzer": "standard_analyzer"
+                  "analyzer": "standard_analyzer",
+                  "search_analyzer": "standard"
                 },
                 "v":{
                   "type": "integer"
@@ -525,14 +474,16 @@ indices.datasetsIndexConfig = {
           "properties":{
             "attr_name":{
               "type": "text",
-              "analyzer": "standard_analyzer"
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "standard"
             },
             "attr_set":{
               "type": "nested",
               "properties":{
                 "k":{
                   "type": "text",
-                  "analyzer": "standard_analyzer"
+                  "analyzer": "standard_analyzer",
+                  "search_analyzer": "standard"
                 },
                 "v":{
                   "type": "integer",
@@ -555,13 +506,6 @@ indices.dataresourcesIndexConfig = {
         standard_analyzer: {
           filter: ["lowercase"],
           tokenizer: "standard"
-        }
-      },
-      filter: {
-        edge_ngram: {
-          max_gram: "20",
-          min_gram: "8",
-          type: "edge_ngram"
         }
       }
     }

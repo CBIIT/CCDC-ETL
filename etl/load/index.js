@@ -72,6 +72,7 @@ load.run = async () => {
       let tmp = {};
       let has_partition = false;
       let partitionSet = {};
+      tmp.data_resource_name = drs[i].id;
       tmp.data_resource_id = drs[i].id;
       //tmp.dataset_id = dataset.id;
       tmp.dataset_id = tmp.data_resource_id + "-" + dataset.dataset_name; 
@@ -236,6 +237,7 @@ load.run = async () => {
   const glossaries = await loadHelper.getGlossary();
   const glossaryPageDocument = loadHelper.getGlossaryPageDocument(glossaries);
   ccdcDocuments.push(glossaryPageDocument);
+  /*
   const datasetDocuments = loadHelper.getDatasetDocuments(dsDocuments);
   datasetDocuments.forEach((dd) => {
     ccdcDocuments.push(dd);
@@ -244,6 +246,7 @@ load.run = async () => {
   dataResourceDocuments.forEach((drd) => {
     ccdcDocuments.push(drd);
   });
+  */
   for(let c = 0; c< ccdcDocuments.length; c++){
     let tmp = await elasticsearch.addDocument(config.indexDoc.alias, ccdcDocuments[c].uid , ccdcDocuments[c]);
     logger.info("Indexed document into elasticsearch: " + tmp._id);
