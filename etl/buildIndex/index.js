@@ -11,10 +11,10 @@ buildIndex.run = async () => {
   let dataresourcesIndexName = config.indexDR.prefix + ts;
   let datasetsIndexName = config.indexDS.prefix + ts;
   let documentsIndexName = config.indexDoc.prefix + ts;
-  await elasticsearch.createIndex(dataresourcesIndexName, dataresourcesIndexConfig);
-  logger.info("Created data resources index : " + dataresourcesIndexName);
   await elasticsearch.createIndex(datasetsIndexName, datasetsIndexConfig);
   logger.info("Created datasets index : " + datasetsIndexName);
+  await elasticsearch.createIndex(dataresourcesIndexName, dataresourcesIndexConfig);
+  logger.info("Created data resources index : " + dataresourcesIndexName);
   await elasticsearch.createIndex(documentsIndexName, documentsIndexConfig);
   logger.info("Created documents index : " + documentsIndexName);
   //find out the alias of the index
