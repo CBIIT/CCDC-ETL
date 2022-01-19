@@ -26,13 +26,12 @@ indices.datasetsIndexConfig = {
           "type":"custom",
           "tokenizer":"keyword",
           "filter":[
-            "lowercase",
-            "my_filter"
+            "lowercase"
           ]
         },
         "standard_analyzer": {
           "type":"custom",
-          "tokenizer": "standard",
+          "tokenizer": "whitespace",
           "filter": [
             "lowercase",
             "my_filter"
@@ -49,7 +48,7 @@ indices.datasetsIndexConfig = {
         "data_resource_name": {
           "type": "text",
           "analyzer": "standard_analyzer",
-          "search_analyzer": "standard"
+          "search_analyzer": "keyword_analyzer"
         },
         "dataset_id": {
           "type": "keyword",
@@ -57,12 +56,12 @@ indices.datasetsIndexConfig = {
         "dataset_name": {
           "type": "text",
           "analyzer": "standard_analyzer",
-          "search_analyzer": "standard"
+          "search_analyzer": "keyword_analyzer"
         },
         "desc": {
           "type": "text",
           "analyzer": "standard_analyzer",
-          "search_analyzer": "standard"
+          "search_analyzer": "keyword_analyzer"
         },
         "primary_dataset_scope": {
           "type": "keyword"
@@ -70,17 +69,17 @@ indices.datasetsIndexConfig = {
         "poc": {
           "type": "text",
           "analyzer": "standard_analyzer",
-          "search_analyzer": "standard"
+          "search_analyzer": "keyword_analyzer"
         },
         "poc_email": {
           "type": "text",
           "analyzer": "standard_analyzer",
-          "search_analyzer": "standard"
+          "search_analyzer": "keyword_analyzer"
         },
         "published_in": {
           "type": "text",
           "analyzer": "standard_analyzer",
-          "search_analyzer": "standard"
+          "search_analyzer": "keyword_analyzer"
         },
         "digest_type": {
           "type": "keyword"
@@ -94,7 +93,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -107,7 +106,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -120,7 +119,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -133,7 +132,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -141,7 +140,7 @@ indices.datasetsIndexConfig = {
             "s":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             }
           }
         },
@@ -151,7 +150,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -164,7 +163,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -177,7 +176,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -190,7 +189,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -203,7 +202,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -216,7 +215,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -229,7 +228,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -242,7 +241,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -255,7 +254,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -268,7 +267,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -281,7 +280,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -294,7 +293,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -304,7 +303,7 @@ indices.datasetsIndexConfig = {
         "program_name":{
           "type": "text",
           "analyzer": "standard_analyzer",
-          "search_analyzer": "standard"
+          "search_analyzer": "keyword_analyzer"
         },
         "project_anatomic_site": {
           "type": "nested",
@@ -312,7 +311,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -325,7 +324,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -335,7 +334,7 @@ indices.datasetsIndexConfig = {
         "project_name":{
           "type": "text",
           "analyzer": "standard_analyzer",
-          "search_analyzer": "standard"
+          "search_analyzer": "keyword_analyzer"
         },
         "sample_analyte_type": {
           "type": "nested",
@@ -343,7 +342,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -356,7 +355,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -369,7 +368,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -382,7 +381,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -395,7 +394,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -408,7 +407,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -421,7 +420,7 @@ indices.datasetsIndexConfig = {
             "k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "v":{
               "type": "integer"
@@ -434,7 +433,7 @@ indices.datasetsIndexConfig = {
             "p_k":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "p_v":{
               "type": "nested",
@@ -442,7 +441,7 @@ indices.datasetsIndexConfig = {
                 "k":{
                   "type": "text",
                   "analyzer": "standard_analyzer",
-                  "search_analyzer": "standard"
+                  "search_analyzer": "keyword_analyzer"
                 },
                 "v":{
                   "type": "integer"
@@ -475,7 +474,7 @@ indices.datasetsIndexConfig = {
             "attr_name":{
               "type": "text",
               "analyzer": "standard_analyzer",
-              "search_analyzer": "standard"
+              "search_analyzer": "keyword_analyzer"
             },
             "attr_set":{
               "type": "nested",
@@ -483,7 +482,7 @@ indices.datasetsIndexConfig = {
                 "k":{
                   "type": "text",
                   "analyzer": "standard_analyzer",
-                  "search_analyzer": "standard"
+                  "search_analyzer": "keyword_analyzer"
                 },
                 "v":{
                   "type": "integer",
