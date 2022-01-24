@@ -199,7 +199,7 @@ loadHelper.getAboutPageDocument = () => {
 loadHelper.getGlossaryPageDocument = (glossaries) => {
   const contents = [];
   glossaries.forEach((g) => {
-    contents.push("<p>" + g.term_category + " " + g.term_name + " " + g.definition + " " + g.reference + " </p>");
+    contents.push(" " + g.term_category + " " + g.term_name + " " + g.definition + " " + g.reference + " ");
   });
   return {
     uid: "glossary",

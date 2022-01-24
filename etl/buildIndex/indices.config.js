@@ -567,11 +567,36 @@ indices.documentsIndexConfig = {
     number_of_shards: 1,
     max_result_window: 5000,
     max_inner_result_window: 500,
-    analysis: {
-      analyzer: {
-        my_analyzer: {
-          filter: ["lowercase"],
-          tokenizer: "whitespace"
+    "max_ngram_diff": "30",
+    "analysis": {
+      "filter":{
+        "document_filter":{
+          "type":"ngram",
+          "min_gram":3,
+          "max_gram":30,
+          "token_chars":[
+            "letter",
+            "digit",
+            "symbol",
+            "punctuation"
+          ]
+        }
+      },
+      "analyzer":{
+        "keyword_analyzer":{
+          "type":"custom",
+          "tokenizer":"keyword",
+          "filter":[
+            "lowercase"
+          ]
+        },
+        "standard_analyzer": {
+          "type":"custom",
+          "tokenizer": "whitespace",
+          "filter": [
+            "lowercase",
+            "document_filter"
+          ]
         }
       }
     }
@@ -580,18 +605,21 @@ indices.documentsIndexConfig = {
     properties: {
       "title": {
         "type": "text",
-        "analyzer": "my_analyzer"
+        "analyzer": "standard_analyzer",
+        "search_analyzer": "keyword_analyzer"
       },
       "description": {
         "type": "text",
-        "analyzer": "my_analyzer"
+        "analyzer": "standard_analyzer",
+        "search_analyzer": "keyword_analyzer"
       },
       "link": {
         "type": "keyword"
       },
       "content": {
         "type": "text",
-        "analyzer": "my_analyzer"
+        "analyzer": "standard_analyzer",
+        "search_analyzer": "keyword_analyzer"
       }
     }
   }
