@@ -515,8 +515,7 @@ indices.dataresourcesIndexConfig = {
         "type": "keyword"
       },
       "resource_name": {
-        "type": "text",
-        "analyzer": "standard_analyzer"
+        "type": "keyword"
       },
       "resource_type": {
         "type": "keyword"
