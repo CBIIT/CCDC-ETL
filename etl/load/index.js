@@ -3,6 +3,7 @@ const logger = require("../../common/logger");
 const loadHelper = require("./loadHelper");
 const { toNumber } = require("lodash");
 const elasticsearch = require("../../common/elasticsearch");
+const utils = require("../../common/utils");
 const {
   readNCItSynonyms,
 } = require('../../common/utils');
@@ -217,6 +218,12 @@ load.run = async () => {
     drDocument.analytics = drs[i].analytics;
     drDocument.visualization = drs[i].visualization;
     drDocument.datasets_total = datasets.length;
+    if (drs[i].data_update_date == null){
+      drDocument.data_update_date = drs[i].initial_submission_date;
+    } else {
+      drDocument.data_update_date = Math.max(drs[i].initial_submission_date, drs[i].data_update_date);
+    }
+    drDocument.data_update_date = utils.timestampToString(drDocument.data_update_date);
     let result = await elasticsearch.addDocument(config.indexDR.alias, drDocument.data_resource_id , drDocument);
     drDocuments.push(drDocument);
     logger.info("Indexed document into elasticsearch: " + result._id);
@@ -227,6 +234,7 @@ load.run = async () => {
   let rowCount = await loadHelper.insertAggratedDataForDataResource(submissionIDs);
   rowCount += await loadHelper.insertAggratedDataForDataResourceTypeFilter();
   rowCount += await loadHelper.insertAggratedDataForDataContentTypeFilter();
+  rowCount += await loadHelper.insertAggratedDataForSiteUpdateDate();
   logger.info("End of aggragating data: " + ( aggratedData + rowCount ) + " records have been created.");
   logger.info("Start creating CCDC website documents.");
   const ccdcDocuments = [];

@@ -556,7 +556,10 @@ indices.dataresourcesIndexConfig = {
       },
       "datasets_total": {
         "type": "integer"
-      }
+      },
+      "data_update_date": {
+        "type": "keyword"
+      },
     }
   }
 };

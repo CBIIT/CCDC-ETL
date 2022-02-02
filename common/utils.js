@@ -43,9 +43,82 @@ const readGlossary = () => {
   return result;
 };
 
+const getTodayDate = () => {
+  const date = new Date();
+  let str = "";
+  const month = date.getMonth();
+  if (month < 9) {
+    str += `0${month + 1}`;
+  } else {
+    str += (month + 1).toString();
+  }
+  str += '/';
+  const day = date.getDate();
+  if (day < 10) {
+    str += `0${day}`;
+  } else {
+    str += day.toString();
+  }
+  str += `/${date.getFullYear()}`;
+  return str;
+};
+
+const timestampToString = (ts) => {
+  const date = new Date(ts);
+  let str = "";
+  const month = date.getMonth();
+  if (month < 9) {
+    str += `0${month + 1}`;
+  } else {
+    str += (month + 1).toString();
+  }
+  str += '/';
+  const day = date.getDate();
+  if (day < 10) {
+    str += `0${day}`;
+  } else {
+    str += day.toString();
+  }
+  str += `/${date.getFullYear()}`;
+  return str;
+};
+
+const ExcelDateToJSDate = (serial) => {
+  if (serial === undefined) {
+    return null;
+  }
+  const utc_days  = Math.floor(serial - 25569);
+  const utc_value = utc_days * 86400;                                        
+  const date = new Date(utc_value * 1000);
+  return date.toISOString().substring(0, 10);
+};
+
+const ExcelDateToJSDateTime = (serial) => {
+  const utc_days  = Math.floor(serial - 25569);
+  const utc_value = utc_days * 86400;                                        
+  const date_info = new Date(utc_value * 1000);
+
+  const fractional_day = serial - Math.floor(serial) + 0.0000001;
+
+  const total_seconds = Math.floor(86400 * fractional_day);
+
+  const seconds = total_seconds % 60;
+
+  total_seconds -= seconds;
+
+  const hours = Math.floor(total_seconds / (60 * 60));
+  const minutes = Math.floor(total_seconds / 60) % 60;
+
+  return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+};
+
 module.exports = {
 	fetch,
   readNCItTerms,
   readNCItSynonyms,
   readGlossary,
+  getTodayDate,
+  timestampToString,
+  ExcelDateToJSDate,
+  ExcelDateToJSDateTime,
 };
