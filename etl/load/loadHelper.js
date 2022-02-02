@@ -1,5 +1,6 @@
 const logger = require("../../common/logger");
 const mysql = require("../../common/mysql");
+const utils = require("../../common/utils");
 
 let loadHelper = {};
 
@@ -164,6 +165,25 @@ loadHelper.insertAggratedDataForDataContentTypeFilter = async () => {
       return -1;
   }
 };
+
+loadHelper.insertAggratedDataForSiteUpdateDate = async () => {
+  let sql = "insert into aggragation (data_element, element_value, dataset_count) "
+        + "values('Site Data Update', ?, 0)";
+  let inserts = [
+    utils.getTodayDate()
+  ];
+  sql = mysql.format(sql, inserts);
+  try{
+      const result = await mysql.query(sql);
+      return result.affectedRows;
+  }
+  catch(error){
+      logger.error(error);
+      return -1;
+  }
+};
+
+
 
 loadHelper.getHomePageDocument = () => {
   const contents = [];
