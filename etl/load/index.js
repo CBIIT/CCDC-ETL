@@ -196,7 +196,7 @@ load.run = async () => {
     drDocument.resource_uri = drs[i].resource_uri;
     let data_content_type = [];
     if(drs[i].has_genomics_omics === 1) {
-      data_content_type.push("Genomics & Omics");
+      data_content_type.push("Genomics/Omics");
     }
     if(drs[i].has_imaging_data === 1) {
       data_content_type.push("Imaging");
