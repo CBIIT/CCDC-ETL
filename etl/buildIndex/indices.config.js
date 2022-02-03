@@ -56,7 +56,12 @@ indices.datasetsIndexConfig = {
         "dataset_name": {
           "type": "text",
           "analyzer": "standard_analyzer",
-          "search_analyzer": "keyword_analyzer"
+          "search_analyzer": "keyword_analyzer",
+          "fields": {
+            "raw": { 
+              "type":  "keyword"
+            }
+          }
         },
         "desc": {
           "type": "text",

@@ -149,7 +149,7 @@ loadHelper.insertAggratedDataForDataResourceTypeFilter = async () => {
 
 loadHelper.insertAggratedDataForDataContentTypeFilter = async () => {
   let sql = "insert into aggragation (data_element, element_value, dataset_count) "
-        + "select 'Resource Data Content Type', 'Genomics & Omics', COALESCE(sum(1), 0) from data_resources dr where dr.has_genomics_omics = 1 UNION ALL "
+        + "select 'Resource Data Content Type', 'Genomics/Omics', COALESCE(sum(1), 0) from data_resources dr where dr.has_genomics_omics = 1 UNION ALL "
         + "select 'Resource Data Content Type', 'Imaging', COALESCE(sum(1), 0) from data_resources dr where dr.has_imaging_data = 1 UNION ALL "
         + "select 'Resource Data Content Type', 'Clinical', COALESCE(sum(1), 0) from data_resources dr where dr.has_clinical_data = 1 UNION ALL "
         + "select 'Resource Data Content Type', 'Xenograft', COALESCE(sum(1), 0) from data_resources dr where dr.has_xenograft_data = 1 UNION ALL "
