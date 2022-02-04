@@ -37,7 +37,7 @@ const readGlossary = () => {
       }
       tmp.termName = data[i+1][1];
       tmp.definition = data[i+1][2];
-      tmp.reference = data[i+1][3];
+      tmp.reference = ( data[i+1][3] === undefined ? "" : data[i+1][3] ) + " " + ( data[i+1][4] === undefined ? "" : data[i+1][4] );
       result.push(tmp);
   }
   return result;
