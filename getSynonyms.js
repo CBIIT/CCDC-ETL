@@ -18,7 +18,7 @@ const getSynonyms = async function(){
     let d = await fetch(config.ncitAPI + terms[t]);
     const syns = [];
     d.synonyms.map((syn) => {
-      if (syns.indexOf(syn.name) === -1) {
+      if (syns.indexOf(syn.name) === -1 && syn.source && syn.source === "NCI") {
         syns.push(syn.name);
       }
     });
