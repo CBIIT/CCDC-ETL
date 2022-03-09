@@ -44,6 +44,7 @@ indices.datasetsIndexConfig = {
     properties: {
         "data_resource_id": {
           "type": "keyword",
+          "normalizer": "lowercase"
         },
         "data_resource_name": {
           "type": "text",
@@ -59,7 +60,8 @@ indices.datasetsIndexConfig = {
           "search_analyzer": "keyword_analyzer",
           "fields": {
             "raw": { 
-              "type":  "keyword"
+              "type":  "keyword",
+              "normalizer": "lowercase"
             }
           }
         },
@@ -69,7 +71,8 @@ indices.datasetsIndexConfig = {
           "search_analyzer": "keyword_analyzer"
         },
         "primary_dataset_scope": {
-          "type": "keyword"
+          "type": "keyword",
+          "normalizer": "lowercase"
         },
         "poc": {
           "type": "text",
@@ -520,7 +523,8 @@ indices.dataresourcesIndexConfig = {
         "type": "keyword"
       },
       "resource_name": {
-        "type": "keyword"
+        "type": "keyword",
+        "normalizer": "lowercase"
       },
       "resource_type": {
         "type": "keyword"
@@ -613,7 +617,13 @@ indices.documentsIndexConfig = {
       "title": {
         "type": "text",
         "analyzer": "standard_analyzer",
-        "search_analyzer": "keyword_analyzer"
+        "search_analyzer": "keyword_analyzer",
+        "fields": {
+          "raw": { 
+            "type":  "keyword",
+            "normalizer": "lowercase"
+          }
+        }
       },
       "description": {
         "type": "text",
