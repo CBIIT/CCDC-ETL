@@ -266,6 +266,11 @@ indices.datasetsIndexConfig = {
             },
             "v":{
               "type": "integer"
+            },
+            "s":{
+              "type": "text",
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "keyword_analyzer"
             }
           }
         },
