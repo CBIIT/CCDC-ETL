@@ -17,6 +17,9 @@ extract.run = async () => {
     const files = fs.readdirSync(digestFileFolder);
     for(let i = 0; i< files.length; i++){
         let file = files[parseInt(i, 10)];
+        if (file.startsWith(".")) {
+          continue;
+        }
         const workSheetsFromFile = xlsx.parse(`${digestFileFolder}/${file}`);
         let dataResource = extractHelper.getDataResourceInfo(workSheetsFromFile[0]);
         //update data resource info to RDB if exists, otherwise create a new row
