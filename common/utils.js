@@ -3,6 +3,17 @@ const fs = require("fs");
 const axios = require('axios');
 const xlsx = require("node-xlsx").default;
 
+const containsSpecialCharacters = (str) => {
+  if (str === undefined) {
+    return false;
+  }
+  const newStr = str.toString().trim();
+  if (newStr === "") {
+    return false;
+  }
+  return !(newStr.match(/^[\r\n\x20-\x7E]+$/g) !== null);
+};
+
 const fetch = async (url) => {
   try {
       const response = await axios.get(url, {timeout: 60000, clarifyTimeoutError: false})
@@ -123,6 +134,7 @@ const ExcelDateToJSDateTime = (serial) => {
 };
 
 module.exports = {
+  containsSpecialCharacters,
 	fetch,
   readNCItDiseaseTerms,
   readNCItTumorSiteTerms,
