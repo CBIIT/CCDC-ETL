@@ -84,6 +84,33 @@ loadHelper.getGlossary = async () => {
   }
 };
 
+loadHelper.reOrderDataElment = (dataObj) => {
+  let idx_1 = -1, idx_2 = -1;
+  dataObj.forEach((cdd, idx) => {
+    if (cdd.k === "Not Reported") {
+      idx_1 = idx;
+    }
+    if (cdd.k === "Unknown") {
+      idx_2 = idx;
+    }
+  });
+  let obj_1, obj_2;
+  if (idx_1 > -1) {
+    obj_1 = dataObj[idx_1];
+    dataObj.splice(idx_1, 1);
+  }
+  if (idx_2 > -1) {
+    obj_2 = dataObj[idx_2];
+    dataObj.splice(idx_2, 1);
+  }
+  if (idx_1 > -1) {
+    dataObj.push(obj_1);
+  }
+  if (idx_2 > -1) {
+    dataObj.push(obj_2);
+  }
+};
+
 loadHelper.deletePreviousAggratedData = async () => {
   let sql = "delete from aggragation";
   
