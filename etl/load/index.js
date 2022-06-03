@@ -5,7 +5,8 @@ const { toNumber } = require("lodash");
 const elasticsearch = require("../../common/elasticsearch");
 const utils = require("../../common/utils");
 const {
-  readNCItSynonyms,
+  readNCItDiseaseSynonyms,
+  readNCItTumorSiteSynonyms,
 } = require('../../common/utils');
 
 var core_elements_1 = {
@@ -53,7 +54,8 @@ load.run = async () => {
   const drDocuments = [];
   const dsDocuments = [];
   //prepare NCIt synonyms data
-  const synonyms = readNCItSynonyms();
+  const diseaseSynonyms = readNCItDiseaseSynonyms();
+  const tumorSiteSynonyms = utils.readNCItTumorSiteSynonyms();
   //get data resource list from table data_resources
   const drs = await loadHelper.getDataResources();
   const submissionIDs = [];
@@ -176,9 +178,18 @@ load.run = async () => {
       //add synonyms into the document for case disease dignosis
       if(tmp.case_disease_diagnosis) {
         tmp.case_disease_diagnosis.forEach((disease) => {
-          const syn = synonyms[disease.k.trim().toLowerCase()];
+          const syn = diseaseSynonyms[disease.k.trim().toLowerCase()];
           if(syn) {
             disease.s = syn;
+          }
+        });
+      }
+      //add synonyms into the document for case tumor site
+      if(tmp.case_tumor_site) {
+        tmp.case_tumor_site.forEach((tumor) => {
+          const syn = tumorSiteSynonyms[tumor.k.trim().toLowerCase()];
+          if(syn) {
+            tumor.s = syn;
           }
         });
       }

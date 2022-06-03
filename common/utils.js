@@ -14,13 +14,23 @@ const fetch = async (url) => {
 
 const dataFilesDir = path.join(__dirname, '..', "data_files");
 
-const readNCItTerms = () => {
-  let content = fs.readFileSync(dataFilesDir + "/ncit_terms.json").toString();
+const readNCItDiseaseTerms = () => {
+  let content = fs.readFileSync(dataFilesDir + "/ncit_disease_terms.json").toString();
   return JSON.parse(content);
 };
 
-const readNCItSynonyms = () => {
-  let content = fs.readFileSync(dataFilesDir + "/ncit_synonyms.json").toString();
+const readNCItTumorSiteTerms = () => {
+  let content = fs.readFileSync(dataFilesDir + "/ncit_tumor_site_terms.json").toString();
+  return JSON.parse(content);
+};
+
+const readNCItDiseaseSynonyms = () => {
+  let content = fs.readFileSync(dataFilesDir + "/ncit_disease_synonyms.json").toString();
+  return JSON.parse(content);
+};
+
+const readNCItTumorSiteSynonyms = () => {
+  let content = fs.readFileSync(dataFilesDir + "/ncit_tumor_site_synonyms.json").toString();
   return JSON.parse(content);
 };
 
@@ -114,8 +124,10 @@ const ExcelDateToJSDateTime = (serial) => {
 
 module.exports = {
 	fetch,
-  readNCItTerms,
-  readNCItSynonyms,
+  readNCItDiseaseTerms,
+  readNCItTumorSiteTerms,
+  readNCItDiseaseSynonyms,
+  readNCItTumorSiteSynonyms,
   readGlossary,
   getTodayDate,
   timestampToString,
