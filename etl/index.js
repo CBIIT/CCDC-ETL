@@ -5,6 +5,7 @@
  "use strict";
  var config = require("../config");
  var logger = require("../common/logger");
+ var validate = require("./validate");
  var extract = require("./extract");
  var buildIndex = require("./buildIndex");
  var createTables = require("./createTables");
@@ -15,9 +16,16 @@
  var etl = {};
  
  etl.startEtl = async () => {
-    await extract.run();
-    await buildIndex.run();
-    await load.run();
+   logger.info("Validating digest files...");
+   const result = await validate.run();
+   if (result) {
+      logger.info("Successful in validating digest files.");
+      await extract.run();
+      await buildIndex.run();
+      await load.run();
+   } else {
+      logger.error("validating digest files failed:");
+   }
  };
  
  etl.endEtl = () => {
