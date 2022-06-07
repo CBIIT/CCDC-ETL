@@ -142,9 +142,14 @@ const checkDigest = (digestSheet) => {
 validateHelper.check = (digestFile) => {
     let valid = checkDataResourceInfo(digestFile[0]);
     valid = valid && checkDatasetsInfo(digestFile[1]);
-    const len = digestFile[1].data;
+    const data = digestFile[1].data;
+    let len = data.length - 1;
     for(let i = 0; i< len; i++){
-        valid = valid && checkDigest(digestFile[i + 2]);
+        if (data[i+1].length === 0) {
+            continue;
+        }
+        const result = checkDigest(digestFile[i + 2]);
+        valid = valid && result;
     }
     return valid;
 };
