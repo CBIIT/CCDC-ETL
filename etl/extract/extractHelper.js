@@ -9,7 +9,7 @@ extractHelper.getDataResourceInfo = (dataResourceSheet) => {
     result.id = data[9][2];
     result.resourceName = data[9][3];
     result.resourceType = data[14][1];
-    result.description = data[14][0];
+    result.description = data[14][0] === undefined ? "" : data[14][0].trim();
     result.resourceUri = data[9][4];
     result.siteOwner = "";
     result.poc = data[14][3];
@@ -51,7 +51,7 @@ extractHelper.getDatasetsInfo = (datasetInfoSheet) => {
             break;
         }
         tmp.datasetFullName = data[i+1][3];
-        tmp.description = data[i+1][4];
+        tmp.description = data[i+1][4] === undefined ? "" : data[i+1][4].trim();
         tmp.datasetScope = data[i+1][5];
         tmp.poc = data[i+1][6];
         tmp.pocEmail = data[i+1][7];
@@ -75,7 +75,7 @@ extractHelper.getDigest = (digestSheet) => {
         if(tmp.dataElement == null){
             break;
         }
-        tmp.elementValue = data[i + 1][5];
+        tmp.elementValue = data[i + 1][5] === undefined ? "" : data[i+1][5].toString().trim();
         tmp.statisticType = data[i + 1][6];
         tmp.statisticValue = data[i + 1][7];
         tmp.status = 1;
