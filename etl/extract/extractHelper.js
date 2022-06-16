@@ -209,8 +209,8 @@ extractHelper.getSiteChangeLogInfo = (siteChangeLogSheet) => {
     let len = data.length - 1;
     for(let i = 0; i < len; i++){
         let tmp = {};
-        tmp.logType = data[i+1][0];
-        if(tmp.logtype == null){
+        tmp.logType = data[i+1][0] === "promotional" ? 0 : 1;
+        if(tmp.logType == null){
             break;
         }
         tmp.title = data[i+1][1];
