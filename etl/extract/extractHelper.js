@@ -203,4 +203,55 @@ extractHelper.deleteAllGlossary = async () => {
   }
 };
 
+extractHelper.getSiteChangeLogInfo = (siteChangeLogSheet) => {
+    let result = [];
+    let data = siteChangeLogSheet.data;
+    let len = data.length - 1;
+    for(let i = 0; i < len; i++){
+        let tmp = {};
+        tmp.logType = data[i+1][0];
+        if(tmp.logtype == null){
+            break;
+        }
+        tmp.title = data[i+1][1];
+        tmp.postDate = data[i+1][2];
+        tmp.description = data[i+1][3] === undefined ? "" : data[i+1][3].trim();
+        tmp.details = data[i+1][4] === undefined ? "" : data[i+1][4].trim();
+        tmp.status = 1;
+        result.push(tmp);
+    }
+    return result;
+};
+
+extractHelper.deleteAllSiteChangeLog = async () => {
+    let sql = "delete from changelog";
+
+    try{
+        const result = await mysql.query(sql);
+        return result;
+    }
+    catch(error){
+        logger.error(error);
+        return -1;
+    }
+};
+
+extractHelper.insertSiteChangeLog = async (siteChangeLog) => {
+    let sql = "insert into changelog (log_type, title, postDate, description, details, status) "
+        +"values (?,?,?,?)";
+    
+    let inserts = [
+        siteChangeLog.logType, siteChangeLog.title, siteChangeLog.postDate, siteChangeLog.description, siteChangeLog.details, siteChangeLog.status
+    ];
+    sql = mysql.format(sql, inserts);
+    try{
+        const result = await mysql.query(sql);
+        return result.insertId;
+    }
+    catch(error){
+        logger.error(error);
+        return -1;
+    }
+};
+
 module.exports = extractHelper;
