@@ -175,10 +175,12 @@ validateHelper.checkSiteChangeLog = (siteChangeLogFile) => {
             valid = false;
             logger.error("Found special characters in Short Description on Row: " + (i+1));
         }
+        /*
         if (util.containsSpecialCharacters(data[i+1][4])) {
             valid = false;
             logger.error("Found special characters in Detail on Row: " + (i+1));
         }
+        */
     }
     return valid;
 };

@@ -214,7 +214,7 @@ extractHelper.getSiteChangeLogInfo = (siteChangeLogSheet) => {
             break;
         }
         tmp.title = data[i+1][1];
-        tmp.postDate = data[i+1][2];
+        tmp.postDate = utils.ExcelDateToJSDate(data[i+1][2]);
         tmp.description = data[i+1][3] === undefined ? "" : data[i+1][3].trim();
         tmp.details = data[i+1][4] === undefined ? "" : data[i+1][4].trim();
         tmp.status = 1;
@@ -237,8 +237,8 @@ extractHelper.deleteAllSiteChangeLog = async () => {
 };
 
 extractHelper.insertSiteChangeLog = async (siteChangeLog) => {
-    let sql = "insert into changelog (log_type, title, postDate, description, details, status) "
-        +"values (?,?,?,?)";
+    let sql = "insert into changelog (log_type, title, post_date, description, details, status) "
+        +"values (?,?,?,?,?,?)";
     
     let inserts = [
         siteChangeLog.logType, siteChangeLog.title, siteChangeLog.postDate, siteChangeLog.description, siteChangeLog.details, siteChangeLog.status
