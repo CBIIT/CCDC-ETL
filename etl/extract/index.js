@@ -5,6 +5,7 @@ const xlsx = require("node-xlsx").default;
 const extractHelper = require("./extractHelper");
 const {
   readGlossary,
+  readSiteChangeLog,
 } = require('../../common/utils');
 
 // Parse a file
@@ -18,6 +19,9 @@ extract.run = async () => {
     for(let i = 0; i< files.length; i++){
         let file = files[parseInt(i, 10)];
         if (file.startsWith(".")) {
+          continue;
+        }
+        if (file === "site_announcement_log.xlsx") {
           continue;
         }
         const workSheetsFromFile = xlsx.parse(`${digestFileFolder}/${file}`);
@@ -52,6 +56,19 @@ extract.run = async () => {
       await extractHelper.insertGlossary(glossaries[g]);
     }
     logger.info(glossaries.length + " glossaries has been inserted.");
+    //get site change log data from data file and put into relational DB
+    try{
+      const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
+      let logs = extractHelper.getSiteChangeLogInfo(siteChangeLogFile[0]);
+      await extractHelper.deleteAllSiteChangeLog();
+      for(let l = 0; l < logs.length; l++){
+        await extractHelper.insertSiteChangeLog(logs[l]);
+      }
+      logger.info(logs.length + " site change logs has been inserted.");
+    }
+    catch(error) {
+      logger.error(error);
+    }
 };
 
 module.exports = extract;

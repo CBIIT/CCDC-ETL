@@ -177,4 +177,28 @@ createTablesHelper.createGlossaryTable = async () => {
   }
 };
 
+createTablesHelper.createChangelogTable = async () => {
+  let sql = "CREATE TABLE changelog (" +
+    "id int(11) NOT NULL AUTO_INCREMENT, " +
+    "log_type int(1) NOT NULL, " +
+    "title varchar(500) NOT NULL, " +
+    "post_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+    "description varchar(3000) DEFAULT NULL, " +
+    "details text DEFAULT NULL, " +
+    "status int(1) NOT NULL, " +
+    "PRIMARY KEY (id) " +
+  ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
+
+  let createParams = [];
+  sql = mysql.format(sql, createParams);
+  try{
+      await mysql.query(sql);
+      return 1;
+  }
+  catch(error){
+      logger.error(error);
+      return -1;
+  }
+};
+
 module.exports = createTablesHelper;
