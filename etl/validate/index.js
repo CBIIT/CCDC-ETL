@@ -17,6 +17,9 @@ validate.run = async () => {
       if (file.startsWith(".")) {
         continue;
       }
+      if (file === "site_announcement_log.xlsx") {
+        continue;
+      }
       const workSheetsFromFile = xlsx.parse(`${digestFileFolder}/${file}`);
       const result = validateHelper.check(workSheetsFromFile);
       if (!result) {
@@ -24,7 +27,20 @@ validate.run = async () => {
       }
       valid = valid && result;
     }
-    
+
+    //validate site change log file
+    try{
+      const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
+      const validateResult = validateHelper.checkSiteChangeLog(siteChangeLogFile);
+      if (!validateResult) {
+        logger.error("Failed when validating site change log file: site_announcement_log.xlsx");
+      }
+      valid = valid && validateResult;
+    }
+    catch(error) {
+      logger.error(error);
+    }
+
     return valid;
 };
 

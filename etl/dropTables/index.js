@@ -35,6 +35,11 @@ dropTables.run = async () => {
     logger.info("Table <glossary> droped.");
   }
 
+  result  = await dropTablesHelper.dropChangelogTable();
+  if(result === 1){
+    logger.info("Table <changelog> droped.");
+  }
+
 };
 
 module.exports = dropTables;

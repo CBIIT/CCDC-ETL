@@ -154,4 +154,35 @@ validateHelper.check = (digestFile) => {
     return valid;
 };
 
+validateHelper.checkSiteChangeLog = (siteChangeLogFile) => {
+    let valid = true;
+    let data = siteChangeLogFile[0].data;
+    let len = data.length - 1;
+    for(let i = 0; i < len; i++){
+        if (util.containsSpecialCharacters(data[i+1][0])) {
+            valid = false;
+            logger.error("Found special characters in Type on Row: " + (i+1));
+        }
+        if (util.containsSpecialCharacters(data[i+1][1])) {
+            valid = false;
+            logger.error("Found special characters in Title on Row: " + (i+1));
+        }
+        if (util.containsSpecialCharacters(data[i+1][2])) {
+            valid = false;
+            logger.error("Found special characters in Date on Row: " + (i+1));
+        }
+        if (util.containsSpecialCharacters(data[i+1][3])) {
+            valid = false;
+            logger.error("Found special characters in Short Description on Row: " + (i+1));
+        }
+        /*
+        if (util.containsSpecialCharacters(data[i+1][4])) {
+            valid = false;
+            logger.error("Found special characters in Detail on Row: " + (i+1));
+        }
+        */
+    }
+    return valid;
+};
+
 module.exports = validateHelper;

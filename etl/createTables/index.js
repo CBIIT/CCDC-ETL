@@ -35,6 +35,11 @@ createTables.run = async () => {
     logger.info("Table <glossary> created.");
   }
 
+  result = await createTablesHelper.createChangelogTable();
+  if(result === 1){
+    logger.info("Table <changelog> created.");
+  }
+
 };
 
 module.exports = createTables;
