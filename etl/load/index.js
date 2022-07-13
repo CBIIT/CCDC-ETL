@@ -290,6 +290,23 @@ load.run = async () => {
         });
         loadHelper.reOrderDataElment(tmp.sample_composition_type);
       }
+      if (tmp.projects) {
+        tmp.projects.sort((a, b) => {
+          const l_a = a.p_k.toLowerCase();
+          const l_b = b.p_k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+      }
+      //re-order additional data element to be lower case alphabetic order
+      if (tmp.additional) {
+        tmp.additional.forEach((add) => {
+          add.attr_set.sort((a, b) => {
+            const l_a = a.k.toLowerCase();
+            const l_b = b.k.toLowerCase();
+            return l_a < l_b ? -1 : 1;
+          });
+        });
+      }
       //indexing dataset into elasticsearch
       let result = await elasticsearch.addDocument(config.indexDS.alias, tmp.data_resource_id + "_" + tmp.dataset_id , tmp);
       dsDocuments.push(tmp);
