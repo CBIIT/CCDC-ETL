@@ -22,6 +22,7 @@ createTablesHelper.createDataResourcesTable = async () => {
      "has_cell_lines_data int(1) NOT NULL, " +
      "initial_submission_date datetime NOT NULL, " +
      "data_update_date datetime, " +
+     "suggested_next_data_update datetime, " +
      "create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
      "update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, " +
      "status int(1) NOT NULL, " +

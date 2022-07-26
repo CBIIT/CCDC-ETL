@@ -84,6 +84,25 @@ const getTodayDate = () => {
   return str;
 };
 
+const getTodayDateFormatted = () => {
+  const date = new Date();
+  let str = "";
+  str += date.getFullYear();
+  const month = date.getMonth();
+  if (month < 9) {
+    str += `0${month + 1}`;
+  } else {
+    str += (month + 1).toString();
+  }
+  const day = date.getDate();
+  if (day < 10) {
+    str += `0${day}`;
+  } else {
+    str += day.toString();
+  }
+  return str;
+};
+
 const timestampToString = (ts) => {
   const date = new Date(ts);
   let str = "";
@@ -142,6 +161,7 @@ module.exports = {
   readNCItTumorSiteSynonyms,
   readGlossary,
   getTodayDate,
+  getTodayDateFormatted,
   timestampToString,
   ExcelDateToJSDate,
   ExcelDateToJSDateTime,
