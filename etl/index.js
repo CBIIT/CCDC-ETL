@@ -10,6 +10,7 @@
  var buildIndex = require("./buildIndex");
  var createTables = require("./createTables");
  var dropTables = require("./dropTables");
+ var reporting = require("./reporting");
  var load = require("./load");
  var mysql = require("../common/mysql");
  
@@ -48,7 +49,16 @@ etl.dropDBTables = async () => {
 };
 
 etl.finishedDropTables = () => {
-mysql.close();
+   mysql.close();
+};
+
+etl.reportNextDataUpdate = async () => {
+   logger.info("Reporting suggested next data update for CCDC digest.");
+   await reporting.run();
+};
+
+etl.finishedReportNextDataUpdate = () => {
+   mysql.close();
 };
  
  module.exports = etl;

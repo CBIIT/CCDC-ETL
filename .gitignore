@@ -1,3 +1,4 @@
 digests/
 node_modules/
 .env
+*_Resource Update Report.xlsx
