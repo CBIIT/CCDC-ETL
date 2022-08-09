@@ -46,7 +46,7 @@ const readNCItTumorSiteSynonyms = () => {
 };
 
 const readGlossary = () => {
-  const glossarySheets = xlsx.parse(`${dataFilesDir}/Glossary.xlsm`);
+  const glossarySheets = xlsx.parse(`${dataFilesDir}/Site glossary.xlsx`);
   let result = [];
   let data = glossarySheets[0].data;
   let len = data.length - 1;
