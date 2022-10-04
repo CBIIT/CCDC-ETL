@@ -80,4 +80,17 @@ dropTablesHelper.dropGlossaryTable = async () => {
   }
 };
 
+dropTablesHelper.dropChangelogTable = async () => {
+    let sql = "DROP TABLE changelog";
+    sql = mysql.format(sql, []);
+    try{
+        await mysql.query(sql);
+        return 1;
+    }
+    catch(error){
+        logger.error(error);
+        return -1;
+    }
+};
+
 module.exports = dropTablesHelper;

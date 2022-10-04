@@ -9,7 +9,7 @@ extractHelper.getDataResourceInfo = (dataResourceSheet) => {
     result.id = data[9][2];
     result.resourceName = data[9][3];
     result.resourceType = data[14][1];
-    result.description = data[14][0];
+    result.description = data[14][0] === undefined ? "" : data[14][0].trim();
     result.resourceUri = data[9][4];
     result.siteOwner = "";
     result.poc = data[14][3];
@@ -25,6 +25,7 @@ extractHelper.getDataResourceInfo = (dataResourceSheet) => {
     result.hasCellLinesData = data[14][2].toLowerCase().indexOf("cell") > -1? 1 : 0;
     result.initialSubmissionDate = utils.ExcelDateToJSDate(data[9][0]);
     result.dataUpdateDate = utils.ExcelDateToJSDate(data[17][0]);
+    result.suggestedNextDataUpdate = utils.ExcelDateToJSDate(data[17][2]);
     result.status = 1;
     return result;
 };
@@ -51,7 +52,7 @@ extractHelper.getDatasetsInfo = (datasetInfoSheet) => {
             break;
         }
         tmp.datasetFullName = data[i+1][3];
-        tmp.description = data[i+1][4];
+        tmp.description = data[i+1][4] === undefined ? "" : data[i+1][4].trim();
         tmp.datasetScope = data[i+1][5];
         tmp.poc = data[i+1][6];
         tmp.pocEmail = data[i+1][7];
@@ -75,7 +76,7 @@ extractHelper.getDigest = (digestSheet) => {
         if(tmp.dataElement == null){
             break;
         }
-        tmp.elementValue = data[i + 1][5];
+        tmp.elementValue = data[i + 1][5] === undefined ? "" : data[i+1][5].toString().trim();
         tmp.statisticType = data[i + 1][6];
         tmp.statisticValue = data[i + 1][7];
         tmp.status = 1;
@@ -88,18 +89,19 @@ extractHelper.insertOrUpdateDataResource = async (dataResourceInfo) => {
     let sql = "insert into data_resources (id, resource_name, resource_type, "
         +"description, resource_uri, site_owner, poc, poc_email, api, pediatric_specific, "
         +"analytics, visualization, has_genomics_omics, has_imaging_data, has_clinical_data, "
-        +"has_xenograft_data, has_cell_lines_data, initial_submission_date, data_update_date, status) "
-        +"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) on duplicate key update resource_name = VALUES(resource_name), resource_type = VALUES(resource_type), "
+        +"has_xenograft_data, has_cell_lines_data, initial_submission_date, data_update_date, suggested_next_data_update, status) "
+        +"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) on duplicate key update resource_name = VALUES(resource_name), resource_type = VALUES(resource_type), "
         +"description = VALUES(description), resource_uri = VALUES(resource_uri), site_owner = VALUES(site_owner), poc = VALUES(poc), poc_email = VALUES(poc_email), api = VALUES(api), pediatric_specific = VALUES(pediatric_specific), "
         +"analytics = VALUES(analytics), visualization = VALUES(visualization), has_genomics_omics = VALUES(has_genomics_omics), has_imaging_data = VALUES(has_imaging_data), has_clinical_data = VALUES(has_clinical_data), "
-        +"has_xenograft_data = VALUES(has_xenograft_data), has_cell_lines_data = VALUES(has_cell_lines_data), initial_submission_date = VALUES(initial_submission_date), data_update_date=VALUES(data_update_date), update_time = now()";
+        +"has_xenograft_data = VALUES(has_xenograft_data), has_cell_lines_data = VALUES(has_cell_lines_data), initial_submission_date = VALUES(initial_submission_date), data_update_date=VALUES(data_update_date), suggested_next_data_update=VALUES(suggested_next_data_update), update_time = now()";
     
     
     let inserts = [
         dataResourceInfo.id,dataResourceInfo.resourceName,dataResourceInfo.resourceType,dataResourceInfo.description,dataResourceInfo.resourceUri,
         dataResourceInfo.siteOwner,dataResourceInfo.poc,dataResourceInfo.pocEmail,dataResourceInfo.api,dataResourceInfo.pediatricSpecific,
         dataResourceInfo.analytics,dataResourceInfo.visualization,dataResourceInfo.hasGenomicsOmics,dataResourceInfo.hasImagingData,
-        dataResourceInfo.hasClinicalData,dataResourceInfo.hasXenograftData,dataResourceInfo.hasCellLinesData,dataResourceInfo.initialSubmissionDate,dataResourceInfo.dataUpdateDate,dataResourceInfo.status
+        dataResourceInfo.hasClinicalData,dataResourceInfo.hasXenograftData,dataResourceInfo.hasCellLinesData,
+        dataResourceInfo.initialSubmissionDate,dataResourceInfo.dataUpdateDate,dataResourceInfo.suggestedNextDataUpdate,dataResourceInfo.status
     ];
     sql = mysql.format(sql, inserts);
     try{
@@ -201,6 +203,57 @@ extractHelper.deleteAllGlossary = async () => {
       logger.error(error);
       return -1;
   }
+};
+
+extractHelper.getSiteChangeLogInfo = (siteChangeLogSheet) => {
+    let result = [];
+    let data = siteChangeLogSheet.data;
+    let len = data.length - 1;
+    for(let i = 0; i < len; i++){
+        let tmp = {};
+        tmp.logType = data[i+1][0] === "promotional" ? 0 : 1;
+        if(tmp.logType == null){
+            break;
+        }
+        tmp.title = data[i+1][1];
+        tmp.postDate = utils.ExcelDateToJSDate(data[i+1][2]);
+        tmp.description = data[i+1][3] === undefined ? "" : data[i+1][3].trim();
+        tmp.details = data[i+1][4] === undefined ? "" : data[i+1][4].trim();
+        tmp.status = 1;
+        result.push(tmp);
+    }
+    return result;
+};
+
+extractHelper.deleteAllSiteChangeLog = async () => {
+    let sql = "delete from changelog";
+
+    try{
+        const result = await mysql.query(sql);
+        return result;
+    }
+    catch(error){
+        logger.error(error);
+        return -1;
+    }
+};
+
+extractHelper.insertSiteChangeLog = async (siteChangeLog) => {
+    let sql = "insert into changelog (log_type, title, post_date, description, details, status) "
+        +"values (?,?,?,?,?,?)";
+    
+    let inserts = [
+        siteChangeLog.logType, siteChangeLog.title, siteChangeLog.postDate, siteChangeLog.description, siteChangeLog.details, siteChangeLog.status
+    ];
+    sql = mysql.format(sql, inserts);
+    try{
+        const result = await mysql.query(sql);
+        return result.insertId;
+    }
+    catch(error){
+        logger.error(error);
+        return -1;
+    }
 };
 
 module.exports = extractHelper;

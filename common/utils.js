@@ -3,6 +3,17 @@ const fs = require("fs");
 const axios = require('axios');
 const xlsx = require("node-xlsx").default;
 
+const containsSpecialCharacters = (str) => {
+  if (str === undefined) {
+    return false;
+  }
+  const newStr = str.toString().trim();
+  if (newStr === "") {
+    return false;
+  }
+  return !(newStr.match(/^[\r\n\x20-\x7E]+$/g) !== null);
+};
+
 const fetch = async (url) => {
   try {
       const response = await axios.get(url, {timeout: 60000, clarifyTimeoutError: false})
@@ -35,7 +46,7 @@ const readNCItTumorSiteSynonyms = () => {
 };
 
 const readGlossary = () => {
-  const glossarySheets = xlsx.parse(`${dataFilesDir}/Glossary.xlsm`);
+  const glossarySheets = xlsx.parse(`${dataFilesDir}/Site glossary.xlsx`);
   let result = [];
   let data = glossarySheets[0].data;
   let len = data.length - 1;
@@ -70,6 +81,25 @@ const getTodayDate = () => {
     str += day.toString();
   }
   str += `/${date.getFullYear()}`;
+  return str;
+};
+
+const getTodayDateFormatted = () => {
+  const date = new Date();
+  let str = "";
+  str += date.getFullYear();
+  const month = date.getMonth();
+  if (month < 9) {
+    str += `0${month + 1}`;
+  } else {
+    str += (month + 1).toString();
+  }
+  const day = date.getDate();
+  if (day < 10) {
+    str += `0${day}`;
+  } else {
+    str += day.toString();
+  }
   return str;
 };
 
@@ -123,6 +153,7 @@ const ExcelDateToJSDateTime = (serial) => {
 };
 
 module.exports = {
+  containsSpecialCharacters,
 	fetch,
   readNCItDiseaseTerms,
   readNCItTumorSiteTerms,
@@ -130,6 +161,7 @@ module.exports = {
   readNCItTumorSiteSynonyms,
   readGlossary,
   getTodayDate,
+  getTodayDateFormatted,
   timestampToString,
   ExcelDateToJSDate,
   ExcelDateToJSDateTime,

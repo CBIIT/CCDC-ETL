@@ -193,6 +193,120 @@ load.run = async () => {
           }
         });
       }
+      //re-order core data element to be lower case alphabetic order
+      if (tmp.case_disease_diagnosis) {
+        tmp.case_disease_diagnosis.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.case_disease_diagnosis);
+      }
+      if (tmp.case_ethnicity) {
+        tmp.case_ethnicity.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.case_ethnicity);
+      }
+      if (tmp.case_race) {
+        tmp.case_race.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.case_race);
+      }
+      if (tmp.case_sex) {
+        tmp.case_sex.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.case_sex);
+      }
+      if (tmp.case_sex_at_birth) {
+        tmp.case_sex_at_birth.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.case_sex_at_birth);
+      }
+      if (tmp.case_treatment_administered) {
+        tmp.case_treatment_administered.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.case_treatment_administered);
+      }
+      if (tmp.case_treatment_outcome) {
+        tmp.case_treatment_outcome.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.case_treatment_outcome);
+      }
+      if (tmp.case_tumor_site) {
+        tmp.case_tumor_site.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.case_tumor_site);
+      }
+      if (tmp.sample_analyte_type) {
+        tmp.sample_analyte_type.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.sample_analyte_type);
+      }
+      if (tmp.sample_anatomic_site) {
+        tmp.sample_anatomic_site.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.sample_anatomic_site);
+      }
+      if (tmp.sample_assay_method) {
+        tmp.sample_assay_method.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.sample_assay_method);
+      }
+      if (tmp.sample_composition_type) {
+        tmp.sample_composition_type.sort((a, b) => {
+          const l_a = a.k.toLowerCase();
+          const l_b = b.k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+        loadHelper.reOrderDataElment(tmp.sample_composition_type);
+      }
+      if (tmp.projects) {
+        tmp.projects.sort((a, b) => {
+          const l_a = a.p_k.toLowerCase();
+          const l_b = b.p_k.toLowerCase();
+          return l_a < l_b ? -1 : 1;
+        });
+      }
+      //re-order additional data element to be lower case alphabetic order
+      if (tmp.additional) {
+        tmp.additional.forEach((add) => {
+          add.attr_set.sort((a, b) => {
+            const l_a = a.k.toLowerCase();
+            const l_b = b.k.toLowerCase();
+            return l_a < l_b ? -1 : 1;
+          });
+        });
+      }
       //indexing dataset into elasticsearch
       let result = await elasticsearch.addDocument(config.indexDS.alias, tmp.data_resource_id + "_" + tmp.dataset_id , tmp);
       dsDocuments.push(tmp);
