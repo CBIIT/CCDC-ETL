@@ -217,8 +217,9 @@ extractHelper.getSiteChangeLogInfo = (siteChangeLogSheet) => {
         }
         tmp.title = data[i+1][1];
         tmp.postDate = utils.ExcelDateToJSDate(data[i+1][2]);
-        tmp.description = data[i+1][3] === undefined ? "" : data[i+1][3].trim();
-        tmp.details = data[i+1][4] === undefined ? "" : data[i+1][4].trim();
+        tmp.contentType = data[i+1][3] === undefined ? "" : data[i+1][3].trim();
+        tmp.description = data[i+1][4] === undefined ? "" : data[i+1][4].trim();
+        tmp.details = data[i+1][5] === undefined ? "" : data[i+1][5].trim();
         tmp.status = 1;
         result.push(tmp);
     }
@@ -239,11 +240,11 @@ extractHelper.deleteAllSiteChangeLog = async () => {
 };
 
 extractHelper.insertSiteChangeLog = async (siteChangeLog) => {
-    let sql = "insert into changelog (log_type, title, post_date, description, details, status) "
-        +"values (?,?,?,?,?,?)";
+    let sql = "insert into changelog (log_type, title, post_date, content_type, description, details, status) "
+        +"values (?,?,?,?,?,?,?)";
     
     let inserts = [
-        siteChangeLog.logType, siteChangeLog.title, siteChangeLog.postDate, siteChangeLog.description, siteChangeLog.details, siteChangeLog.status
+        siteChangeLog.logType, siteChangeLog.title, siteChangeLog.postDate, siteChangeLog.contentType, siteChangeLog.description, siteChangeLog.details, siteChangeLog.status
     ];
     sql = mysql.format(sql, inserts);
     try{
