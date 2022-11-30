@@ -300,11 +300,13 @@ load.run = async () => {
       //re-order additional data element to be lower case alphabetic order
       if (tmp.additional) {
         tmp.additional.forEach((add) => {
-          add.attr_set.sort((a, b) => {
-            const l_a = a.k.toLowerCase();
-            const l_b = b.k.toLowerCase();
-            return l_a < l_b ? -1 : 1;
-          });
+          if (["Grant ID", "Grant Name"].indexOf(add.attr_name) === -1 ) {
+            add.attr_set.sort((a, b) => {
+              const l_a = a.k.toLowerCase();
+              const l_b = b.k.toLowerCase();
+              return l_a < l_b ? -1 : 1;
+            });
+          }
         });
       }
       //indexing dataset into elasticsearch
