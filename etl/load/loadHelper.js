@@ -174,12 +174,49 @@ loadHelper.insertAggratedDataForDataResourceTypeFilter = async () => {
 };
 
 loadHelper.insertAggratedDataForDataContentTypeFilter = async () => {
-  let sql = "insert into aggragation (data_element, element_value, dataset_count) "
-        + "select 'Data Content Type', 'Genomics/Omics', COALESCE(sum(1), 0) from data_resources dr where dr.has_genomics_omics = 1 UNION ALL "
-        + "select 'Data Content Type', 'Imaging', COALESCE(sum(1), 0) from data_resources dr where dr.has_imaging_data = 1 UNION ALL "
-        + "select 'Data Content Type', 'Clinical', COALESCE(sum(1), 0) from data_resources dr where dr.has_clinical_data = 1 UNION ALL "
-        + "select 'Data Content Type', 'Xenograft', COALESCE(sum(1), 0) from data_resources dr where dr.has_xenograft_data = 1 UNION ALL "
-        + "select 'Data Content Type', 'Cell Lines', COALESCE(sum(1), 0) from data_resources dr where dr.has_cell_lines_data = 1 ";
+  let sql = "select * from data_resources";
+  let dataContentType = {
+    "Genomics/Omics": 0,
+    "Imaging": 0,
+    "Clinical": 0,
+    "Xenograft": 0,
+    "Cell Lines": 0,
+    "Epidemiologic": 0
+  };
+  try{
+      const drs = await mysql.query(sql);
+      for(let i = 0; i< drs.length; i++){
+        let dct = drs[i].data_content_type.toLowerCase();
+        if(dct.indexOf("genomics") > -1) {
+          dataContentType["Genomics/Omics"] ++;
+        }
+        if(dct.indexOf("imaging") > -1) {
+          dataContentType["Imaging"] ++;
+        }
+        if(dct.indexOf("clinical") > -1) {
+          dataContentType["Clinical"] ++;
+        }
+        if(dct.indexOf("xenograft") > -1) {
+          dataContentType["Xenograft"] ++;
+        }
+        if(dct.indexOf("cell") > -1) {
+          dataContentType["Cell Lines"] ++;
+        }
+        if(dct.indexOf("epidemiologic") > -1) {
+          dataContentType["Epidemiologic"] ++;
+        }
+      }
+  }
+  catch(error){
+      logger.error(error);
+      return -1;
+  }
+
+  sql = "insert into aggragation (data_element, element_value, dataset_count) values ";
+  for(const [key, value] of Object.entries(dataContentType)){
+    sql += "('Data Content Type','" + key +"', " + value + "),";
+  }
+  sql = sql.substring(0, sql.length - 1);
   let inserts = [];
   sql = mysql.format(sql, inserts);
   try{
