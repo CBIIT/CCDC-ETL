@@ -321,21 +321,25 @@ load.run = async () => {
     drDocument.resource_type = drs[i].resource_type;
     drDocument.description = drs[i].description;
     drDocument.resource_uri = drs[i].resource_uri;
+    let data_content_type_str = drs[i].data_content_type.toLowerCase();
     let data_content_type = [];
-    if(drs[i].has_genomics_omics === 1) {
+    if(data_content_type_str.indexOf("genomics") > -1) {
       data_content_type.push("Genomics/Omics");
     }
-    if(drs[i].has_imaging_data === 1) {
+    if(data_content_type_str.indexOf("imaging") > -1) {
       data_content_type.push("Imaging");
     }
-    if(drs[i].has_clinical_data === 1) {
+    if(data_content_type_str.indexOf("clinical") > -1) {
       data_content_type.push("Clinical");
     }
-    if(drs[i].has_xenograft_data === 1) {
+    if(data_content_type_str.indexOf("xenograft") > -1) {
       data_content_type.push("Xenograft");
     }
-    if(drs[i].has_cell_lines_data === 1) {
+    if(data_content_type_str.indexOf("cell") > -1) {
       data_content_type.push("Cell Lines");
+    }
+    if(data_content_type_str.indexOf("epidemiologic") > -1) {
+      data_content_type.push("Epidemiologic");
     }
     drDocument.data_content_type = data_content_type.length === 0 ? "" : data_content_type.join(",");
     drDocument.poc = drs[i].poc;
