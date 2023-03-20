@@ -23,6 +23,10 @@ const createXLSX = (dataJson) => {
     });
     const fields = [
         {
+          label: 'Dataset URL',
+          value: 'dataset_url'
+        },
+        {
           label: 'Resource',
           value: 'data_resource_id'
         },
@@ -376,6 +380,7 @@ const export2CSV = async (searchText, filters, options) => {
     ];
     let datasets = searchResults.map((ds) => {
       let tmp = ds._source;
+      tmp.dataset_url = "dataset/" + tmp.dataset_id;
       dataElements.forEach((de) => {
         if(tmp[de]) {
           tmp[de] = tmp[de].map((t) => {
