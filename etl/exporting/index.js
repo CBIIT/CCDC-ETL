@@ -5,7 +5,92 @@ const config = require("../../config");
 const util = require("../../common/utils");
 const xl = require('excel4node');
 
-const createXLSX = (dataJson) => {
+const createResourcesXLSX = (dataJson) => {
+  let wb = new xl.Workbook();
+  let ws = wb.addWorksheet('Report');
+  let style = wb.createStyle({
+      font: {
+          color: "#ffffff",
+          size: 16,
+      },
+      fill: {
+          type: 'pattern',
+          patternType: 'solid',
+          bgColor: "#6e6e6e",
+          fgColor: "#6e6e6e",
+      },
+      dateFormat: 'mm/dd/yy',
+  });
+  const fields = [			
+      {
+        label: 'suffixUrl',
+        value: 'suffixUrl'
+      },
+      {
+        label: 'ResourceName',
+        value: 'resource_name'
+      },
+      {
+        label: 'ResourceCode',
+        value: 'data_resource_id'
+      },
+      {
+        label: 'Point of Contact',
+        value: 'poc'
+      },
+      {
+        label: 'DtstSummaryCnt',
+        value: 'datasets_total'
+      },
+      {
+        label: 'FilterType',
+        value: 'filter_type'
+      },
+      {
+        label: 'ResourceType',
+        value: 'resource_type'
+      },
+      {
+        label: 'Specialization',
+        value: 'specialization'
+      },
+      {
+        label: 'Data Update Date',
+        value: 'data_update_date'
+      },
+      {
+        label: "Visualization Tools",
+        value: "visualization_tools"
+      },
+      {
+        label: "Analytic Tools",
+        value: "analytic_tools"
+      },
+      {
+        label: "Data Content Type",
+        value: "data_content_type"
+      },
+  ];
+  fields.forEach((field, idx) => {
+      ws.column(idx+1).setWidth(30);
+      ws.cell(1, idx+1).string(field.label).style(style);
+  });
+  dataJson.forEach((dj, idx) => {
+      fields.forEach((field, fIdx) => {
+          if (dj[field.value] === undefined || dj[field.value] === null) {
+              ws.cell(idx + 2, fIdx + 1).string("");
+          } else if (typeof dj[field.value] === "number") {
+              ws.cell(idx + 2, fIdx + 1).number(dj[field.value]);
+          } else {
+              ws.cell(idx + 2, fIdx + 1).string(dj[field.value]);
+          }
+      });
+  });
+
+  wb.write('CCDC_Resources_'+ util.getTodayDateFormatted() +'.xlsx');
+};
+
+const createDatasetsXLSX = (dataJson) => {
     let wb = new xl.Workbook();
     let ws = wb.addWorksheet('Report');
     let style = wb.createStyle({
@@ -22,6 +107,10 @@ const createXLSX = (dataJson) => {
         dateFormat: 'mm/dd/yy',
     });
     const fields = [
+        {
+          label: 'Dataset URL',
+          value: 'dataset_url'
+        },
         {
           label: 'Resource',
           value: 'data_resource_id'
@@ -159,8 +248,26 @@ const createXLSX = (dataJson) => {
 
 var exporting = {};
 
-exporting.run = async () => {
-    logger.info("Start exporting...");
+exporting.runResources = async () => {
+  logger.info("Start exporting Resources...");
+  let pageInfo = {page: 1, pageSize: 1000};
+  let sort = {name: "Resource", k: "data_resource_id", v: "asc"};
+  let options = {};
+  options.pageInfo = pageInfo;
+  options.sort = sort;
+  try{
+      const result = await searchResources(options);
+      createResourcesXLSX(result);
+      logger.info(`Successfully exported ${result.length} CCDC resources to Excel.`);
+  }
+  catch(error){
+      logger.error(error);
+  }
+  logger.info("End of exporting.");
+};
+
+exporting.runDatasets = async () => {
+    logger.info("Start exporting Datasets...");
     let searchText = "";
     let filters = [];
     let pageInfo = {page: 1, pageSize: 5000};
@@ -169,8 +276,8 @@ exporting.run = async () => {
     options.pageInfo = pageInfo;
     options.sort = sort;
     try{
-        const result = await export2CSV(searchText, filters, options);
-        createXLSX(result);
+        const result = await searchDatasets(searchText, filters, options);
+        createDatasetsXLSX(result);
         logger.info(`Successfully exported ${result.length} CCDC datasets to Excel.`);
     }
     catch(error){
@@ -354,7 +461,37 @@ const getSearchQuery = (searchText, filters, options) => {
       return body;
 };
 
-const export2CSV = async (searchText, filters, options) => {
+const getParticipatingResourcesSearchQuery = (options) => {
+  let query = {};
+  query.match_all = {};
+
+  let body = {
+    size: options.pageInfo.pageSize,
+    from: (options.pageInfo.page - 1 ) * options.pageInfo.pageSize
+  };
+  body.query = query;
+  body.sort = [];
+  let tmp = {};
+  tmp["resource_name"] = "asc";
+  body.sort.push(tmp);
+  return body;
+};
+
+const searchResources = async (options) => {
+  let query = getParticipatingResourcesSearchQuery(options);
+  let searchResults = await elasticsearch.search(config.indexDR.alias, query);
+  let resources = searchResults.map((ds) => {
+    ds._source.suffixUrl = '/resource/' + ds._source.data_resource_id;
+    ds._source.filter_type = ds._source.resource_type.toUpperCase();
+    ds._source.specialization = ds._source.pediatric_specific === 0 ? "Mixed Adult and Pediatric" : "Pediatric";
+    ds._source.visualization_tools = ds._source.visualization === 0 ? "" : "YES";
+    ds._source.analytic_tools = ds._source.analytics === 0 ? "" : "YES";
+    return ds._source;
+  });
+  return resources;
+};
+
+const searchDatasets = async (searchText, filters, options) => {
     let query = getSearchQuery(searchText, filters, options);
     let searchResults = await elasticsearch.search(config.indexDS.alias, query);
     let dataElements = [
@@ -376,6 +513,7 @@ const export2CSV = async (searchText, filters, options) => {
     ];
     let datasets = searchResults.map((ds) => {
       let tmp = ds._source;
+      tmp.dataset_url = "dataset/" + tmp.dataset_id;
       dataElements.forEach((de) => {
         if(tmp[de]) {
           tmp[de] = tmp[de].map((t) => {
