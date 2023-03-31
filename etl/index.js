@@ -63,10 +63,18 @@ etl.finishedReportNextDataUpdate = () => {
 };
 
 etl.exportDatasets = async () => {
-   await exporting.run();
+   await exporting.runDatasets();
 };
 
 etl.finishedExportDatasets = () => {
+   mysql.close();
+};
+
+etl.exportResources = async () => {
+   await exporting.runResources();
+};
+
+etl.finishedExportResources = () => {
    mysql.close();
 };
  
