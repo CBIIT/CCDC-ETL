@@ -236,7 +236,7 @@ const createDatasetsXLSX = (dataJson) => {
             } else if (typeof dj[field.value] === "number") {
                 ws.cell(idx + 2, fIdx + 1).number(dj[field.value]);
             } else if (dj[field.value].constructor.toString().indexOf("Array") > -1) {
-                ws.cell(idx + 2, fIdx + 1).string(dj[field.value].join(";"));
+                ws.cell(idx + 2, fIdx + 1).string(dj[field.value].join("; "));
             } else {
                 ws.cell(idx + 2, fIdx + 1).string(dj[field.value]);
             }
