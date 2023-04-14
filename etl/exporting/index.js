@@ -514,10 +514,30 @@ const searchDatasets = async (searchText, filters, options) => {
     let datasets = searchResults.map((ds) => {
       let tmp = ds._source;
       tmp.dataset_url = "dataset/" + tmp.dataset_id;
+      if (tmp.desc) {
+        tmp.desc = tmp.desc.replace('\t','');
+      }
+      if (tmp.dataset_name) {
+        tmp.dataset_name = tmp.dataset_name.replace('\t','');
+      }
+      let pocLinks = tmp.poc_email === undefined || tmp.poc_email === null ? "" : tmp.poc_email;
+      if (pocLinks) { pocLinks = pocLinks.split(';'); }
+      tmp.poc_email = pocLinks.join(",");
+      if (tmp.published_in) {
+        tmp.published_in = tmp.published_in.replace(/ ; /g,' ');
+      }
+      if (tmp.case_id) {
+        tmp.case_id = tmp.case_id.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      }
+      if (tmp.sample_id) {
+        tmp.sample_id = tmp.sample_id.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      }
       dataElements.forEach((de) => {
         if(tmp[de]) {
           tmp[de] = tmp[de].map((t) => {
-            return t.n + " (" + t.v + ")";
+            let formatedN = t.n.replace('\t','');
+            let formatedV = t.v ? t.v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : "";
+            return formatedN + " (" + formatedV + ")";
           });
         }
       });
@@ -531,7 +551,7 @@ const searchDatasets = async (searchText, filters, options) => {
           if (attr === "dbgap study identifier") {
             tmp.dbgap_id = t.attr_set.map((item) => {
                 return item.k;
-            }).join(";");
+            }).join(" ");
           } else if (attr === "grant") {
             tmp.grant = t.attr_set.map((item) => {
                 return item.k;
@@ -548,9 +568,26 @@ const searchDatasets = async (searchText, filters, options) => {
         });
         tmp.grant_info = "";
         if (tmp.grant_ids.length > 0) {
-            tmp.grant_info = tmp.grant_ids.map((item, idx) => {
-                return item + "," + tmp.grant_names[idx];
-            }).join(";");
+            let grant_info_arr = tmp.grant_ids.map((item, idx) => {
+                return {
+                  id: item,
+                  name: tmp.grant_names[idx]
+                };
+            });
+            grant_info_arr.sort((a, b) => {
+              let id_a = a.id.toLowerCase();
+              let id_b = b.id.toLowerCase();
+              if (id_a > id_b) {
+                return 1;
+              } else if ( id_a < id_b) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+            tmp.grant_info = grant_info_arr.map((item, idx) => {
+              return item.id + "|" + item.name ;
+          }).join(";");
         }
       }
       return ds._source;
