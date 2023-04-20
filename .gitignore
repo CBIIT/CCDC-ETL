@@ -2,3 +2,5 @@ digests/
 node_modules/
 .env
 *_Resource Update Report.xlsx
+CCDC_Datasets_*.xlsx
+CCDC_Resources_*.xlsx

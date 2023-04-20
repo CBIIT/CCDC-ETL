@@ -11,6 +11,7 @@
  var createTables = require("./createTables");
  var dropTables = require("./dropTables");
  var reporting = require("./reporting");
+ var exporting = require("./exporting");
  var load = require("./load");
  var mysql = require("../common/mysql");
  
@@ -58,6 +59,22 @@ etl.reportNextDataUpdate = async () => {
 };
 
 etl.finishedReportNextDataUpdate = () => {
+   mysql.close();
+};
+
+etl.exportDatasets = async () => {
+   await exporting.runDatasets();
+};
+
+etl.finishedExportDatasets = () => {
+   mysql.close();
+};
+
+etl.exportResources = async () => {
+   await exporting.runResources();
+};
+
+etl.finishedExportResources = () => {
    mysql.close();
 };
  
