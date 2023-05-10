@@ -520,12 +520,10 @@ const searchDatasets = async (searchText, filters, options) => {
       if (tmp.dataset_name) {
         tmp.dataset_name = tmp.dataset_name.replace('\t','');
       }
-      let pocLinks = tmp.poc_email === undefined || tmp.poc_email === null ? "" : tmp.poc_email;
-      if (pocLinks) { pocLinks = pocLinks.split(';'); }
-      tmp.poc_email = pocLinks.join(",");
-      if (tmp.published_in) {
-        tmp.published_in = tmp.published_in.replace(/ ; /g,' ');
+      if (tmp.primary_dataset_scope) {
+        tmp.primary_dataset_scope = tmp.primary_dataset_scope.toUpperCase();
       }
+      tmp.poc_email = tmp.poc_email === undefined || tmp.poc_email === null ? "" : tmp.poc_email;
       if (tmp.case_id) {
         tmp.case_id = tmp.case_id.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       }
