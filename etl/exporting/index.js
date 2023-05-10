@@ -523,7 +523,21 @@ const searchDatasets = async (searchText, filters, options) => {
       if (tmp.primary_dataset_scope) {
         tmp.primary_dataset_scope = tmp.primary_dataset_scope.toUpperCase();
       }
-      tmp.poc_email = tmp.poc_email === undefined || tmp.poc_email === null ? "" : tmp.poc_email;
+      let pocLinks = tmp.poc_email === undefined || tmp.poc_email === null ? "" : tmp.poc_email;
+      if (pocLinks) { pocLinks = pocLinks.split(';'); }
+      tmp.poc_email = pocLinks.join(", ");
+      if (tmp.published_in) {
+        let publishedLinks = tmp.published_in === undefined || tmp.published_in === null ? "" : tmp.published_in;
+        if (tmp.published_in) {
+          publishedLinks = publishedLinks.split(';');
+          publishedLinks.sort((a, b) => {
+            const la = a.trim().toLowerCase();
+            const lb = b.trim().toLowerCase();
+            return la < lb ? -1 : 1;
+          });
+        }
+        tmp.published_in = publishedLinks.join("\n");
+      }
       if (tmp.case_id) {
         tmp.case_id = tmp.case_id.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       }
@@ -549,7 +563,7 @@ const searchDatasets = async (searchText, filters, options) => {
           if (attr === "dbgap study identifier") {
             tmp.dbgap_id = t.attr_set.map((item) => {
                 return item.k;
-            }).join(" ");
+            }).join("\n");
           } else if (attr === "grant") {
             tmp.grant = t.attr_set.map((item) => {
                 return item.k;
