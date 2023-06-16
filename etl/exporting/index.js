@@ -520,9 +520,9 @@ const searchDatasets = async (searchText, filters, options) => {
       if (tmp.dataset_name) {
         tmp.dataset_name = tmp.dataset_name.replace('\t','');
       }
-      if (tmp.primary_dataset_scope) {
-        tmp.primary_dataset_scope = tmp.primary_dataset_scope.toUpperCase();
-      }
+      // if (tmp.primary_dataset_scope) {
+      //   tmp.primary_dataset_scope = tmp.primary_dataset_scope.toUpperCase();
+      // }
       let pocLinks = tmp.poc_email === undefined || tmp.poc_email === null ? "" : tmp.poc_email;
       if (pocLinks) { pocLinks = pocLinks.split(';'); }
       tmp.poc_email = pocLinks.join(", ");
