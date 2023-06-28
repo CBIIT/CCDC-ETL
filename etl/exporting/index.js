@@ -483,9 +483,11 @@ const searchResources = async (options) => {
   let resources = searchResults.map((ds) => {
     ds._source.suffixUrl = 'resource/' + ds._source.data_resource_id;
     ds._source.filter_type = ds._source.resource_type.toUpperCase();
+    //ds._source.resource_type = ds._source.resource_type.toUpperCase();
     ds._source.specialization = ds._source.pediatric_specific === 0 ? "Mixed Adult and Pediatric" : "Pediatric";
     ds._source.visualization_tools = ds._source.visualization === 0 ? "" : "YES";
     ds._source.analytic_tools = ds._source.analytics === 0 ? "" : "YES";
+    ds._source.data_content_type = ds._source.data_content_type.split(',').sort().join(', ');
     return ds._source;
   });
   return resources;
