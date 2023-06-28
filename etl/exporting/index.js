@@ -481,7 +481,7 @@ const searchResources = async (options) => {
   let query = getParticipatingResourcesSearchQuery(options);
   let searchResults = await elasticsearch.search(config.indexDR.alias, query);
   let resources = searchResults.map((ds) => {
-    ds._source.suffixUrl = '/resource/' + ds._source.data_resource_id;
+    ds._source.suffixUrl = 'resource/' + ds._source.data_resource_id;
     ds._source.filter_type = ds._source.resource_type.toUpperCase();
     ds._source.specialization = ds._source.pediatric_specific === 0 ? "Mixed Adult and Pediatric" : "Pediatric";
     ds._source.visualization_tools = ds._source.visualization === 0 ? "" : "YES";
@@ -520,12 +520,12 @@ const searchDatasets = async (searchText, filters, options) => {
       if (tmp.dataset_name) {
         tmp.dataset_name = tmp.dataset_name.replace('\t','');
       }
-      // if (tmp.primary_dataset_scope) {
-      //   tmp.primary_dataset_scope = tmp.primary_dataset_scope.toUpperCase();
-      // }
+      if (tmp.primary_dataset_scope) {
+        tmp.primary_dataset_scope = tmp.primary_dataset_scope.toUpperCase();
+      }
       let pocLinks = tmp.poc_email === undefined || tmp.poc_email === null ? "" : tmp.poc_email;
       if (pocLinks) { pocLinks = pocLinks.split(';'); }
-      tmp.poc_email = pocLinks.join(", ");
+      tmp.poc_email = pocLinks.join("");
       if (tmp.published_in) {
         let publishedLinks = tmp.published_in === undefined || tmp.published_in === null ? "" : tmp.published_in;
         if (tmp.published_in) {
@@ -563,7 +563,7 @@ const searchDatasets = async (searchText, filters, options) => {
           if (attr === "dbgap study identifier") {
             tmp.dbgap_id = t.attr_set.map((item) => {
                 return item.k;
-            }).join("\n");
+            }).join("");
           } else if (attr === "grant") {
             tmp.grant = t.attr_set.map((item) => {
                 return item.k;
