@@ -138,7 +138,7 @@ load.run = async () => {
       });
 
       //processing partition related digest
-      if(has_partition && tmp.primary_dataset_scope.toLowerCase() == "program"){
+      if(has_partition && (tmp.primary_dataset_scope.toLowerCase() == "program" || tmp.primary_dataset_scope.toLowerCase() == "collection")){
         //only processing project level of partition at this point
         tmp.projects = [];
         for(let p in partitionSet) {
