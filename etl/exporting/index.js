@@ -538,7 +538,7 @@ const searchDatasets = async (searchText, filters, options) => {
             return la < lb ? -1 : 1;
           });
         }
-        tmp.published_in = publishedLinks.join("\n");
+        tmp.published_in = publishedLinks.join("");
       }
       if (tmp.case_id) {
         tmp.case_id = tmp.case_id.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
