@@ -21,6 +21,7 @@ const createResourcesXLSX = (dataJson) => {
       },
       dateFormat: 'mm/dd/yy',
   });
+
   const fields = [			
       {
         label: 'suffixUrl',
@@ -108,11 +109,11 @@ const createDatasetsXLSX = (dataJson) => {
     });
     const fields = [
         {
-          label: 'Dataset URL',
+          label: 'suffixUrl',
           value: 'dataset_url'
         },
         {
-          label: 'Resource',
+          label: 'ResourceCode',
           value: 'data_resource_id'
         },
         {
@@ -120,7 +121,7 @@ const createDatasetsXLSX = (dataJson) => {
           value: 'dataset_id'
         },
         {
-          label: 'Dataset',
+          label: 'DatasetName',
           value: 'dataset_name'
         },
         {
@@ -128,99 +129,99 @@ const createDatasetsXLSX = (dataJson) => {
           value: 'desc'
         },
         {
-          label: 'Primary Dataset Scope',
+          label: 'DatasetScope',
           value: 'primary_dataset_scope'
         },
         {
-          label: 'Point of Contact',
+          label: 'POC',
           value: 'poc'
         },
         {
-          label: 'Point of Contact Email',
+          label: 'POCemail',
           value: 'poc_email'
         },
         {
-          label: 'Published In',
+          label: 'pubIn',
           value: 'published_in'
         },
         {
-          label: "Number of Cases",
+          label: "numOfCases",
           value: "case_id"
         },
         {
-          label: "Number of Samples",
+          label: "noOfSamples",
           value: "sample_id"
         },
         {
-          label: "Case Disease Diagnosis",
+          label: "caseDiseaseDiagnosis",
           value: "case_disease_diagnosis"
         },
         {
-          label: "Case Age at Diagnosis",
+          label: "caseAge",
           value: "case_age_at_diagnosis"
         },
         {
-          label: "Case Ethnicity",
+          label: "caseEthn",
           value: "case_ethnicity"
         },
         {
-          label: "Case Race",
+          label: "caseRace",
           value: "case_race"
         },
         {
-          label: "Case Sex",
+          label: "caseSex",
           value: "case_sex"
         },
         {
-          label: "Case Gender",
+          label: "CaseGender",
           value: "case_gender"
         },
         {
-          label: "Case Tumor Site",
+          label: "caseTumorSite",
           value: "case_tumor_site"
         },
         {
-          label: "Case Treatment Administered",
+          label: "caseTrtmtAdmn",
           value: "case_treatment_administered"
         },
         {
-          label: "Case Treatment Outcome",
+          label: "caseTrtmtOutcm",
           value: "case_treatment_outcome"
         },
         {
-          label: "Sample Assay Method",
+          label: "sampleAssMethod",
           value: "sample_assay_method"
         },
         {
-          label: "Sample Analyte Type",
+          label: "sampleAnalType",
           value: "sample_analyte_type"
         },
         {
-          label: "Sample Anatomic Site",
+          label: "sampleAnatSite",
           value: "sample_anatomic_site"
         },
         {
-          label: "Sample Composition Type",
+          label: "sampleCompType",
           value: "sample_composition_type"
         },
         {
-          label: "Sample is Normal",
+          label: "sampIsNormal",
           value: "sample_is_normal"
         },
         {
-          label: "Sample is Xenograft",
+          label: "sampIsXenograft",
           value: "sample_is_xenograft"
         },
         {
-          label: "dbGaP ID",
+          label: "dbgapID",
           value: "dbgap_id"
         },
         {
-          label: "Grant",
+          label: "grant",
           value: "grant"
         },
         {
-          label: "Grant Info",
+          label: "grantInfo",
           value: "grant_info"
         },
     ];
@@ -481,11 +482,13 @@ const searchResources = async (options) => {
   let query = getParticipatingResourcesSearchQuery(options);
   let searchResults = await elasticsearch.search(config.indexDR.alias, query);
   let resources = searchResults.map((ds) => {
-    ds._source.suffixUrl = '/resource/' + ds._source.data_resource_id;
+    ds._source.suffixUrl = 'resource/' + ds._source.data_resource_id;
     ds._source.filter_type = ds._source.resource_type.toUpperCase();
+    //ds._source.resource_type = ds._source.resource_type.toUpperCase();
     ds._source.specialization = ds._source.pediatric_specific === 0 ? "Mixed Adult and Pediatric" : "Pediatric";
     ds._source.visualization_tools = ds._source.visualization === 0 ? "" : "YES";
     ds._source.analytic_tools = ds._source.analytics === 0 ? "" : "YES";
+    ds._source.data_content_type = ds._source.data_content_type.split(',').sort().join(', ');
     return ds._source;
   });
   return resources;
@@ -520,12 +523,12 @@ const searchDatasets = async (searchText, filters, options) => {
       if (tmp.dataset_name) {
         tmp.dataset_name = tmp.dataset_name.replace('\t','');
       }
-      // if (tmp.primary_dataset_scope) {
-      //   tmp.primary_dataset_scope = tmp.primary_dataset_scope.toUpperCase();
-      // }
+      if (tmp.primary_dataset_scope) {
+        tmp.primary_dataset_scope = tmp.primary_dataset_scope.toUpperCase();
+      }
       let pocLinks = tmp.poc_email === undefined || tmp.poc_email === null ? "" : tmp.poc_email;
       if (pocLinks) { pocLinks = pocLinks.split(';'); }
-      tmp.poc_email = pocLinks.join(", ");
+      tmp.poc_email = pocLinks.join("");
       if (tmp.published_in) {
         let publishedLinks = tmp.published_in === undefined || tmp.published_in === null ? "" : tmp.published_in;
         if (tmp.published_in) {
@@ -536,7 +539,7 @@ const searchDatasets = async (searchText, filters, options) => {
             return la < lb ? -1 : 1;
           });
         }
-        tmp.published_in = publishedLinks.join("\n");
+        tmp.published_in = publishedLinks.join("");
       }
       if (tmp.case_id) {
         tmp.case_id = tmp.case_id.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -563,7 +566,7 @@ const searchDatasets = async (searchText, filters, options) => {
           if (attr === "dbgap study identifier") {
             tmp.dbgap_id = t.attr_set.map((item) => {
                 return item.k;
-            }).join("\n");
+            }).join("");
           } else if (attr === "grant") {
             tmp.grant = t.attr_set.map((item) => {
                 return item.k;
