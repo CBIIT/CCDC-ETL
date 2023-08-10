@@ -181,7 +181,8 @@ loadHelper.insertAggratedDataForDataContentTypeFilter = async () => {
     "Clinical": 0,
     "Xenograft": 0,
     "Cell Lines": 0,
-    "Epidemiologic": 0
+    "Epidemiologic": 0,
+    "Biospecimens": 0
   };
   try{
       const drs = await mysql.query(sql);
@@ -204,6 +205,9 @@ loadHelper.insertAggratedDataForDataContentTypeFilter = async () => {
         }
         if(dct.indexOf("epidemiologic") > -1) {
           dataContentType["Epidemiologic"] ++;
+        }
+        if(dct.indexOf("biospecimens") > -1) {
+          dataContentType["Biospecimens"] ++;
         }
       }
   }

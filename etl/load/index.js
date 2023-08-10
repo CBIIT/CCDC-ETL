@@ -341,6 +341,9 @@ load.run = async () => {
     if(data_content_type_str.indexOf("epidemiologic") > -1) {
       data_content_type.push("Epidemiologic");
     }
+    if(data_content_type_str.indexOf("biospecimens") > -1) {
+      data_content_type.push("Biospecimens");
+    }
     drDocument.data_content_type = data_content_type.length === 0 ? "" : data_content_type.join(",");
     drDocument.poc = drs[i].poc;
     drDocument.poc_email = drs[i].poc_email;
