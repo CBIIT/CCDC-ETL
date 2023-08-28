@@ -7,7 +7,7 @@ This is CCDC's ETL, which loads data into MySQL and indexes that data in Elastic
 ## Prerequisites
 
 - Digest files in `/digests`
-- `site_announcements.xlsx` file in `/digests`
+- `site_announcement_log.xlsx` file in `/digests`
 - Elasticsearch 7.17.10
 - MySQL 8.0.34.0
 - Node.js 16.18.0
