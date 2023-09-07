@@ -104,7 +104,7 @@ createTablesHelper.createDigestsTable = async () => {
     "parent_digest_level varchar(10) NOT NULL, " +
     "digest_level varchar(10) NOT NULL, " +
     "core_element int(1) NOT NULL, " +
-    "data_element varchar(45) NOT NULL, " +
+    "data_element varchar(200) NOT NULL, " +
     "element_value varchar(400) NOT NULL, " +
     "statistic_type varchar(20) NOT NULL, " +
     "statistic_value varchar(45) DEFAULT NULL, " +
