@@ -1,3 +1,4 @@
+const { stripHtml } = require('string-strip-html');
 const logger = require("../../common/logger");
 const mysql = require("../../common/mysql");
 const utils = require("../../common/utils");
@@ -295,16 +296,52 @@ loadHelper.getGlossaryPageDocument = (glossaries) => {
   };
 };
 
-loadHelper.getSiteUpdatesDocument = () => {
+loadHelper.getSiteUpdatesDocument = async () => {
   const contents = [];
+  let sql = "SELECT post_date, title, description, details FROM changelog WHERE log_type=1";
+  let inserts = [];
 
-  return {
-    uid: "siteupdate",
-    title: "Updates to the Data Catalog Site",
-    description: "A page that lists updates to this site.",
-    content: contents.join(),
-    link: "/siteupdate"
-  };
+  sql = mysql.format(sql, inserts);
+
+  try {
+    const results = await mysql.query(sql);
+    results.forEach((siteUpdate) => {
+      [
+        siteUpdate.post_date.toLocaleString('default', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }),
+        siteUpdate.title,
+        stripHtml(siteUpdate.description).result,
+        stripHtml(siteUpdate.details).result,
+      ].forEach((text) => {
+        const trimmedText = text.trim();
+
+        if (trimmedText) {
+          contents.push(`<p> ${trimmedText} </p>`);
+        }
+      });
+    });
+    console.log(contents);
+    return {
+      uid: "siteupdate",
+      title: "Updates to the Data Catalog Site",
+      description: "A page that lists updates to this site.",
+      content: contents.join(),
+      link: "/siteupdate"
+    };
+  } catch (error) {
+    logger.error(error);
+    return -1;
+  }
+  // return {
+  //   uid: "siteupdate",
+  //   title: "Updates to the Data Catalog Site",
+  //   description: "A page that lists updates to this site.",
+  //   content: contents.join(),
+  //   link: "/siteupdate"
+  // };
 };
 
 loadHelper.getDatasetDocuments = (datasets) => {
