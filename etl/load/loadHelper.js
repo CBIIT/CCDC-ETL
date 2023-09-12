@@ -323,11 +323,11 @@ loadHelper.getSiteUpdatesDocument = async () => {
         }
       });
     });
-    console.log(contents);
+    // console.log(contents);
     return {
       uid: "siteupdate",
-      title: "Updates to the Data Catalog Site",
-      description: "A page that lists updates to this site.",
+      title: "CCDI Site Updates",
+      description: "A chronological listing of site updates and changes.",
       content: contents.join(),
       link: "/siteupdate"
     };
