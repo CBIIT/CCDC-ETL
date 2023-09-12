@@ -24,6 +24,7 @@
     "lodash": "^4.17.21",
     "mysql": "^2.18.1",
     "node-xlsx": "^0.17.1",
+    "string-strip-html": "^8.5.0",
     "winston": "^3.3.3"
   }
 }
