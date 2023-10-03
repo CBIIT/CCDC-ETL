@@ -379,6 +379,8 @@ load.run = async () => {
   const glossaries = await loadHelper.getGlossary();
   const glossaryPageDocument = loadHelper.getGlossaryPageDocument(glossaries);
   ccdcDocuments.push(glossaryPageDocument);
+  const siteUpdatesDocument = await loadHelper.getSiteUpdatesDocument();
+  ccdcDocuments.push(siteUpdatesDocument);
   /*
   const datasetDocuments = loadHelper.getDatasetDocuments(dsDocuments);
   datasetDocuments.forEach((dd) => {
