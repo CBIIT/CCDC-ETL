@@ -32,6 +32,7 @@ var core_elements_1 = {
   "Sample Anatomic Site": "sample_anatomic_site",
   "Sample Assay Method": "sample_assay_method",
   "Sample Composition Type": "sample_composition_type",
+  "Sample Is Cell Line": 'sample_is_cell_line',
   "Sample Is Normal": "sample_is_normal",
   "Sample Is Xenograft": "sample_is_xenograft",
   "Sample Repository Name": "sample_repository_name"

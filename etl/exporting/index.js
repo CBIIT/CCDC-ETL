@@ -205,6 +205,10 @@ const createDatasetsXLSX = (dataJson) => {
           value: "sample_composition_type"
         },
         {
+          label: "sampIsCellLine",
+          value: "sample_is_cell_line"
+        },
+        {
           label: "sampIsNormal",
           value: "sample_is_normal"
         },
@@ -359,6 +363,7 @@ const getSearchQuery = (searchText, filters, options) => {
               "sample_assay_method.k",
               "sample_composition_type.k",
               "sample_repository_name.k",
+              "sample_is_cell_line.k",
               "sample_is_normal.k",
               "sample_is_xenograft.k"
             ];
@@ -511,6 +516,7 @@ const searchDatasets = async (searchText, filters, options) => {
         "sample_analyte_type",
         "sample_anatomic_site",
         "sample_composition_type",
+        "sample_is_cell_line",
         "sample_is_normal",
         "sample_is_xenograft"
     ];
