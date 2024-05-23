@@ -414,6 +414,19 @@ indices.datasetsIndexConfig = {
             }
           }
         },
+        "sample_is_cell_line": {
+          "type": "nested",
+          "properties":{
+            "k":{
+              "type": "text",
+              "analyzer": "standard_analyzer",
+              "search_analyzer": "keyword_analyzer"
+            },
+            "v":{
+              "type": "integer"
+            }
+          }
+        },
         "sample_is_normal": {
           "type": "nested",
           "properties":{
