@@ -214,7 +214,8 @@ extractHelper.getSiteChangeLogInfo = (siteChangeLogSheet) => {
             break;
         }
         tmp.title = data[i+1][1];
-        tmp.postDate = utils.ExcelDateToJSDate(data[i+1][2]);
+        // tmp.postDate = utils.ExcelDateToJSDate(data[i+1][2]);
+        tmp.postDate = data[i+1][2] === undefined ? "" : data[i+1][2].trim();
         tmp.contentType = data[i+1][3] === undefined ? "" : data[i+1][3].trim();
         tmp.description = data[i+1][4] === undefined ? "" : data[i+1][4].trim();
         tmp.details = data[i+1][5] === undefined ? "" : data[i+1][5].trim();
