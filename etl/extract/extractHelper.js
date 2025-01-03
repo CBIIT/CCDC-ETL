@@ -205,7 +205,7 @@ extractHelper.deleteAllGlossary = async () => {
 
 extractHelper.getSiteChangeLogInfo = (siteChangeLogSheet) => {
     let result = [];
-    let data = siteChangeLogSheet.data;
+    let data = siteChangeLogSheet;
     let len = data.length - 1;
     for(let i = 0; i < len; i++){
         let tmp = {};

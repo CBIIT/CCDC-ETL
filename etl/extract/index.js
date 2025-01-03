@@ -59,7 +59,7 @@ extract.run = async () => {
     //get site change log data from data file and put into relational DB
     try{
       const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
-      let logs = extractHelper.getSiteChangeLogInfo(siteChangeLogFile[0]);
+      let logs = extractHelper.getSiteChangeLogInfo(siteChangeLogFile[0].data);
       await extractHelper.deleteAllSiteChangeLog();
       for(let l = 0; l < logs.length; l++){
         await extractHelper.insertSiteChangeLog(logs[l]);

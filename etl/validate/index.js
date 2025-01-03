@@ -31,7 +31,7 @@ validate.run = async () => {
     //validate site change log file
     try{
       const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
-      const validateResult = validateHelper.checkSiteChangeLog(siteChangeLogFile);
+      const validateResult = validateHelper.checkSiteChangeLog(siteChangeLogFile[0].data);
       if (!validateResult) {
         logger.error("Failed when validating site change log file: site_announcement_log.xlsx");
       }
