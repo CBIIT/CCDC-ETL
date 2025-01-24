@@ -1,6 +1,7 @@
 const config = require("../../config");
 const logger = require("../../common/logger");
 const fs = require("fs");
+const yaml = require("js-yaml");
 const xlsx = require("node-xlsx").default;
 const validateHelper = require("./validateHelper");
 
@@ -14,6 +15,9 @@ validate.run = async () => {
     let valid = true;
     for(let i = 0; i< files.length; i++){
       let file = files[parseInt(i, 10)];
+      if (file === "site_announcement_log.yaml") {
+        break;
+      }
       if (file.startsWith(".")) {
         continue;
       }
@@ -30,8 +34,11 @@ validate.run = async () => {
 
     //validate site change log file
     try{
-      const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
-      const validateResult = validateHelper.checkSiteChangeLog(siteChangeLogFile);
+      // const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
+      // const validateResult = validateHelper.checkSiteChangeLog(siteChangeLogFile[0].data);
+      const digestFileFolder = config.digestFileFolder;
+      const yamlData = yaml.load(fs.readFileSync(digestFileFolder + '/site_announcement_log.yaml', 'utf8'));
+      const validateResult = validateHelper.checkSiteChangeLog(yamlData);
       if (!validateResult) {
         logger.error("Failed when validating site change log file: site_announcement_log.xlsx");
       }

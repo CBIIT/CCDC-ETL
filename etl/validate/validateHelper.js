@@ -156,7 +156,7 @@ validateHelper.check = (digestFile) => {
 
 validateHelper.checkSiteChangeLog = (siteChangeLogFile) => {
     let valid = true;
-    let data = siteChangeLogFile[0].data;
+    let data = siteChangeLogFile;
     let len = data.length - 1;
     for(let i = 0; i < len; i++){
         if (util.containsSpecialCharacters(data[i+1][0])) {
