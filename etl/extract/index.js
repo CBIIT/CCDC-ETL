@@ -1,6 +1,7 @@
 const config = require("../../config");
 const logger = require("../../common/logger");
 const fs = require("fs");
+const yaml = require("js-yaml");
 const xlsx = require("node-xlsx").default;
 const extractHelper = require("./extractHelper");
 const {
@@ -18,6 +19,9 @@ extract.run = async () => {
     const files = fs.readdirSync(digestFileFolder);
     for(let i = 0; i< files.length; i++){
         let file = files[parseInt(i, 10)];
+        if (file === "site_announcement_log.yaml") {
+          break;
+        }
         if (file.startsWith(".")) {
           continue;
         }
@@ -58,8 +62,11 @@ extract.run = async () => {
     logger.info(glossaries.length + " glossaries has been inserted.");
     //get site change log data from data file and put into relational DB
     try{
-      const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
-      let logs = extractHelper.getSiteChangeLogInfo(siteChangeLogFile[0]);
+      // const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
+      // let logs = extractHelper.getSiteChangeLogInfo(siteChangeLogFile[0].data);
+      const digestFileFolder = config.digestFileFolder;
+      const yamlData = yaml.load(fs.readFileSync(digestFileFolder + '/site_announcement_log.yaml', 'utf8'));
+      let logs = extractHelper.getSiteChangeLogInfo(yamlData);
       await extractHelper.deleteAllSiteChangeLog();
       for(let l = 0; l < logs.length; l++){
         await extractHelper.insertSiteChangeLog(logs[l]);
