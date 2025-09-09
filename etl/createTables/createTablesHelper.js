@@ -179,6 +179,7 @@ createTablesHelper.createChangelogTable = async () => {
     "id int(11) NOT NULL AUTO_INCREMENT, " +
     "log_type int(1) NOT NULL, " +
     "title varchar(500) NOT NULL, " +
+    "version varchar(100) NOT NULL, " +
     "post_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
     "content_type varchar(500) DEFAULT NULL, " +
     "description varchar(3000) DEFAULT NULL, " +
