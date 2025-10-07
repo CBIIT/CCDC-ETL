@@ -335,7 +335,7 @@ loadHelper.getSiteUpdatesDocument = async () => {
       title: "CCDI Site Updates",
       description: "A chronological listing of site updates and changes.",
       content: contents.join(),
-      link: "/siteupdate"
+      link: "/releasenotes"
     };
   } catch (error) {
     logger.error(error);
