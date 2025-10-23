@@ -350,6 +350,7 @@ load.run = async () => {
     drDocument.poc_email = drs[i].poc_email;
     drDocument.api = drs[i].api;
     drDocument.pediatric_specific = drs[i].pediatric_specific;
+    drDocument.resource_contact_url = drs[i].resource_contact_url;
     drDocument.analytics = drs[i].analytics;
     drDocument.visualization = drs[i].visualization;
     drDocument.datasets_total = datasets.length;

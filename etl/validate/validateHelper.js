@@ -62,6 +62,10 @@ const checkDataResourceInfo = (dataResourceSheet) => {
         valid = false;
         logger.error("Found special characters in Resource Data Update Date.");
     }
+    if (util.containsSpecialCharacters(data[17][4])) {
+        valid = false;
+        logger.error("Found special characters in Resource Contact URL.");
+    }
     return valid;
 };
 

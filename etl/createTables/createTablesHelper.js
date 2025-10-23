@@ -16,6 +16,7 @@ createTablesHelper.createDataResourcesTable = async () => {
      "analytics int(1) NOT NULL, " +
      "visualization int(1) NOT NULL, " +
      "data_content_type varchar(200) NOT NULL, " +
+     "resource_contact_url varchar(400) DEFAULT NULL, " +
      "initial_submission_date datetime NOT NULL, " +
      "data_update_date datetime, " +
      "suggested_next_data_update datetime, " +
