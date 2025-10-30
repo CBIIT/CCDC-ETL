@@ -19,6 +19,7 @@ extractHelper.getDataResourceInfo = (dataResourceSheet) => {
     result.analytics = data[14][5] === "Yes" ? 1 : 0;
     result.visualization = data[14][6] === "Yes" ? 1 : 0;
     result.dataContentType = data[14][2];
+    result.resourceContactURL = data[17][4];
     // result.hasGenomicsOmics = data[14][2].toLowerCase().indexOf("genomics") > -1? 1 : 0;
     // result.hasImagingData = data[14][2].toLowerCase().indexOf("imaging") > -1? 1 : 0;
     // result.hasClinicalData = data[14][2].toLowerCase().indexOf("clinical") > -1? 1 : 0;
@@ -89,16 +90,16 @@ extractHelper.getDigest = (digestSheet) => {
 extractHelper.insertOrUpdateDataResource = async (dataResourceInfo) => {
     let sql = "insert into data_resources (id, resource_name, resource_type, "
         +"description, resource_uri, site_owner, poc, poc_email, api, pediatric_specific, "
-        +"analytics, visualization, data_content_type, initial_submission_date, data_update_date, suggested_next_data_update, status) "
-        +"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) on duplicate key update resource_name = VALUES(resource_name), resource_type = VALUES(resource_type), "
+        +"analytics, visualization, data_content_type, resource_contact_url, initial_submission_date, data_update_date, suggested_next_data_update, status) "
+        +"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) on duplicate key update resource_name = VALUES(resource_name), resource_type = VALUES(resource_type), "
         +"description = VALUES(description), resource_uri = VALUES(resource_uri), site_owner = VALUES(site_owner), poc = VALUES(poc), poc_email = VALUES(poc_email), api = VALUES(api), pediatric_specific = VALUES(pediatric_specific), "
-        +"analytics = VALUES(analytics), visualization = VALUES(visualization), data_content_type = VALUES(data_content_type), initial_submission_date = VALUES(initial_submission_date), data_update_date=VALUES(data_update_date), suggested_next_data_update=VALUES(suggested_next_data_update), update_time = now()";
+        +"analytics = VALUES(analytics), visualization = VALUES(visualization), data_content_type = VALUES(data_content_type), resource_contact_url = VALUES(resource_contact_url), initial_submission_date = VALUES(initial_submission_date), data_update_date=VALUES(data_update_date), suggested_next_data_update=VALUES(suggested_next_data_update), update_time = now()";
     
     
     let inserts = [
         dataResourceInfo.id,dataResourceInfo.resourceName,dataResourceInfo.resourceType,dataResourceInfo.description,dataResourceInfo.resourceUri,
         dataResourceInfo.siteOwner,dataResourceInfo.poc,dataResourceInfo.pocEmail,dataResourceInfo.api,dataResourceInfo.pediatricSpecific,
-        dataResourceInfo.analytics,dataResourceInfo.visualization,dataResourceInfo.dataContentType,
+        dataResourceInfo.analytics,dataResourceInfo.visualization,dataResourceInfo.dataContentType, dataResourceInfo.resourceContactURL,
         dataResourceInfo.initialSubmissionDate,dataResourceInfo.dataUpdateDate,dataResourceInfo.suggestedNextDataUpdate,dataResourceInfo.status
     ];
     sql = mysql.format(sql, inserts);
