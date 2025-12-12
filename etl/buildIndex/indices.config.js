@@ -575,6 +575,10 @@ indices.dataresourcesIndexConfig = {
         "type": "text",
         "analyzer": "standard_analyzer"
       },
+      "resource_contact_url": {
+        "type": "text",
+        "analyzer": "standard_analyzer"
+      },
       "analytics": {
         "type": "keyword"
       },

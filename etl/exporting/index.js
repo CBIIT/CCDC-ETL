@@ -71,6 +71,10 @@ const createResourcesXLSX = (dataJson) => {
         label: "Data Content Type",
         value: "data_content_type"
       },
+      {
+        label: "Resource Contact URL",
+        value: "resource_contact_url"
+      },
   ];
   fields.forEach((field, idx) => {
       ws.column(idx+1).setWidth(30);
