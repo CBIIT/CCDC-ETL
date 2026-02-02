@@ -6,65 +6,67 @@ let validateHelper = {};
 const checkDataResourceInfo = (dataResourceSheet) => {
     let valid = true;
     let data = dataResourceSheet.data;
+    const sheetPrefix = "[Data Resource Info] ";
     if (util.containsSpecialCharacters(data[9][2])) {
         valid = false;
-        logger.error("Found special characters in Resource ID.");
+        logger.error(sheetPrefix + "Found special characters in Resource ID.");
     }
     if (util.containsSpecialCharacters(data[9][3])) {
         valid = false;
-        logger.error("Found special characters in Resource Name.");
+        logger.error(sheetPrefix + "Found special characters in Resource Name.");
     }
     if (util.containsSpecialCharacters(data[14][1])) {
         valid = false;
-        logger.error("Found special characters in Resource Type.");
+        logger.error(sheetPrefix + "Found special characters in Resource Type.");
     }
     if (util.containsSpecialCharacters(data[14][0])) {
         valid = false;
-        logger.error("Found special characters in Resource Description.");
+        const value = (data[14][0] || '').toString();
+        logger.error(sheetPrefix + "Found special characters in Resource Description. Value: " + value.substring(0, 50));
     }
     if (util.containsSpecialCharacters(data[9][4])) {
         valid = false;
-        logger.error("Found special characters in Resource URI.");
+        logger.error(sheetPrefix + "Found special characters in Resource URI.");
     }
     if (util.containsSpecialCharacters(data[14][3])) {
         valid = false;
-        logger.error("Found special characters in Resource POC.");
+        logger.error(sheetPrefix + "Found special characters in Resource POC.");
     }
     if (util.containsSpecialCharacters(data[14][4])) {
         valid = false;
-        logger.error("Found special characters in Resource POC Email.");
+        logger.error(sheetPrefix + "Found special characters in Resource POC Email.");
     }
     if (util.containsSpecialCharacters(data[14][8])) {
         valid = false;
-        logger.error("Found special characters in Resource API.");
+        logger.error(sheetPrefix + "Found special characters in Resource API.");
     }
     if (util.containsSpecialCharacters(data[14][7])) {
         valid = false;
-        logger.error("Found special characters in Resource Pediatric Specific.");
+        logger.error(sheetPrefix + "Found special characters in Resource Pediatric Specific.");
     }
     if (util.containsSpecialCharacters(data[14][5])) {
         valid = false;
-        logger.error("Found special characters in Resource Analytics.");
+        logger.error(sheetPrefix + "Found special characters in Resource Analytics.");
     }
     if (util.containsSpecialCharacters(data[14][6])) {
         valid = false;
-        logger.error("Found special characters in Resource Visualization.");
+        logger.error(sheetPrefix + "Found special characters in Resource Visualization.");
     }
     if (util.containsSpecialCharacters(data[14][2])) {
         valid = false;
-        logger.error("Found special characters in Resource Content Type.");
+        logger.error(sheetPrefix + "Found special characters in Resource Content Type.");
     }
     if (util.containsSpecialCharacters(data[9][0])) {
         valid = false;
-        logger.error("Found special characters in Resource Initial Submission Date.");
+        logger.error(sheetPrefix + "Found special characters in Resource Initial Submission Date.");
     }
     if (util.containsSpecialCharacters(data[17][0])) {
         valid = false;
-        logger.error("Found special characters in Resource Data Update Date.");
+        logger.error(sheetPrefix + "Found special characters in Resource Data Update Date.");
     }
     if (util.containsSpecialCharacters(data[17][4])) {
         valid = false;
-        logger.error("Found special characters in Resource Contact URL.");
+        logger.error(sheetPrefix + "Found special characters in Resource Contact URL.");
     }
     return valid;
 };
@@ -73,71 +75,76 @@ const checkDatasetsInfo = (datasetInfoSheet) => {
     let valid = true;
     let data = datasetInfoSheet.data;
     let len = data.length - 1;
+    const sheetPrefix = "[Dataset Info] ";
     for(let i = 0; i < len; i++){
         if (util.containsSpecialCharacters(data[i+1][2])) {
             valid = false;
-            logger.error("Found special characters in Dataset Name on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Dataset Name on Row: " + (i+1));
         }
         if (util.containsSpecialCharacters(data[i+1][3])) {
             valid = false;
-            logger.error("Found special characters in Dataset Full Name on Row: " + (i+1));
+            const value = (data[i+1][3] || '').toString();
+            logger.error(sheetPrefix + "Found special characters in Dataset Full Name on Row: " + (i+1) + ", Value: " + value.substring(0, 50));
         }
         if (util.containsSpecialCharacters(data[i+1][4])) {
             valid = false;
-            logger.error("Found special characters in Dataset Description on Row: " + (i+1));
+            const value = (data[i+1][4] || '').toString();
+            logger.error(sheetPrefix + "Found special characters in Dataset Description on Row: " + (i+1) + ", Value: " + value.substring(0, 50));
         }
         if (util.containsSpecialCharacters(data[i+1][5])) {
             valid = false;
-            logger.error("Found special characters in Dataset Scope on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Dataset Scope on Row: " + (i+1));
         }
         if (util.containsSpecialCharacters(data[i+1][6])) {
             valid = false;
-            logger.error("Found special characters in Dataset POC on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Dataset POC on Row: " + (i+1));
         }
         if (util.containsSpecialCharacters(data[i+1][7])) {
             valid = false;
-            logger.error("Found special characters in Dataset POC Email on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Dataset POC Email on Row: " + (i+1));
         }
         if (util.containsSpecialCharacters(data[i+1][8])) {
             valid = false;
-            logger.error("Found special characters in Dataset Published In on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Dataset Published In on Row: " + (i+1));
         }
     }
     return valid;
 };
 
-const checkDigest = (digestSheet) => {
+const checkDigest = (digestSheet, datasetName) => {
     let valid = true;
     let data = digestSheet.data;
     let len = data.length - 1;
+    const sheetPrefix = "[" + (datasetName || "Digest") + "] ";
     for(let i = 0; i< len; i++){
         if (util.containsSpecialCharacters(data[i+1][1])) {
             valid = false;
-            logger.error("Found special characters in Parent Digest Level on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Parent Digest Level on Row: " + (i+1));
         }
         if (util.containsSpecialCharacters(data[i+1][2])) {
             valid = false;
-            logger.error("Found special characters in Digest Level on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Digest Level on Row: " + (i+1));
         }
         if (util.containsSpecialCharacters(data[i+1][3])) {
             valid = false;
-            logger.error("Found special characters in Core Element on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Core Element on Row: " + (i+1));
         }
         if (util.containsSpecialCharacters(data[i+1][4])) {
             valid = false;
-            logger.error("Found special characters in Data Element on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Data Element on Row: " + (i+1));
         }
         if (util.containsSpecialCharacters(data[i+1][5])) {
             valid = false;
-            logger.error("Found special characters in Element Value on Row: " + (i+1));
+            const value = (data[i+1][5] || '').toString();
+            logger.error(sheetPrefix + "Found special characters in Element Value on Row: " + (i+1) + ", Value: " + value.substring(0, 50));
         }
         if (util.containsSpecialCharacters(data[i+1][6])) {
             valid = false;
-            logger.error("Found special characters in Statistic Type on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Statistic Type on Row: " + (i+1));
         }
         if (util.containsSpecialCharacters(data[i+1][7])) {
             valid = false;
-            logger.error("Found special characters in Statistic Value on Row: " + (i+1));
+            logger.error(sheetPrefix + "Found special characters in Statistic Value on Row: " + (i+1));
         }
     }
     return valid;
@@ -152,7 +159,8 @@ validateHelper.check = (digestFile) => {
         if (data[i+1].length === 0) {
             continue;
         }
-        const result = checkDigest(digestFile[i + 2]);
+        const datasetName = data[i+1][2] || "Dataset_" + (i+1);
+        const result = checkDigest(digestFile[i + 2], datasetName);
         valid = valid && result;
     }
     return valid;
