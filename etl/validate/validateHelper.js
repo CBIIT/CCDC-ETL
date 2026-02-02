@@ -22,8 +22,7 @@ const checkDataResourceInfo = (dataResourceSheet) => {
     if (util.containsSpecialCharacters(data[14][0])) {
         valid = false;
         const value = (data[14][0] || '').toString();
-        const truncatedValue = value.length > 0 ? value.substring(0, 50) : "[empty]";
-        logger.error(sheetPrefix + "Found special characters in Resource Description. Value: " + truncatedValue);
+        logger.error(sheetPrefix + "Found special characters in Resource Description. Value: " + value.substring(0, 50));
     }
     if (util.containsSpecialCharacters(data[9][4])) {
         valid = false;
@@ -137,7 +136,7 @@ const checkDigest = (digestSheet, datasetName) => {
         if (util.containsSpecialCharacters(data[i+1][5])) {
             valid = false;
             const value = (data[i+1][5] || '').toString();
-            logger.error(sheetPrefix + "Found special characters in Element Value on Row: " + (i+1) + ", Value: " + value.substring(0, 50));
+            logger.error(sheetPrefix + "Found special characters in Element Value on Row: " + (i+1) + ", Value: " + value);
         }
         if (util.containsSpecialCharacters(data[i+1][6])) {
             valid = false;
