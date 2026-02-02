@@ -22,7 +22,8 @@ const checkDataResourceInfo = (dataResourceSheet) => {
     if (util.containsSpecialCharacters(data[14][0])) {
         valid = false;
         const value = (data[14][0] || '').toString();
-        logger.error(sheetPrefix + "Found special characters in Resource Description. Value: " + value.substring(0, 50));
+        const truncatedValue = value.length > 0 ? value.substring(0, 50) : "[empty]";
+        logger.error(sheetPrefix + "Found special characters in Resource Description. Value: " + truncatedValue);
     }
     if (util.containsSpecialCharacters(data[9][4])) {
         valid = false;
