@@ -1,31 +1,26 @@
 const config = require("../../config");
 const logger = require("../../common/logger");
 const fs = require("fs");
-const yaml = require("js-yaml");
 const xlsx = require("node-xlsx").default;
 const extractHelper = require("./extractHelper");
 const {
   readGlossary,
-  readSiteChangeLog,
 } = require('../../common/utils');
 
 // Parse a file
 
 let extract = {};
 
-extract.run = async () => {
+extract.run = async (siteAnnouncements) => {
     //get data from spreadsheet and store them into relational DB
     const digestFileFolder = config.digestFileFolder;
     const files = fs.readdirSync(digestFileFolder);
     for(let i = 0; i< files.length; i++){
         let file = files[parseInt(i, 10)];
-        if (file === "site_announcement_log.yaml") {
-          break;
-        }
         if (file.startsWith(".")) {
           continue;
         }
-        if (file === "site_announcement_log.xlsx") {
+        if (file === "site_announcement_log.yaml" || file === "site_announcement_log.xlsx") {
           continue;
         }
         const workSheetsFromFile = xlsx.parse(`${digestFileFolder}/${file}`);
@@ -60,22 +55,8 @@ extract.run = async () => {
       await extractHelper.insertGlossary(glossaries[g]);
     }
     logger.info(glossaries.length + " glossaries has been inserted.");
-    //get site change log data from data file and put into relational DB
-    try{
-      // const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
-      // let logs = extractHelper.getSiteChangeLogInfo(siteChangeLogFile[0].data);
-      const digestFileFolder = config.digestFileFolder;
-      const yamlData = yaml.load(fs.readFileSync(digestFileFolder + '/site_announcement_log.yaml', 'utf8'));
-      let logs = extractHelper.getSiteChangeLogInfo(yamlData);
-      await extractHelper.deleteAllSiteChangeLog();
-      for(let l = 0; l < logs.length; l++){
-        await extractHelper.insertSiteChangeLog(logs[l]);
-      }
-      logger.info(logs.length + " site change logs has been inserted.");
-    }
-    catch(error) {
-      logger.error(error);
-    }
+    await extractHelper.replaceSiteChangeLogs(siteAnnouncements);
+    logger.info(siteAnnouncements.length + " site change logs have been inserted.");
 };
 
 module.exports = extract;
