@@ -1,7 +1,9 @@
 let path = require("path");
 let localEnv = require("dotenv");
 let _ = require("lodash");
+const { preferDeployedValue } = require("./environment");
 
+const deployedSiteAnnouncementUrl = process.env.SITE_ANNOUNCEMENT_URL;
 const cfg = localEnv.config();
 if (!cfg.error) {
     let tmp = cfg.parsed;
@@ -16,6 +18,10 @@ if (!cfg.error) {
         RDB_PASSWORD: tmp.RDB_PASSWORD,
         RDB_NAME: tmp.RDB_NAME,
         ES_HOST: tmp.ES_HOST,
+        SITE_ANNOUNCEMENT_URL: preferDeployedValue(
+          deployedSiteAnnouncementUrl,
+          tmp.SITE_ANNOUNCEMENT_URL
+        ),
     };
 }
 
@@ -26,6 +32,8 @@ var config = {
   root: path.resolve(__dirname, "../../"),
 
   digestFileFolder: process.env.DIGEST_FILE_FOLDER || path.resolve(__dirname, "../digests"),
+
+  siteAnnouncementUrl: process.env.SITE_ANNOUNCEMENT_URL,
 
   // Log directory
   logDir: process.env.LOGDIR || "/local/content/ccdc/etl/logs",

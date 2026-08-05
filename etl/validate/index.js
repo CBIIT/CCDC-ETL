@@ -1,13 +1,12 @@
 const config = require("../../config");
 const logger = require("../../common/logger");
 const fs = require("fs");
-const yaml = require("js-yaml");
 const xlsx = require("node-xlsx").default;
 const validateHelper = require("./validateHelper");
 
 let validate = {};
 
-validate.run = async () => {
+validate.run = async (siteAnnouncements) => {
     //get data from spreadsheet
     const digestFileFolder = config.digestFileFolder;
     const files = fs.readdirSync(digestFileFolder);
@@ -15,13 +14,10 @@ validate.run = async () => {
     let valid = true;
     for(let i = 0; i< files.length; i++){
       let file = files[parseInt(i, 10)];
-      if (file === "site_announcement_log.yaml") {
-        break;
-      }
       if (file.startsWith(".")) {
         continue;
       }
-      if (file === "site_announcement_log.xlsx") {
+      if (file === "site_announcement_log.yaml" || file === "site_announcement_log.xlsx") {
         continue;
       }
       const workSheetsFromFile = xlsx.parse(`${digestFileFolder}/${file}`);
@@ -32,20 +28,15 @@ validate.run = async () => {
       valid = valid && result;
     }
 
-    //validate site change log file
-    try{
-      // const siteChangeLogFile = xlsx.parse(`${digestFileFolder}/site_announcement_log.xlsx`);
-      // const validateResult = validateHelper.checkSiteChangeLog(siteChangeLogFile[0].data);
-      const digestFileFolder = config.digestFileFolder;
-      const yamlData = yaml.load(fs.readFileSync(digestFileFolder + '/site_announcement_log.yaml', 'utf8'));
-      const validateResult = validateHelper.checkSiteChangeLog(yamlData);
-      if (!validateResult) {
-        logger.error("Failed when validating site change log file: site_announcement_log.xlsx");
+    try {
+      const announcementValid = validateHelper.checkSiteChangeLog(siteAnnouncements);
+      if (!announcementValid) {
+        logger.error("Failed when validating site announcements from SITE_ANNOUNCEMENT_URL");
       }
-      valid = valid && validateResult;
-    }
-    catch(error) {
-      logger.error(error);
+      valid = valid && announcementValid;
+    } catch (error) {
+      logger.error(`Failed when validating SITE_ANNOUNCEMENT_URL: ${error.message}`);
+      valid = false;
     }
 
     return valid;

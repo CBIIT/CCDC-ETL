@@ -302,15 +302,15 @@ loadHelper.getGlossaryPageDocument = (glossaries) => {
   };
 };
 
-loadHelper.getSiteUpdatesDocument = async () => {
+loadHelper.getSiteUpdatesDocument = async (database = mysql) => {
   const contents = [];
   let sql = "SELECT post_date, title, description, details FROM changelog WHERE log_type=1";
   let inserts = [];
 
-  sql = mysql.format(sql, inserts);
+  sql = database.format(sql, inserts);
 
   try {
-    const results = await mysql.query(sql);
+    const results = await database.query(sql);
     results.forEach((siteUpdate) => {
       [
         siteUpdate.post_date.toLocaleString('default', {
@@ -329,7 +329,6 @@ loadHelper.getSiteUpdatesDocument = async () => {
         }
       });
     });
-    // console.log(contents);
     return {
       uid: "siteupdate",
       title: "CCDI Site Updates",
@@ -341,13 +340,6 @@ loadHelper.getSiteUpdatesDocument = async () => {
     logger.error(error);
     return -1;
   }
-  // return {
-  //   uid: "siteupdate",
-  //   title: "Updates to the Data Catalog Site",
-  //   description: "A page that lists updates to this site.",
-  //   content: contents.join(),
-  //   link: "/siteupdate"
-  // };
 };
 
 loadHelper.getDatasetDocuments = (datasets) => {

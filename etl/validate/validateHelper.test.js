@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import validateHelper from './validateHelper';
 
 describe('ValidateHelper', () => {
   it('should validate data resource info structure', () => {
@@ -34,4 +35,31 @@ describe('ValidateHelper', () => {
     expect(typeof testString).toBe('string');
     expect(typeof testNumber).toBe('number');
   });
+
+  const validRelease = {
+    releaseId: 'catalog_release_06102026',
+    logType: 1,
+    title: 'New release',
+    version: '1.5.9',
+    postDate: '2026-06-10',
+    contentType: 'Clinical,Genomics/Omics',
+    description: 'New resources and datasets',
+    details: '<p>Full release details</p>',
+    status: 1,
+  };
+
+  it('validates normalized changelog records', () => {
+    expect(validateHelper.checkSiteChangeLog([validRelease])).toBe(true);
+  });
+
+  it.each([
+    [{ ...validRelease, title: '' }],
+    [{ ...validRelease, postDate: '2026-02-31' }],
+    [{ ...validRelease, description: 'x'.repeat(3001) }],
+    [{ ...validRelease, details: 'x'.repeat(65536) }],
+    [{ ...validRelease, logType: 0 }],
+  ])('rejects records that do not fit the changelog contract', (record) => {
+    expect(validateHelper.checkSiteChangeLog([record])).toBe(false);
+  });
+
 });
