@@ -3,23 +3,34 @@ let localEnv = require("dotenv");
 let _ = require("lodash");
 const { preferDeployedValue } = require("./environment");
 
-const deployedSiteAnnouncementUrl = process.env.SITE_ANNOUNCEMENT_URL;
+const deployedEnv = {
+    NODE_ENV: process.env.NODE_ENV,
+    DIGEST_FILE_FOLDER: process.env.DIGEST_FILE_FOLDER,
+    LOGDIR: process.env.LOGDIR,
+    LOG_LEVEL: process.env.LOG_LEVEL,
+    RDB_HOST: process.env.RDB_HOST,
+    RDB_USER: process.env.RDB_USER,
+    RDB_PASSWORD: process.env.RDB_PASSWORD,
+    RDB_NAME: process.env.RDB_NAME,
+    ES_HOST: process.env.ES_HOST,
+    SITE_ANNOUNCEMENT_URL: process.env.SITE_ANNOUNCEMENT_URL,
+};
 const cfg = localEnv.config();
 if (!cfg.error) {
     let tmp = cfg.parsed;
     process.env = {
         ...process.env,
-        NODE_ENV: tmp.NODE_ENV,
-        DIGEST_FILE_FOLDER: tmp.DIGEST_FILE_FOLDER,
-        LOGDIR: tmp.LOGDIR,
-        LOG_LEVEL: tmp.LOG_LEVEL,
-        RDB_HOST: tmp.RDB_HOST,
-        RDB_USER: tmp.RDB_USER,
-        RDB_PASSWORD: tmp.RDB_PASSWORD,
-        RDB_NAME: tmp.RDB_NAME,
-        ES_HOST: tmp.ES_HOST,
+        NODE_ENV: preferDeployedValue(deployedEnv.NODE_ENV, tmp.NODE_ENV),
+        DIGEST_FILE_FOLDER: preferDeployedValue(deployedEnv.DIGEST_FILE_FOLDER, tmp.DIGEST_FILE_FOLDER),
+        LOGDIR: preferDeployedValue(deployedEnv.LOGDIR, tmp.LOGDIR),
+        LOG_LEVEL: preferDeployedValue(deployedEnv.LOG_LEVEL, tmp.LOG_LEVEL),
+        RDB_HOST: preferDeployedValue(deployedEnv.RDB_HOST, tmp.RDB_HOST),
+        RDB_USER: preferDeployedValue(deployedEnv.RDB_USER, tmp.RDB_USER),
+        RDB_PASSWORD: preferDeployedValue(deployedEnv.RDB_PASSWORD, tmp.RDB_PASSWORD),
+        RDB_NAME: preferDeployedValue(deployedEnv.RDB_NAME, tmp.RDB_NAME),
+        ES_HOST: preferDeployedValue(deployedEnv.ES_HOST, tmp.ES_HOST),
         SITE_ANNOUNCEMENT_URL: preferDeployedValue(
-          deployedSiteAnnouncementUrl,
+          deployedEnv.SITE_ANNOUNCEMENT_URL,
           tmp.SITE_ANNOUNCEMENT_URL
         ),
     };
