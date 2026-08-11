@@ -1,48 +1,46 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from "vitest";
+import utils from "./utils";
 
-describe('Utils - Basic Tests', () => {
-  it('should pass basic assertion', () => {
-    expect(1 + 1).toBe(2);
+describe("containsSpecialCharacters", () => {
+  it("accepts printable ASCII, CR/LF, blanks, and missing values", () => {
+    expect(utils.containsSpecialCharacters("Hello\r\nWorld ~")).toBe(false);
+    expect(utils.containsSpecialCharacters("   ")).toBe(false);
+    expect(utils.containsSpecialCharacters(undefined)).toBe(false);
+    expect(utils.containsSpecialCharacters(null)).toBe(false);
   });
 
-  it('should validate string operations', () => {
-    const str = 'Hello World';
-    expect(str.length).toBeGreaterThan(0);
-  });
-
-  it('should validate array operations', () => {
-    const arr = [1, 2, 3];
-    expect(arr).toHaveLength(3);
-  });
-});
-
-describe('Utils - Date Functions', () => {
-  it('should create current date', () => {
-    const date = new Date();
-    expect(date).toBeInstanceOf(Date);
-  });
-
-  it('should format date string', () => {
-    const dateStr = '2025-12-24';
-    expect(dateStr).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  it("detects invalid controls and Unicode", () => {
+    expect(utils.containsSpecialCharacters("a\tb")).toBe(true);
+    expect(utils.containsSpecialCharacters("café")).toBe(true);
   });
 });
 
-describe('Utils - containsSpecialCharacters (Mocked)', () => {
-  it('should validate undefined input handling', () => {
-    expect(undefined).toBeUndefined();
+describe("normalizeText", () => {
+  it("replaces every supported occurrence without trimming or collapsing spaces", () => {
+    const result = utils.normalizeText("  A\u00a0B\u2019s\u2013x\t\u200b\u2013  ");
+
+    expect(result.value).toBe("  A B's-x -  ");
+    expect(result.replacementCount).toBe(6);
+    expect(result.replacements).toEqual({
+      "U+0009": 1,
+      "U+00A0": 1,
+      "U+200B": 1,
+      "U+2013": 2,
+      "U+2019": 1,
+    });
+    expect(result.unresolved).toEqual([]);
   });
 
-  it('should validate empty string handling', () => {
-    expect(''.length).toBe(0);
+  it("leaves unknown Unicode unchanged and reports unique code points", () => {
+    const result = utils.normalizeText("é😀é");
+    expect(result.value).toBe("é😀é");
+    expect(result.replacementCount).toBe(0);
+    expect(result.unresolved.map((item) => item.code)).toEqual(["U+00E9", "U+1F600"]);
   });
 
-  it('should validate whitespace trimming', () => {
-    expect('   '.trim()).toBe('');
-  });
-
-  it('should validate ASCII character regex', () => {
-    const validAscii = /^[\x20-\x7E]+$/;
-    expect(validAscii.test('Hello World 123')).toBe(true);
+  it("does not coerce non-string values", () => {
+    for (const value of [undefined, null, 42, true, new Date(0)]) {
+      expect(utils.normalizeText(value)).toMatchObject({ value, replacementCount: 0 });
+    }
   });
 });

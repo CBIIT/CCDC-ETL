@@ -59,3 +59,21 @@ Ensure that Elasticsearch and MySQL are running, and then run the command
 ```bash
 node index.js
 ```
+
+### Digest special-character repair
+
+As part of the normal `node index.js` run, the ETL automatically repairs the following known special characters before validating the digest workbooks. Repair is limited to the Data Resource, Dataset, and Digest cells covered by the existing validator; glossary sheets, extra sheets, and other unvalidated cells are left unchanged. No additional command-line flag is required, and corrected validation-relevant values are saved in place to the source `.xlsx` files.
+
+| Character | Code point | Replacement |
+| --- | --- | --- |
+| Non-breaking space | `U+00A0` | Ordinary space |
+| Curly apostrophe | `U+2019` | Straight apostrophe (`'`) |
+| En dash | `U+2013` | Hyphen (`-`) |
+| Tab | `U+0009` | Ordinary space |
+| Zero-width space | `U+200B` | Removed |
+
+The terminal logs each changed workbook and finishes with a deterministic summary such as `Modified 2 digest files: first.xlsx, second.xlsx`. When no workbook changes are needed, it reports `Modified 0 digest files.`
+
+Only the five mappings above are repaired automatically in validation-relevant cells. Any other invalid Unicode character in those cells is left unchanged and reported with its workbook and cell location. Validation then fails closed, so extraction, indexing, and loading do not proceed with unresolved characters. This follows the validator's existing trim behavior, so special whitespace that appears only at a checked value's leading or trailing edge is not rewritten when validation already accepts it.
+
+Workbook replacement uses a same-directory temporary file that is verified before it is atomically renamed over the original. The ETL does not create `.bak` files, so digest workbooks should remain recoverable from their normal source or storage. Do not run two ETL processes against the same digest directory concurrently; file locking is not currently provided.

@@ -1,11 +1,11 @@
 const config = require("../../config");
 const logger = require("../../common/logger");
-const fs = require("fs");
 const xlsx = require("node-xlsx").default;
 const extractHelper = require("./extractHelper");
 const {
   readGlossary,
 } = require('../../common/utils');
+const { listDigestFiles } = require("../../common/digestFiles");
 
 // Parse a file
 
@@ -14,15 +14,9 @@ let extract = {};
 extract.run = async (siteAnnouncements) => {
     //get data from spreadsheet and store them into relational DB
     const digestFileFolder = config.digestFileFolder;
-    const files = fs.readdirSync(digestFileFolder);
+    const files = listDigestFiles(digestFileFolder);
     for(let i = 0; i< files.length; i++){
         let file = files[parseInt(i, 10)];
-        if (file.startsWith(".")) {
-          continue;
-        }
-        if (file === "site_announcement_log.yaml" || file === "site_announcement_log.xlsx") {
-          continue;
-        }
         const workSheetsFromFile = xlsx.parse(`${digestFileFolder}/${file}`);
         let dataResource = extractHelper.getDataResourceInfo(workSheetsFromFile[0]);
         //update data resource info to RDB if exists, otherwise create a new row
