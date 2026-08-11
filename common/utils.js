@@ -3,15 +3,62 @@ const fs = require("fs");
 const axios = require('axios');
 const xlsx = require("node-xlsx").default;
 
-const containsSpecialCharacters = (str) => {
-  if (str === undefined) {
+const INVALID_TEXT_CHARACTER = /[^\r\n\x20-\x7E]/u;
+const INVALID_TEXT_CHARACTERS = /[^\r\n\x20-\x7E]/gu;
+const TEXT_REPLACEMENTS = new Map([
+  ["\u00A0", " "],
+  ["\u2019", "'"],
+  ["\u2013", "-"],
+  ["\t", " "],
+  ["\u200B", ""],
+]);
+
+const containsSpecialCharacters = (value) => {
+  if (value === undefined || value === null) {
     return false;
   }
-  const newStr = str.toString().trim();
+  const newStr = value.toString().trim();
   if (newStr === "") {
     return false;
   }
-  return !(newStr.match(/^[\r\n\x20-\x7E]+$/g) !== null);
+  return INVALID_TEXT_CHARACTER.test(newStr);
+};
+
+const normalizeText = (value) => {
+  if (typeof value !== "string") {
+    return { value, replacementCount: 0, replacements: {}, unresolved: [] };
+  }
+
+  const replacements = {};
+  let replacementCount = 0;
+  let normalized = "";
+  for (const character of value) {
+    if (TEXT_REPLACEMENTS.has(character)) {
+      const codePoint = `U+${character.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")}`;
+      replacements[codePoint] = (replacements[codePoint] || 0) + 1;
+      replacementCount += 1;
+      normalized += TEXT_REPLACEMENTS.get(character);
+    } else {
+      normalized += character;
+    }
+  }
+
+  const unresolved = [];
+  const seen = new Set();
+  for (const match of normalized.matchAll(INVALID_TEXT_CHARACTERS)) {
+    const character = match[0];
+    const codePoint = character.codePointAt(0);
+    if (!seen.has(codePoint)) {
+      seen.add(codePoint);
+      unresolved.push({
+        character,
+        codePoint,
+        code: `U+${codePoint.toString(16).toUpperCase().padStart(4, "0")}`,
+      });
+    }
+  }
+
+  return { value: normalized, replacementCount, replacements, unresolved };
 };
 
 const fetch = async (url) => {
@@ -154,6 +201,7 @@ const ExcelDateToJSDateTime = (serial) => {
 
 module.exports = {
   containsSpecialCharacters,
+	normalizeText,
 	fetch,
   readNCItDiseaseTerms,
   readNCItTumorSiteTerms,
