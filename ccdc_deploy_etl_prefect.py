@@ -27,7 +27,14 @@ CONNECTION_SECRET_PREFECT_VARIABLES = {
     "stage": "ccdc_etl_secret_name_stage",
     "production": "ccdc_etl_secret_name_prod",
 }
-CONNECTION_SECRET_KEYS = ("RDB_HOST", "RDB_USER", "RDB_PASSWORD", "RDB_NAME", "ES_HOST")
+CONNECTION_SECRET_ENV_MAPPING = {
+    "RDB_HOST": "host",
+    "RDB_USER": "username",
+    "RDB_PASSWORD": "password",
+    "RDB_NAME": "dbname",
+    "ES_HOST": "opensearch_host",
+}
+DEFAULT_RDB_NAME = "ccdc"
 TIER_ENVIRONMENTS = {
     "lower": {"dev", "qa"},
     "upper": {"stage", "production"},
@@ -36,7 +43,22 @@ TIER_ENVIRONMENTS = {
 
 def _run(command: List[str], cwd: Path, env: Optional[Dict[str, str]] = None) -> None:
     print(f"Running command: {' '.join(command)}")
-    subprocess.run(command, cwd=cwd, env=env, check=True)
+    result = subprocess.run(
+        command,
+        cwd=cwd,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.stdout:
+        print(result.stdout)
+    if result.stderr:
+        print(result.stderr)
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"Command '{' '.join(command)}' failed with exit code {result.returncode}."
+        )
 
 
 def _site_announcement_url(environment: str) -> str:
@@ -106,11 +128,19 @@ def _load_connection_env(environment: str, repo_dir: Path) -> Dict[str, str]:
     secret_name = _get_prefect_variable(secret_variable_name)
     secret = _load_secret(secret_name, repo_dir)
 
-    missing_keys = [key for key in CONNECTION_SECRET_KEYS if not secret.get(key)]
+    optional_secret_keys = {CONNECTION_SECRET_ENV_MAPPING["RDB_NAME"]}
+    missing_keys = [
+        secret_key
+        for secret_key in CONNECTION_SECRET_ENV_MAPPING.values()
+        if secret_key not in optional_secret_keys and not secret.get(secret_key)
+    ]
     if missing_keys:
         raise ValueError(f"The CCDC ETL connection secret is missing: {', '.join(missing_keys)}.")
 
-    return {key: str(secret[key]) for key in CONNECTION_SECRET_KEYS}
+    connection_env = {}
+    for env_key, secret_key in CONNECTION_SECRET_ENV_MAPPING.items():
+        connection_env[env_key] = str(secret.get(secret_key) or DEFAULT_RDB_NAME)
+    return connection_env
 
 
 def _sync_s3_folder_to_digests(repo_dir: Path, s3_folder: str) -> Path:

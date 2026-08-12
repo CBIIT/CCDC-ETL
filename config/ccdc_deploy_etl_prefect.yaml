@@ -19,6 +19,27 @@ pull:
       repository: https://github.com/CBIIT/CCDC-ETL.git
       branch: PODCAT-1790
       include_submodules: True
+  
+  - prefect.deployments.steps.run_shell_script:
+      id: install-node
+      script: |
+        echo "Installing Node.js and npm..."
+ 
+        apt-get update -y
+        apt-get install -y curl ca-certificates awscli
+ 
+        bash -c "curl -fsSL https://deb.nodesource.com/setup_22.x | bash -"
+        apt-get install -y nodejs
+ 
+        echo "AWS CLI version:"
+        aws --version
+ 
+        echo "Node version:"
+        node --version
+ 
+        echo "NPM version:"
+        npm --version
+ 
   - prefect.deployments.steps.run_shell_script:
       script: npm ci
       directory: "{{ clone-step.directory }}"
@@ -47,7 +68,7 @@ deployments:
         env:
           PREFECT_LOGGING_EXTRA_LOGGERS: "CCDC ETL"
           CCDC_ETL_TIER: lower
-          CCDC_ETL_S3_BUCKET_ENV_VAR: CCDC_ETL_LOWER_TIER_S3_BUCKET
+          CCDC_ETL_S3_BUCKET: ccdi-nonprod-ccdc-etl-bucket-cdk
   
   - name: ccdc_deploy_etl_upper
     version: null
@@ -71,4 +92,4 @@ deployments:
         env:
           PREFECT_LOGGING_EXTRA_LOGGERS: "CCDC ETL"
           CCDC_ETL_TIER: upper
-          CCDC_ETL_S3_BUCKET_ENV_VAR: CCDC_ETL_UPPER_TIER_S3_BUCKET
+          CCDC_ETL_S3_BUCKET: ccdi-prod-ccdc-etl-bucket-cdk
