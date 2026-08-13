@@ -120,7 +120,11 @@ def _load_secret(secret_name: str, repo_dir: Path) -> Dict[str, str]:
         check=False,
     )
     if result.returncode != 0:
-        raise ValueError("Failed to load the CCDC ETL connection secret from AWS Secrets Manager.")
+        error_detail = result.stderr.strip() or "No error detail returned by AWS CLI."
+        raise ValueError(
+            "Failed to load the CCDC ETL connection secret from AWS Secrets Manager: "
+            f"{error_detail}"
+        )
     return json.loads(result.stdout)
 
 
