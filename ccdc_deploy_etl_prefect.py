@@ -42,22 +42,23 @@ TIER_ENVIRONMENTS = {
 
 
 def _run(command: List[str], cwd: Path, env: Optional[Dict[str, str]] = None) -> None:
-    print(f"Running command: {' '.join(command)}")
-    result = subprocess.run(
+    print(f"Running command: {' '.join(command)}", flush=True)
+    process = subprocess.Popen(
         command,
         cwd=cwd,
         env=env,
-        capture_output=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
         text=True,
-        check=False,
     )
-    if result.stdout:
-        print(result.stdout)
-    if result.stderr:
-        print(result.stderr)
-    if result.returncode != 0:
+    if process.stdout:
+        for line in process.stdout:
+            print(line, end="", flush=True)
+
+    returncode = process.wait()
+    if returncode != 0:
         raise RuntimeError(
-            f"Command '{' '.join(command)}' failed with exit code {result.returncode}."
+            f"Command '{' '.join(command)}' failed with exit code {returncode}."
         )
 
 
