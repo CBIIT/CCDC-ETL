@@ -1,0 +1,101 @@
+# Welcome to your prefect.yaml file! You can use this file for storing and managing
+# configuration for deploying your flows. We recommend committing this file to source
+# control along with your flow code.
+
+# Generic metadata about this project
+name: CTOS CCDC DATAOPS
+prefect-version: null
+
+# build section allows you to manage and build docker images
+build: null
+
+# push section allows you to manage if and how this project is uploaded to remote locations
+push: null
+
+# pull section allows you to provide instructions for cloning this project in remote locations
+pull:
+  - prefect.deployments.steps.git_clone:
+      id: clone-step
+      repository: https://github.com/CBIIT/CCDC-ETL.git
+      branch: PODCAT-1790
+      include_submodules: True
+  
+  - prefect.deployments.steps.run_shell_script:
+      id: install-node
+      script: |
+        echo "Installing Node.js and npm..."
+ 
+        apt-get update -y
+        apt-get install -y curl ca-certificates awscli
+ 
+        bash -c "curl -fsSL https://deb.nodesource.com/setup_22.x | bash -"
+        apt-get install -y nodejs
+ 
+        echo "AWS CLI version:"
+        aws --version
+ 
+        echo "Node version:"
+        node --version
+ 
+        echo "NPM version:"
+        npm --version
+ 
+  - prefect.deployments.steps.run_shell_script:
+      script: npm ci
+      directory: "{{ clone-step.directory }}"
+      stream_output: True
+
+deployments:
+  - name: ccdc_deploy_etl_lower
+    version: null
+    tags: []
+    description: null
+    schedule: {}
+    flow_name: null
+    entrypoint: ccdc_deploy_etl_prefect.py:ccdc_deploy_etl_lower
+    parameters:
+      environment: dev
+      etl_branch: main
+      s3_folder: ""
+      operation:
+        - node dropTable.js
+        - node createTable.js
+        - node index.js
+    work_pool:
+      name: ccdi-dcc-32gb-prefect-3.4.19-python3.13
+      work_queue_name: default
+      job_variables:
+        env:
+          PREFECT_LOGGING_EXTRA_LOGGERS: "CCDC ETL"
+          CCDC_ETL_TIER: lower
+          CCDC_ETL_S3_BUCKET: ccdi-nonprod-ccdc-etl-bucket-cdk
+          ES_REQUEST_TIMEOUT: "120000"
+          ES_PING_TIMEOUT: "10000"
+          ES_MAX_RETRIES: "0"
+  
+  - name: ccdc_deploy_etl_upper
+    version: null
+    tags: []
+    description: null
+    schedule: {}
+    flow_name: null
+    entrypoint: ccdc_deploy_etl_prefect.py:ccdc_deploy_etl_upper
+    parameters:
+      environment: stage
+      etl_branch: main
+      s3_folder: ""
+      operation:
+        - node dropTable.js
+        - node createTable.js
+        - node index.js
+    work_pool:
+      name: ccdi-dcc-prod-32gb-prefect-3.4.19-python3.13
+      work_queue_name: default
+      job_variables:
+        env:
+          PREFECT_LOGGING_EXTRA_LOGGERS: "CCDC ETL"
+          CCDC_ETL_TIER: upper
+          CCDC_ETL_S3_BUCKET: ccdi-prod-ccdc-etl-bucket-cdk
+          ES_REQUEST_TIMEOUT: "120000"
+          ES_PING_TIMEOUT: "10000"
+          ES_MAX_RETRIES: "0"
