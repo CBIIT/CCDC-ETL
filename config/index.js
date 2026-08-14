@@ -14,6 +14,8 @@ const deployedEnv = {
     RDB_NAME: process.env.RDB_NAME,
     ES_HOST: process.env.ES_HOST,
     ES_REQUEST_TIMEOUT: process.env.ES_REQUEST_TIMEOUT,
+    ES_PING_TIMEOUT: process.env.ES_PING_TIMEOUT,
+    ES_MAX_RETRIES: process.env.ES_MAX_RETRIES,
     SITE_ANNOUNCEMENT_URL: process.env.SITE_ANNOUNCEMENT_URL,
 };
 const cfg = localEnv.config();
@@ -31,6 +33,8 @@ if (!cfg.error) {
         RDB_NAME: preferDeployedValue(deployedEnv.RDB_NAME, tmp.RDB_NAME),
         ES_HOST: preferDeployedValue(deployedEnv.ES_HOST, tmp.ES_HOST),
         ES_REQUEST_TIMEOUT: preferDeployedValue(deployedEnv.ES_REQUEST_TIMEOUT, tmp.ES_REQUEST_TIMEOUT),
+        ES_PING_TIMEOUT: preferDeployedValue(deployedEnv.ES_PING_TIMEOUT, tmp.ES_PING_TIMEOUT),
+        ES_MAX_RETRIES: preferDeployedValue(deployedEnv.ES_MAX_RETRIES, tmp.ES_MAX_RETRIES),
         SITE_ANNOUNCEMENT_URL: preferDeployedValue(
           deployedEnv.SITE_ANNOUNCEMENT_URL,
           tmp.SITE_ANNOUNCEMENT_URL
@@ -87,7 +91,9 @@ var config = {
   //elasticsearch connection
   elasticsearch: {
     host: process.env.ES_HOST || "http://127.0.0.1:9200",
-		requestTimeout: Number(process.env.ES_REQUEST_TIMEOUT || 30000)
+		requestTimeout: Number(process.env.ES_REQUEST_TIMEOUT || 30000),
+		pingTimeout: Number(process.env.ES_PING_TIMEOUT || 10000),
+		maxRetries: Number(process.env.ES_MAX_RETRIES || 0)
   },
 
   //NCIt synonyms API

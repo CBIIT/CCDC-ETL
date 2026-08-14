@@ -6,6 +6,12 @@ const etl = require("./etl");
 
 const runCCDCETL = async function(){
     try {
+        logger.info(
+            "Testing Elasticsearch connection "
+            + `(ping timeout: ${config.elasticsearch.pingTimeout} ms, `
+            + `request timeout: ${config.elasticsearch.requestTimeout} ms, `
+            + `max retries: ${config.elasticsearch.maxRetries}).`
+        );
         const elasticsearchConnected = await elasticsearch.testConnection();
         if(elasticsearchConnected){
             logger.info("Elasticsearch connected!");
