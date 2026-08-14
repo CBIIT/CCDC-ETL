@@ -13,6 +13,7 @@ const deployedEnv = {
     RDB_PASSWORD: process.env.RDB_PASSWORD,
     RDB_NAME: process.env.RDB_NAME,
     ES_HOST: process.env.ES_HOST,
+    ES_REQUEST_TIMEOUT: process.env.ES_REQUEST_TIMEOUT,
     SITE_ANNOUNCEMENT_URL: process.env.SITE_ANNOUNCEMENT_URL,
 };
 const cfg = localEnv.config();
@@ -29,6 +30,7 @@ if (!cfg.error) {
         RDB_PASSWORD: preferDeployedValue(deployedEnv.RDB_PASSWORD, tmp.RDB_PASSWORD),
         RDB_NAME: preferDeployedValue(deployedEnv.RDB_NAME, tmp.RDB_NAME),
         ES_HOST: preferDeployedValue(deployedEnv.ES_HOST, tmp.ES_HOST),
+        ES_REQUEST_TIMEOUT: preferDeployedValue(deployedEnv.ES_REQUEST_TIMEOUT, tmp.ES_REQUEST_TIMEOUT),
         SITE_ANNOUNCEMENT_URL: preferDeployedValue(
           deployedEnv.SITE_ANNOUNCEMENT_URL,
           tmp.SITE_ANNOUNCEMENT_URL
@@ -85,7 +87,7 @@ var config = {
   //elasticsearch connection
   elasticsearch: {
     host: process.env.ES_HOST || "http://127.0.0.1:9200",
-		requestTimeout: 30000
+		requestTimeout: Number(process.env.ES_REQUEST_TIMEOUT || 30000)
   },
 
   //NCIt synonyms API

@@ -11,11 +11,13 @@ const runCCDCETL = async function(){
             logger.info("Elasticsearch connected!");
         }
         else{
-            logger.info("Failed to connect to Elasticsearch.");
+            throw new Error("Failed to connect to Elasticsearch.");
         }
     }
     catch(error) {
         logger.error(error);
+        process.exitCode = 1;
+        return;
     }
   
     try{
@@ -24,15 +26,20 @@ const runCCDCETL = async function(){
             logger.info("Relational DB connected!");
         }
         else{
-            logger.info("Failed to connect to Relational Database.");
+            throw new Error("Failed to connect to Relational Database.");
         }
     }
     catch(error) {
         logger.error(error);
+        process.exitCode = 1;
+        return;
     }
 
-    await etl.startEtl();
+    const etlSucceeded = await etl.startEtl();
     etl.endEtl();
+    if (!etlSucceeded) {
+        process.exitCode = 1;
+    }
 };
 
 runCCDCETL();

@@ -69,6 +69,7 @@ deployments:
           PREFECT_LOGGING_EXTRA_LOGGERS: "CCDC ETL"
           CCDC_ETL_TIER: lower
           CCDC_ETL_S3_BUCKET: ccdi-nonprod-ccdc-etl-bucket-cdk
+          ES_REQUEST_TIMEOUT: "120000"
   
   - name: ccdc_deploy_etl_upper
     version: null
@@ -93,3 +94,4 @@ deployments:
           PREFECT_LOGGING_EXTRA_LOGGERS: "CCDC ETL"
           CCDC_ETL_TIER: upper
           CCDC_ETL_S3_BUCKET: ccdi-prod-ccdc-etl-bucket-cdk
+          ES_REQUEST_TIMEOUT: "120000"
