@@ -14,21 +14,48 @@
  var exporting = require("./exporting");
  var load = require("./load");
  var mysql = require("../common/mysql");
+ var siteAnnouncement = require("../common/siteAnnouncement");
  
  var etl = {};
  
- etl.startEtl = async () => {
-   logger.info("Validating digest files...");
-   const result = await validate.run();
+ const createStartEtl = ({
+   appConfig = config,
+   appLogger = logger,
+   validator = validate,
+   extractor = extract,
+   indexBuilder = buildIndex,
+   loader = load,
+   announcementSource = siteAnnouncement,
+ } = {}) => async () => {
+   let siteAnnouncements;
+   try {
+      siteAnnouncements = await announcementSource.readSiteAnnouncements(appConfig.siteAnnouncementUrl);
+   } catch (error) {
+      appLogger.error(`Failed to load SITE_ANNOUNCEMENT_URL: ${error.message}`);
+      return false;
+   }
+
+   appLogger.info("Validating digest files...");
+   const result = await validator.run(siteAnnouncements);
    if (result) {
-      logger.info("Successful in validating digest files.");
-      await extract.run();
-      await buildIndex.run();
-      await load.run();
+      appLogger.info("Successful in validating digest files.");
+      try {
+         await extractor.run(siteAnnouncements);
+         await indexBuilder.run();
+         await loader.run();
+         return true;
+      } catch (error) {
+         appLogger.error(`ETL failed: ${error.message}`);
+         return false;
+      }
    } else {
-      logger.error("validating digest files failed:");
+      appLogger.error("validating digest files failed:");
+      return false;
    }
  };
+
+ etl.startEtl = createStartEtl();
+ etl.createStartEtl = createStartEtl;
  
  etl.endEtl = () => {
     logger.info("Finished ETL process.");
