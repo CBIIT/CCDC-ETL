@@ -17,7 +17,7 @@ pull:
   - prefect.deployments.steps.git_clone:
       id: clone-step
       repository: https://github.com/CBIIT/CCDC-ETL.git
-      branch: PODCAT-1790
+      branch: main
       include_submodules: True
   
   - prefect.deployments.steps.run_shell_script:
