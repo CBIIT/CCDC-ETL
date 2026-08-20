@@ -41,7 +41,8 @@
       appLogger.info("Successful in validating digest files.");
       try {
          await extractor.run(siteAnnouncements);
-         await indexBuilder.run();
+         // Elasticsearch index creation temporarily disabled — RDB write only
+         // await indexBuilder.run();
          await loader.run();
          return true;
       } catch (error) {

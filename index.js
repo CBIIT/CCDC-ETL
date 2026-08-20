@@ -1,10 +1,14 @@
-const config = require("./config");
+// Elasticsearch indexing temporarily disabled — RDB write only
+// const config = require("./config");
 const logger = require("./common/logger");
 const mysql = require("./common/mysql");
-const elasticsearch = require("./common/elasticsearch");
+// Elasticsearch indexing temporarily disabled — RDB write only
+// const elasticsearch = require("./common/elasticsearch");
 const etl = require("./etl");
 
 const runCCDCETL = async function(){
+    // Elasticsearch connection check temporarily disabled — RDB write only
+    /*
     try {
         logger.info(
             "Testing Elasticsearch connection "
@@ -25,6 +29,7 @@ const runCCDCETL = async function(){
         process.exitCode = 1;
         return;
     }
+    */
   
     try{
         const mysqlConnected = await mysql.query("select 1 as c1");

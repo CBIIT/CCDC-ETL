@@ -2,7 +2,8 @@ const config = require("../../config");
 const logger = require("../../common/logger");
 const loadHelper = require("./loadHelper");
 const { toNumber } = require("lodash");
-const elasticsearch = require("../../common/elasticsearch");
+// Elasticsearch indexing temporarily disabled — RDB write only
+// const elasticsearch = require("../../common/elasticsearch");
 const utils = require("../../common/utils");
 const {
   readNCItDiseaseSynonyms,
@@ -310,10 +311,10 @@ load.run = async () => {
           }
         });
       }
-      //indexing dataset into elasticsearch
-      let result = await elasticsearch.addDocument(config.indexDS.alias, tmp.data_resource_id + "_" + tmp.dataset_id , tmp);
+      // indexing dataset into elasticsearch temporarily disabled — RDB write only
+      // let result = await elasticsearch.addDocument(config.indexDS.alias, tmp.data_resource_id + "_" + tmp.dataset_id , tmp);
       dsDocuments.push(tmp);
-      logger.info("Indexed document into elasticsearch: " + result._id);
+      // logger.info("Indexed document into elasticsearch: " + result._id);
     }
     //indexing dataresource into elasticsearch
     let drDocument = {};
@@ -360,9 +361,10 @@ load.run = async () => {
       drDocument.data_update_date = Math.max(drs[i].initial_submission_date, drs[i].data_update_date);
     }
     drDocument.data_update_date = utils.timestampToString(drDocument.data_update_date);
-    let result = await elasticsearch.addDocument(config.indexDR.alias, drDocument.data_resource_id , drDocument);
+    // indexing dataresource into elasticsearch temporarily disabled — RDB write only
+    // let result = await elasticsearch.addDocument(config.indexDR.alias, drDocument.data_resource_id , drDocument);
     drDocuments.push(drDocument);
-    logger.info("Indexed document into elasticsearch: " + result._id);
+    // logger.info("Indexed document into elasticsearch: " + result._id);
   }
   logger.info("Start aggragating data to generate filter list.");
   await loadHelper.deletePreviousAggratedData();
@@ -393,10 +395,11 @@ load.run = async () => {
     ccdcDocuments.push(drd);
   });
   */
-  for(let c = 0; c< ccdcDocuments.length; c++){
-    let tmp = await elasticsearch.addDocument(config.indexDoc.alias, ccdcDocuments[c].uid , ccdcDocuments[c]);
-    logger.info("Indexed document into elasticsearch: " + tmp._id);
-  }
+  // Elasticsearch website-document indexing temporarily disabled — RDB write only
+  // for(let c = 0; c< ccdcDocuments.length; c++){
+  //   let tmp = await elasticsearch.addDocument(config.indexDoc.alias, ccdcDocuments[c].uid , ccdcDocuments[c]);
+  //   logger.info("Indexed document into elasticsearch: " + tmp._id);
+  // }
   
   logger.info("End of creating website documents : " + ccdcDocuments.length + " records have been created.");
 };

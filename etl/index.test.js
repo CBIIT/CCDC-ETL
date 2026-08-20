@@ -30,7 +30,8 @@ describe("ETL announcement snapshot orchestration", () => {
     expect(dependencies.announcementSource.readSiteAnnouncements).toHaveBeenCalledOnce();
     expect(dependencies.validator.run).toHaveBeenCalledWith(announcements);
     expect(dependencies.extractor.run).toHaveBeenCalledWith(announcements);
-    expect(dependencies.indexBuilder.run).toHaveBeenCalledOnce();
+    // Elasticsearch index creation is temporarily disabled
+    expect(dependencies.indexBuilder.run).not.toHaveBeenCalled();
     expect(dependencies.loader.run).toHaveBeenCalledOnce();
   });
 
