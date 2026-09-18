@@ -155,12 +155,25 @@ validateHelper.check = (digestFile) => {
     valid = valid && checkDatasetsInfo(digestFile[1]);
     const data = digestFile[1].data;
     let len = data.length - 1;
+    const datasetNames = data.slice(1).map((row, index) => {
+        if (row.length === 0) {
+            return undefined;
+        }
+        return row[2] || "Dataset_" + (index + 1);
+    });
+    let digestSheets;
+    try {
+        digestSheets = util.getDigestSheets(digestFile, datasetNames);
+    } catch (error) {
+        logger.error(error.message);
+        return false;
+    }
     for(let i = 0; i< len; i++){
         if (data[i+1].length === 0) {
             continue;
         }
         const datasetName = data[i+1][2] || "Dataset_" + (i+1);
-        const result = checkDigest(digestFile[i + 2], datasetName);
+        const result = checkDigest(digestSheets[i], datasetName);
         valid = valid && result;
     }
     return valid;

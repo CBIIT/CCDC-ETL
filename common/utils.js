@@ -64,6 +64,47 @@ const readGlossary = () => {
   return result;
 };
 
+const getDigestSheets = (workSheets, datasetNames) => {
+  const digestSheets = workSheets.slice(2);
+  const selectedSheets = new Array(datasetNames.length);
+  const claimedSheets = new Set();
+
+  datasetNames.forEach((datasetName, datasetIndex) => {
+    if (!datasetName) {
+      return;
+    }
+    const namedSheet = digestSheets.find(
+      (sheet) => sheet.name === datasetName && !claimedSheets.has(sheet)
+    );
+    if (namedSheet) {
+      selectedSheets[datasetIndex] = namedSheet;
+      claimedSheets.add(namedSheet);
+    }
+  });
+
+  datasetNames.forEach((datasetName, datasetIndex) => {
+    if (!datasetName || selectedSheets[datasetIndex]) {
+      return;
+    }
+    const positionalSheet = digestSheets[datasetIndex];
+    let availableSheet = positionalSheet;
+    if (claimedSheets.has(positionalSheet)) {
+      const unclaimedSheets = digestSheets.filter((sheet) => !claimedSheets.has(sheet));
+      if (unclaimedSheets.length !== 1) {
+        throw new Error(`Digest sheet for ${datasetName} is ambiguous`);
+      }
+      [availableSheet] = unclaimedSheets;
+    }
+    if (!availableSheet) {
+      throw new Error(`Digest sheet for ${datasetName} is missing`);
+    }
+    selectedSheets[datasetIndex] = availableSheet;
+    claimedSheets.add(availableSheet);
+  });
+
+  return selectedSheets;
+};
+
 const getTodayDate = () => {
   const date = new Date();
   let str = "";
@@ -160,6 +201,7 @@ module.exports = {
   readNCItDiseaseSynonyms,
   readNCItTumorSiteSynonyms,
   readGlossary,
+  getDigestSheets,
   getTodayDate,
   getTodayDateFormatted,
   timestampToString,
