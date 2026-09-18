@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import utils from './utils';
 
 describe('Utils - Basic Tests', () => {
   it('should pass basic assertion', () => {
@@ -44,5 +45,34 @@ describe('Utils - containsSpecialCharacters (Mocked)', () => {
   it('should validate ASCII character regex', () => {
     const validAscii = /^[\x20-\x7E]+$/;
     expect(validAscii.test('Hello World 123')).toBe(true);
+  });
+});
+
+describe('Utils - getDigestSheets', () => {
+  it('throws when the only remaining digest sheet has a different non-empty name', () => {
+    const workSheets = [
+      { name: 'Data Resource' },
+      { name: 'Dataset Info' },
+      { name: 'A' },
+      { name: 'C' },
+    ];
+
+    expect(() => utils.getDigestSheets(workSheets, ['A', 'B'])).toThrow(
+      'Digest sheet for B is missing'
+    );
+  });
+
+  it('uses the only unnamed fallback sheet when named sheets do not match', () => {
+    const workSheets = [
+      { name: 'Data Resource' },
+      { name: 'Dataset Info' },
+      { name: 'A' },
+      { name: 'C' },
+      { name: '' },
+    ];
+
+    const digestSheets = utils.getDigestSheets(workSheets, ['A', 'B']);
+
+    expect(digestSheets[1]).toBe(workSheets[4]);
   });
 });

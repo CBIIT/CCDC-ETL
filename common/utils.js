@@ -88,12 +88,18 @@ const getDigestSheets = (workSheets, datasetNames) => {
     }
     const positionalSheet = digestSheets[datasetIndex];
     let availableSheet = positionalSheet;
-    if (claimedSheets.has(positionalSheet)) {
-      const unclaimedSheets = digestSheets.filter((sheet) => !claimedSheets.has(sheet));
-      if (unclaimedSheets.length !== 1) {
+    if (
+      !availableSheet
+      || claimedSheets.has(positionalSheet)
+      || availableSheet.name
+    ) {
+      const unclaimedFallbackSheets = digestSheets.filter(
+        (sheet) => !claimedSheets.has(sheet) && !sheet.name
+      );
+      if (unclaimedFallbackSheets.length > 1) {
         throw new Error(`Digest sheet for ${datasetName} is ambiguous`);
       }
-      [availableSheet] = unclaimedSheets;
+      [availableSheet] = unclaimedFallbackSheets;
     }
     if (!availableSheet) {
       throw new Error(`Digest sheet for ${datasetName} is missing`);
