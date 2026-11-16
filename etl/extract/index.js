@@ -4,6 +4,7 @@ const fs = require("fs");
 const xlsx = require("node-xlsx").default;
 const extractHelper = require("./extractHelper");
 const {
+  getDigestSheets,
   readGlossary,
 } = require('../../common/utils');
 
@@ -32,13 +33,17 @@ extract.run = async (siteAnnouncements) => {
         //insert submission info to RDB 
         let submissionId = await extractHelper.insertSubmission(dataSubmissionInfo);
         let datasetsInfo = extractHelper.getDatasetsInfo(workSheetsFromFile[1]);
+        const digestSheets = getDigestSheets(
+          workSheetsFromFile,
+          datasetsInfo.map((datasetInfo) => datasetInfo.datasetName)
+        );
         let len = datasetsInfo.length;
         for(let i = 0; i< len; i++){
             //insert datasets info to RDB
             let datasetInfo = datasetsInfo[parseInt(i, 10)];
             datasetInfo.submissionId = submissionId;
             let datasetId = await extractHelper.insertDataset(datasetInfo);
-            let digests = extractHelper.getDigest(workSheetsFromFile[i + 2]);
+            let digests = extractHelper.getDigest(digestSheets[i]);
             for(let j = 0; j < digests.length ; j++){
                 let digest = digests[parseInt(j, 10)];
                 digest.datasetId = datasetId;
